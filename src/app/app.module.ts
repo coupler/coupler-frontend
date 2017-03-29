@@ -5,10 +5,12 @@ import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TutorialComponent
   ],
   imports: [
     BrowserModule,
