@@ -10,12 +10,14 @@ import { AppComponent } from './app.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DatasetService } from './dataset.service';
+import { DatasetsComponent } from './datasets/datasets.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TutorialComponent,
-    DashboardComponent
+    DashboardComponent,
+    DatasetsComponent
   ],
   imports: [
     BrowserModule,
