@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DatasetService } from './dataset.service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AppRoutingModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [DatasetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
