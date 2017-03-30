@@ -1,11 +1,11 @@
-export enum DatasetType {
-  MySQL
+export enum DatasetKind {
+  mysql
 }
 
 export class Dataset {
   id: number;
   name: string;
-  type: DatasetType;
+  kind: DatasetKind;
   host: string;
   username: string;
   password: string;
@@ -21,6 +21,9 @@ export class Dataset {
           break;
         case "table_name":
           key = "tableName";
+          break;
+        case "type":
+          key = "kind";
           break;
       }
       this[key] = value;
