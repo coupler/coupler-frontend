@@ -26,4 +26,13 @@ export class DatasetDetailComponent implements OnInit {
       switchMap((params: Params) => this.datasetService.getDataset(+params['id'])).
       subscribe(dataset => this.dataset = dataset);
   }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  save(): void {
+    this.datasetService.update(this.dataset).
+      then(() => this.goBack());
+  }
 }

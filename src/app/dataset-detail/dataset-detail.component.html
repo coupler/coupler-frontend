@@ -1,4 +1,56 @@
-<p>
-  dataset-detail works!
-</p>
-{{ dataset | json }}
+<ng-template [ngIf]="dataset">
+  <h2>Dataset: {{dataset.name}}</h2>
+  <form (ngSubmit)="save()" #datasetForm="ngForm">
+    <div class="row">
+      <div class="col-sm-2 form-group">
+        <label for="dataset-name">Name</label>
+        <input class="form-control" id="dataset-name"
+               type="string" required [(ngModel)]="dataset.name" name="name">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="dataset-kind">Type</label>
+        <select class="form-control" id="dataset-kind"
+                required [(ngModel)]="dataset.kind" name="kind">
+          <option></option>
+          <option value="mysql">MySQL</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 form-group">
+        <label for="dataset-host">Host</label>
+        <input class="form-control" id="dataset-host"
+               required [(ngModel)]="dataset.host" name="host">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="dataset-username">Username</label>
+        <input class="form-control" id="dataset-username"
+               required [(ngModel)]="dataset.username" name="username">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="dataset-password">Password</label>
+        <input class="form-control" id="dataset-password"
+               type="password" required [(ngModel)]="dataset.password" name="password">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 form-group">
+        <label for="dataset-database-name">Database Name</label>
+        <input class="form-control" id="dataset-database-name"
+               required [(ngModel)]="dataset.databaseName" name="databaseName">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="dataset-table-name">Table Name</label>
+        <input class="form-control" id="dataset-table-name"
+               required [(ngModel)]="dataset.tableName" name="tableName">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success"
+            [disabled]="!datasetForm.form.valid">
+      Save
+    </button>
+    <button type="button" class="btn btn-primary" (click)="goBack()">
+      Cancel
+    </button>
+  </form>
+</ng-template>
