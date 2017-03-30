@@ -1,0 +1,14 @@
+#sidebar {
+  padding: 5px;
+  background-color: #eee;
+  border-radius: 0 5px 5px 0;
+  border: 1px solid #ddd;
+}
+
+#sidebar ul {
+  margin-bottom: 0;
+}
+
+#sidebar a.active {
+  font-weight: bold;
+}
