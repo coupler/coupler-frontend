@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 @Injectable()
 export class DatasetService {
   private datasetsUrl = environment.apiUrl + '/datasets';
+  private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
 
@@ -24,10 +25,20 @@ export class DatasetService {
   }
 
   getDataset(id: number): Promise<Dataset> {
+    const url = `${this.datasetsUrl}/${id}`;
     return this.http.
-      get(`${this.datasetsUrl}/${id}`).
+      get(url).
       toPromise().
       then(response => new Dataset(response.json())).
+      catch(this.handleError);
+  }
+
+  update(dataset: Dataset): Promise<Dataset> {
+    const url = `${this.datasetsUrl}/${dataset.id}`;
+    return this.http.
+      put(url, dataset.toJSON(), {headers: this.headers}).
+      toPromise().
+      then(() => dataset).
       catch(this.handleError);
   }
 
