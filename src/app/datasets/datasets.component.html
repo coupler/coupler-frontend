@@ -1,6 +1,11 @@
-<p>
-  datasets works!
-</p>
-<div *ngIf="datasets">
-  {{datasets | json}}
-</div>
+<h2>Datasets</h2>
+<ul>
+  <li *ngFor="let dataset of datasets" (click)="gotoDetail(dataset.id)">
+    <div><strong>Name:</strong> {{dataset.name}}</div>
+    <div><strong>Type:</strong> {{dataset.type}}</div>
+    <div class="info" *ngIf="dataset.type.toLowerCase() == 'mysql'">
+      <div><strong>Database:</strong> {{dataset.databaseName}}</div>
+      <div><strong>Table:</strong> {{dataset.tableName}}</div>
+    </div>
+  </li>
+</ul>

@@ -1,0 +1,22 @@
+ul {
+  margin: 0;
+  padding: 0;
+}
+ul::after {
+  content: "";
+  display: block;
+  height: 0px;
+  clear: both;
+}
+
+li {
+  display: block;
+  float: left;
+  width: 200px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px;
+  margin-right: 5px;
+  cursor: pointer;
+}

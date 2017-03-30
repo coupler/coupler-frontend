@@ -11,4 +11,19 @@ export class Dataset {
   password: string;
   databaseName: string;
   tableName: string;
+
+  constructor(attribs: any) {
+    for (let key in attribs) {
+      let value = attribs[key];
+      switch (key) {
+        case "database_name":
+          key = "databaseName";
+          break;
+        case "table_name":
+          key = "tableName";
+          break;
+      }
+      this[key] = value;
+    }
+  }
 }
