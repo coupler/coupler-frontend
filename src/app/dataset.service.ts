@@ -16,11 +16,15 @@ export class DatasetService {
     return this.http.
       get(this.datasetsUrl).
       toPromise().
-      then(response => {
-        let data = response.json();
-        console.log(data);
-        return data as Dataset[]
-      }).
+      then(response => response.json() as Dataset[]).
+      catch(this.handleError);
+  }
+
+  getDataset(id: number): Promise<Dataset> {
+    return this.http.
+      get(`${this.datasetsUrl}/${id}`).
+      toPromise().
+      then(response => response.json() as Dataset).
       catch(this.handleError);
   }
 
