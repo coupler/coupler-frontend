@@ -12,21 +12,32 @@ export class Dataset {
   databaseName: string;
   tableName: string;
 
+  private static attributeMap = {
+    id: "id",
+    name: "name",
+    type: "kind",
+    host: "host",
+    username: "username",
+    password: "password",
+    database_name: "databaseName",
+    table_name: "tableName"
+  };
+
   constructor(attribs: any) {
     for (let key in attribs) {
-      let value = attribs[key];
-      switch (key) {
-        case "database_name":
-          key = "databaseName";
-          break;
-        case "table_name":
-          key = "tableName";
-          break;
-        case "type":
-          key = "kind";
-          break;
+      if (key in Dataset.attributeMap) {
+        let mappedKey = Dataset.attributeMap[key];
+        this[mappedKey] = attribs[key];
       }
-      this[key] = value;
     }
+  }
+
+  toJSON(): string {
+    let attribs = {};
+    for (let key in Dataset.attributeMap) {
+      let mappedKey = Dataset.attributeMap[key];
+      attribs[key] = this[mappedKey];
+    }
+    return JSON.stringify(attribs);
   }
 }
