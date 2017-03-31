@@ -30,4 +30,8 @@ export class DatasetsComponent implements OnInit {
   gotoDetail(id: number): void {
     this.router.navigate(['/datasets', id]);
   }
+
+  newDataset(): void {
+    this.router.navigate(['/datasets', 'new']);
+  }
 }

@@ -9,3 +9,10 @@
     </div>
   </li>
 </ul>
+<p *ngIf="datasets && datasets.length == 0">
+  There are currently no datasets.
+</p>
+
+<button type="button" class="btn btn-primary" (click)="newDataset()">
+  New dataset
+</button>
