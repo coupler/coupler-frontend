@@ -19,6 +19,7 @@ import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 
 import { ComparatorService } from './comparator.service';
+import { ComparatorsComponent } from './comparators/comparators.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ComparatorService } from './comparator.service';
     DatasetDetailComponent,
     LinkagesComponent,
     LinkageDetailComponent,
+    ComparatorsComponent,
   ],
   imports: [
     BrowserModule,
