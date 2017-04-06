@@ -18,6 +18,8 @@ import { LinkageService } from './linkage.service';
 import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 
+import { ComparatorService } from './comparator.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { LinkageDetailComponent } from './linkage-detail/linkage-detail.componen
   providers: [
     DatasetService,
     LinkageService,
+    ComparatorService
   ],
   bootstrap: [AppComponent]
 })
