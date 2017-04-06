@@ -1,0 +1,46 @@
+<ng-template [ngIf]="linkage">
+  <h2>Linkage: {{linkage.name}}</h2>
+  <form (ngSubmit)="save()" #linkageForm="ngForm">
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="linkage-name">Name</label>
+        <input class="form-control" id="linkage-name"
+               type="string" required [(ngModel)]="linkage.name" name="name">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="linkage-description">Description</label>
+        <input class="form-control" id="linkage-description"
+               type="string" required [(ngModel)]="linkage.description" name="description">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="linkage-dataset1-id">Dataset 1</label>
+        <select class="form-control" id="linkage-dataset1-id"
+                required [(ngModel)]="linkage.dataset1Id" name="dataset1Id">
+          <option></option>
+          <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="linkage-dataset2-id">Dataset 2</label>
+        <select class="form-control" id="linkage-dataset2-id"
+                required [(ngModel)]="linkage.dataset2Id" name="dataset2Id">
+          <option></option>
+          <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success"
+            [disabled]="!linkageForm.form.valid">
+      Continue
+    </button>
+    <button type="button" class="btn btn-primary" (click)="gotoLinkages()">
+      Back
+    </button>
+  </form>
+</ng-template>

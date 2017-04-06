@@ -16,6 +16,7 @@ import { DatasetDetailComponent } from './dataset-detail/dataset-detail.componen
 
 import { LinkageService } from './linkage.service';
 import { LinkagesComponent } from './linkages/linkages.component';
+import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { LinkagesComponent } from './linkages/linkages.component';
     DatasetsComponent,
     DatasetDetailComponent,
     LinkagesComponent,
+    LinkageDetailComponent,
   ],
   imports: [
     BrowserModule,
