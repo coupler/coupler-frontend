@@ -9,9 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+
 import { DatasetService } from './dataset.service';
 import { DatasetsComponent } from './datasets/datasets.component';
 import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
+
+import { LinkageService } from './linkage.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { DatasetDetailComponent } from './dataset-detail/dataset-detail.componen
     AppRoutingModule,
     NgbModule.forRoot()
   ],
-  providers: [DatasetService],
+  providers: [
+    DatasetService,
+    LinkageService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
