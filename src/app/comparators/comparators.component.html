@@ -1,23 +1,11 @@
 <div *ngIf="linkage">
   <h2>Linkage: {{linkage.name}} (Comparators)</h2>
-  <ul>
-    <li *ngFor="let comparator of linkage.comparators" (click)="gotoDetail(comparator.id)">
-      <div><strong>Kind:</strong> {{comparator.kind}}</div>
-      <div><strong>Set 1:</strong> {{comparator.set1.join(", ")}}</div>
-      <div><strong>Set 2:</strong> {{comparator.set2.join(", ")}}</div>
-      <div *ngIf="comparator.kind == 'compare'">
-        <strong>Operator:</strong> {{comparator.options.operation}}
-      </div>
-    </li>
-  </ul>
-  <p *ngIf="linkage.comparators && linkage.comparators.length == 0">
-    There are currently no comparators.
-  </p>
+  <app-comparators-list [linkage]="linkage"></app-comparators-list>
 
   <button type="button" class="btn btn-success" (click)="newComparator()">
     New comparator
   </button>
-  <button type="button" class="btn btn-primary" (click)="gotoLinkage()">
+  <button type="button" class="btn btn-primary" (click)="goBack()">
     Back
   </button>
 </div>

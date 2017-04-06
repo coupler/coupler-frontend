@@ -19,6 +19,7 @@ import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageFormComponent } from './linkage-form/linkage-form.component';
 
 import { ComparatorService } from './comparator.service';
+import { ComparatorsListComponent } from './comparators-list/comparators-list.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
 import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 
@@ -31,6 +32,7 @@ import { ComparatorDetailComponent } from './comparator-detail/comparator-detail
     DatasetDetailComponent,
     LinkagesComponent,
     LinkageFormComponent,
+    ComparatorsListComponent,
     ComparatorsComponent,
     ComparatorDetailComponent
   ],
