@@ -15,11 +15,11 @@ import { DatasetService } from '../dataset.service';
 import { ComparatorService } from '../comparator.service';
 
 @Component({
-  selector: 'app-linkage-detail',
-  templateUrl: './linkage-detail.component.html',
-  styleUrls: ['./linkage-detail.component.css']
+  selector: 'app-linkage-form',
+  templateUrl: './linkage-form.component.html',
+  styleUrls: ['./linkage-form.component.css']
 })
-export class LinkageDetailComponent implements OnInit {
+export class LinkageFormComponent implements OnInit {
   linkage: Linkage;
   datasets: Dataset[] = [];
 

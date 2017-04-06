@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LinkageDetailComponent } from './linkage-detail.component';
+import { LinkageFormComponent } from './linkage-form.component';
 
-describe('LinkageDetailComponent', () => {
-  let component: LinkageDetailComponent;
-  let fixture: ComponentFixture<LinkageDetailComponent>;
+describe('LinkageFormComponent', () => {
+  let component: LinkageFormComponent;
+  let fixture: ComponentFixture<LinkageFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LinkageDetailComponent ]
+      declarations: [ LinkageFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LinkageDetailComponent);
+    fixture = TestBed.createComponent(LinkageFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
