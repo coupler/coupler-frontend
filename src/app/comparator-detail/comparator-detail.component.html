@@ -1,0 +1,59 @@
+<ng-template [ngIf]="comparator">
+  <h2>Linkage: {{linkage.name}} (Comparator)</h2>
+  <form (ngSubmit)="save()" #comparatorForm="ngForm">
+    <div class="row">
+      <div class="col-sm-3 form-group">
+        <label for="comparator-kind">Kind</label>
+        <select class="form-control" id="comparator-kind"
+                required [(ngModel)]="comparator.kind" name="kind">
+          <option></option>
+          <option value="compare">Generic comparison</option>
+          <option value="strcompare">String comparison</option>
+          <option value="within">Within range</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" *ngIf="comparator.kind == 'compare'">
+      <div class="col-sm-3 form-group">
+        <label for="comparator-set1">Field from {{linkage.dataset1.name}}</label>
+        <select class="form-control" id="comparator-set1"
+                required [(ngModel)]="comparator.set1[0]" name="set1">
+          <option></option>
+          <option *ngFor="let field of linkage.dataset1.fields" [value]="field.name">
+            {{field.name}} ({{field.kind}})
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="comparator-operation">Operator</label>
+        <select class="form-control" id="comparator-operation"
+                required [(ngModel)]="comparator.options.operation" name="operation">
+          <option></option>
+          <option value="equal">==</option>
+          <option value="not_equal">!=</option>
+          <option value="greater_than">&gt;</option>
+          <option value="greater_than_or_equal">&gt;=</option>
+          <option value="less_than">&lt;</option>
+          <option value="less_than_or_equal">&lt;=</option>
+        </select>
+      </div>
+      <div class="col-sm-3 form-group">
+        <label for="comparator-set2">Field from {{linkage.dataset2.name}}</label>
+        <select class="form-control" id="comparator-set2"
+                required [(ngModel)]="comparator.set2[0]" name="set2">
+          <option></option>
+          <option *ngFor="let field of linkage.dataset2.fields" [value]="field.name">
+            {{field.name}} ({{field.kind}})
+          </option>
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success"
+            [disabled]="!comparatorForm.form.valid">
+      Save
+    </button>
+    <button type="button" class="btn btn-primary" (click)="goBack()">
+      Cancel
+    </button>
+  </form>
+</ng-template>

@@ -8,6 +8,7 @@ import { DatasetDetailComponent } from './dataset-detail/dataset-detail.componen
 import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
+import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'linkages', component: LinkagesComponent },
   { path: 'linkages/:id', component: LinkageDetailComponent },
   { path: 'linkages/:linkageId/comparators', component: ComparatorsComponent },
+  { path: 'linkages/:linkageId/comparators/:id', component: ComparatorDetailComponent }
 ];
 
 @NgModule({
