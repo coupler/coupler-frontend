@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 
@@ -46,8 +45,8 @@ export class LinkageFormComponent implements OnInit {
       subscribe(linkage => this.linkage = linkage);
   }
 
-  gotoLinkages(): void {
-    this.router.navigate(['/linkages']);
+  goBack(): void {
+    this.location.back();
   }
 
   goNext(): void {

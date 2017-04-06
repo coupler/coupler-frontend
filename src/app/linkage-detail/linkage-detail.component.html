@@ -1,0 +1,21 @@
+<ng-template [ngIf]="linkage">
+  <h2>Linkage: {{linkage.name}}</h2>
+  <p>{{linkage.description}}</p>
+
+  <p>
+    <strong>Dataset 1</strong>: {{linkage.dataset1.name}}
+  </p>
+  <p>
+    <strong>Dataset 2</strong>: {{linkage.dataset2.name}}
+  </p>
+
+  <h4>Comparators</h4>
+  <app-comparators-list [linkage]="linkage"></app-comparators-list>
+
+  <button type="button" class="btn btn-success" (click)="edit()">
+    Edit
+  </button>
+  <button type="button" class="btn btn-primary" (click)="goBack()">
+    Back
+  </button>
+</ng-template>

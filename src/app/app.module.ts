@@ -16,6 +16,7 @@ import { DatasetDetailComponent } from './dataset-detail/dataset-detail.componen
 
 import { LinkageService } from './linkage.service';
 import { LinkagesComponent } from './linkages/linkages.component';
+import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 import { LinkageFormComponent } from './linkage-form/linkage-form.component';
 
 import { ComparatorService } from './comparator.service';
@@ -31,6 +32,7 @@ import { ComparatorDetailComponent } from './comparator-detail/comparator-detail
     DatasetsComponent,
     DatasetDetailComponent,
     LinkagesComponent,
+    LinkageDetailComponent,
     LinkageFormComponent,
     ComparatorsListComponent,
     ComparatorsComponent,
