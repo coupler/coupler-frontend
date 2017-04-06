@@ -15,6 +15,7 @@ import { DatasetsComponent } from './datasets/datasets.component';
 import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
 
 import { LinkageService } from './linkage.service';
+import { LinkagesComponent } from './linkages/linkages.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LinkageService } from './linkage.service';
     TutorialComponent,
     DashboardComponent,
     DatasetsComponent,
-    DatasetDetailComponent
+    DatasetDetailComponent,
+    LinkagesComponent,
   ],
   imports: [
     BrowserModule,

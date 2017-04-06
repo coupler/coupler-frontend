@@ -1,0 +1,14 @@
+<h2>Linkages</h2>
+<ul>
+  <li *ngFor="let linkage of linkages" (click)="gotoDetail(linkage.id)">
+    <div><strong>Name:</strong> {{linkage.name}}</div>
+    <div><strong>Description:</strong> {{linkage.description}}</div>
+  </li>
+</ul>
+<p *ngIf="linkages && linkages.length == 0">
+  There are currently no linkages.
+</p>
+
+<button type="button" class="btn btn-primary" (click)="newLinkage()">
+  New linkage
+</button>
