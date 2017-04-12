@@ -24,6 +24,8 @@ import { ComparatorsListComponent } from './comparators-list/comparators-list.co
 import { ComparatorsComponent } from './comparators/comparators.component';
 import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 
+import { JobService } from './job.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +50,8 @@ import { ComparatorDetailComponent } from './comparator-detail/comparator-detail
   providers: [
     DatasetService,
     LinkageService,
-    ComparatorService
+    ComparatorService,
+    JobService
   ],
   bootstrap: [AppComponent]
 })
