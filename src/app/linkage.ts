@@ -1,5 +1,6 @@
 import { Dataset } from './dataset';
 import { Comparator } from './comparator';
+import { Job } from './job';
 
 export class Linkage {
   id: number;
@@ -10,6 +11,7 @@ export class Linkage {
   dataset1: Dataset;
   dataset2: Dataset;
   comparators: Comparator[] = [];
+  jobs: Job[] = [];
 
   private static attributeMap = {
     id: "id",
@@ -19,7 +21,8 @@ export class Linkage {
     dataset_2_id: "dataset2Id",
     dataset_1: "dataset1",
     dataset_2: "dataset2",
-    comparators: "comparators"
+    comparators: "comparators",
+    jobs: "jobs"
   };
 
   constructor(attribs: any) {
@@ -35,6 +38,9 @@ export class Linkage {
             break;
           case 'comparators':
             value = value.map(cattribs => new Comparator(cattribs));
+            break;
+          case 'jobs':
+            value = value.map(jattribs => new Job(jattribs));
             break;
         }
 
@@ -56,6 +62,7 @@ export class Linkage {
         case 'dataset1':
         case 'dataset2':
         case 'comparators':
+        case 'jobs':
           continue;
 
         case 'dataset1Id':
