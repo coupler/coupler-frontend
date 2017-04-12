@@ -25,6 +25,7 @@ import { ComparatorsComponent } from './comparators/comparators.component';
 import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 
 import { JobService } from './job.service';
+import { JobsListComponent } from './jobs-list/jobs-list.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { JobService } from './job.service';
     LinkageFormComponent,
     ComparatorsListComponent,
     ComparatorsComponent,
-    ComparatorDetailComponent
+    ComparatorDetailComponent,
+    JobsListComponent
   ],
   imports: [
     BrowserModule,
