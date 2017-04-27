@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'datasets', component: DatasetsComponent },
   { path: 'datasets/:id', component: DatasetFormComponent },
   { path: 'linkages', component: LinkagesComponent },
+  { path: 'linkages/new', component: LinkageFormComponent },
   { path: 'linkages/:id', component: LinkageDetailComponent },
   { path: 'linkages/:id/edit', component: LinkageFormComponent },
   { path: 'linkages/:linkageId/comparators', component: ComparatorsComponent },

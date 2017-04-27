@@ -36,21 +36,13 @@ export class LinkageFormComponent implements OnInit {
 
     this.route.params.
       switchMap((params: Params) => {
-        if (params['id'] == 'new') {
+        if (!params['id']) {
           return Observable.of<Linkage>(new Linkage({}));
         } else {
           return this.linkageService.getLinkage(+params['id']);
         }
       }).
       subscribe(linkage => this.linkage = linkage);
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
-
-  goNext(): void {
-    this.router.navigate(['/linkages', this.linkage.id, 'comparators']);
   }
 
   save(): void {
@@ -60,6 +52,17 @@ export class LinkageFormComponent implements OnInit {
     } else {
       promise = this.linkageService.create(this.linkage);
     }
-    promise.then(() => this.goNext());
+    promise.then(result => {
+      this.linkage.id = result.id;
+      this.goNext()
+    });
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  goNext(): void {
+    this.router.navigate(['/linkages', this.linkage.id, 'comparators']);
   }
 }
