@@ -27,10 +27,6 @@ export class DatasetsComponent implements OnInit {
       then(datasets => this.datasets = datasets);
   }
 
-  gotoDetail(id: number): void {
-    this.router.navigate(['/datasets', id]);
-  }
-
   newDataset(): void {
     this.router.navigate(['/datasets', 'new']);
   }
