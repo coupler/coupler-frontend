@@ -54,6 +54,15 @@ export class LinkageService {
       catch(this.handleError);
   }
 
+  delete(linkage: Linkage): Promise<Linkage> {
+    const url = `${this.linkagesUrl}/${linkage.id}`;
+    return this.http.
+      delete(url, {headers: this.headers}).
+      toPromise().
+      then(() => linkage).
+      catch(this.handleError);
+  }
+
   handleError(error: any) {
     console.error(error);
   }
