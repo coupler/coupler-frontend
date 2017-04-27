@@ -1,5 +1,16 @@
 <ng-template [ngIf]="dataset">
-  <h2>Dataset: {{dataset.name}}</h2>
+  <h2>Dataset: {{dataset.name || "new"}}</h2>
+  <div class="errors" *ngIf="errors">
+    <div class="box">
+      <h4 *ngIf="errors.length > 1; else errorsElse">
+        There were {{errors.length}} errors:
+      </h4>
+      <ng-template #errorsElse><h4>There was 1 error:</h4></ng-template>
+      <ul>
+        <li *ngFor="let error of errors">{{error}}</li>
+      </ul>
+    </div>
+  </div>
   <form (ngSubmit)="save()" #datasetForm="ngForm">
     <div class="row">
       <div class="col-sm-2 form-group">

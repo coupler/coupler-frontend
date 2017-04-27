@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatasetDetailComponent } from './dataset-detail.component';
+import { DatasetFormComponent } from './dataset-form.component';
 
-describe('DatasetDetailComponent', () => {
-  let component: DatasetDetailComponent;
-  let fixture: ComponentFixture<DatasetDetailComponent>;
+describe('DatasetFormComponent', () => {
+  let component: DatasetFormComponent;
+  let fixture: ComponentFixture<DatasetFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatasetDetailComponent ]
+      declarations: [ DatasetFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DatasetDetailComponent);
+    fixture = TestBed.createComponent(DatasetFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

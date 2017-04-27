@@ -1,0 +1,22 @@
+div.errors {
+  margin-bottom: 1em;
+}
+div.errors div.box {
+  background-color: #eee;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  float: left;
+}
+div.errors::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+div.errors div.box h4 {
+  font-size: larger;
+  background-color: red;
+  color: white;
+  padding: 5px;
+}
+div.errors div.box ul {
+}

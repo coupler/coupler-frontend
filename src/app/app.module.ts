@@ -12,7 +12,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { DatasetService } from './dataset.service';
 import { DatasetsComponent } from './datasets/datasets.component';
-import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
+import { DatasetFormComponent } from './dataset-form/dataset-form.component';
 
 import { LinkageService } from './linkage.service';
 import { LinkagesComponent } from './linkages/linkages.component';
@@ -33,7 +33,7 @@ import { JobsListComponent } from './jobs-list/jobs-list.component';
     TutorialComponent,
     DashboardComponent,
     DatasetsComponent,
-    DatasetDetailComponent,
+    DatasetFormComponent,
     LinkagesComponent,
     LinkageDetailComponent,
     LinkageFormComponent,

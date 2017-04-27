@@ -10,12 +10,13 @@ import { Dataset } from '../dataset';
 import { DatasetService } from '../dataset.service';
 
 @Component({
-  selector: 'app-dataset-detail',
-  templateUrl: './dataset-detail.component.html',
-  styleUrls: ['./dataset-detail.component.css']
+  selector: 'app-dataset-form',
+  templateUrl: './dataset-form.component.html',
+  styleUrls: ['./dataset-form.component.css']
 })
-export class DatasetDetailComponent implements OnInit {
+export class DatasetFormComponent implements OnInit {
   dataset: Dataset;
+  errors: any;
 
   constructor(
     private datasetService: DatasetService,
@@ -46,6 +47,24 @@ export class DatasetDetailComponent implements OnInit {
     } else {
       promise = this.datasetService.create(this.dataset);
     }
-    promise.then(() => this.goBack());
+    promise.then(
+      result => {
+        this.goBack();
+      },
+      result => {
+        let errors = [];
+        for (let key in result.errors) {
+          let keyErrors = result.errors[key];
+          keyErrors.forEach(error => {
+            if (key == "base") {
+              errors.push(error);
+            } else {
+              errors.push(`${key} ${error}`);
+            }
+          });
+        }
+        this.errors = errors;
+      }
+    );
   }
 }
