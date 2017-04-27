@@ -33,25 +33,43 @@ export class DatasetService {
       catch(this.handleError);
   }
 
-  create(dataset: Dataset): Promise<Dataset> {
+  create(dataset: Dataset): Promise<any> {
     if (dataset.id) {
       throw new Error('Dataset must not already have `id` when creating.');
     }
     const url = this.datasetsUrl;
-    return this.http.
-      post(url, dataset.toJSON(), {headers: this.headers}).
-      toPromise().
-      then(() => dataset).
-      catch(this.handleError);
+    let result = this.http.post(url, dataset.toJSON(), {headers: this.headers});
+    return new Promise((resolve, reject) => {
+      let value;
+      result.subscribe(
+        response => {
+          // success
+          resolve(response.json());
+        },
+        response => {
+          // error
+          reject(response.json());
+        }
+      );
+    });
   }
 
-  update(dataset: Dataset): Promise<Dataset> {
+  update(dataset: Dataset): Promise<any> {
     const url = `${this.datasetsUrl}/${dataset.id}`;
-    return this.http.
-      put(url, dataset.toJSON(), {headers: this.headers}).
-      toPromise().
-      then(() => dataset).
-      catch(this.handleError);
+    let result = this.http.put(url, dataset.toJSON(), {headers: this.headers});
+    return new Promise((resolve, reject) => {
+      let value;
+      result.subscribe(
+        response => {
+          // success
+          resolve(response.json());
+        },
+        response => {
+          // error
+          reject(response.json());
+        }
+      );
+    });
   }
 
   handleError(error: any) {
