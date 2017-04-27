@@ -12,11 +12,11 @@ import { LinkageService } from '../linkage.service';
 import { ComparatorService } from '../comparator.service';
 
 @Component({
-  selector: 'app-comparator-detail',
-  templateUrl: './comparator-detail.component.html',
-  styleUrls: ['./comparator-detail.component.css']
+  selector: 'app-comparator-form',
+  templateUrl: './comparator-form.component.html',
+  styleUrls: ['./comparator-form.component.css']
 })
-export class ComparatorDetailComponent implements OnInit {
+export class ComparatorFormComponent implements OnInit {
   linkage: Linkage;
   comparatorId: string;
   comparator: Comparator;

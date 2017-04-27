@@ -22,7 +22,7 @@ import { LinkageFormComponent } from './linkage-form/linkage-form.component';
 import { ComparatorService } from './comparator.service';
 import { ComparatorsListComponent } from './comparators-list/comparators-list.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
-import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
+import { ComparatorFormComponent } from './comparator-form/comparator-form.component';
 
 import { JobService } from './job.service';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
@@ -39,8 +39,8 @@ import { JobsListComponent } from './jobs-list/jobs-list.component';
     LinkageFormComponent,
     ComparatorsListComponent,
     ComparatorsComponent,
-    ComparatorDetailComponent,
-    JobsListComponent
+    ComparatorFormComponent,
+    JobsListComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ComparatorDetailComponent } from './comparator-detail.component';
+import { ComparatorFormComponent } from './comparator-form.component';
 
-describe('ComparatorDetailComponent', () => {
-  let component: ComparatorDetailComponent;
-  let fixture: ComponentFixture<ComparatorDetailComponent>;
+describe('ComparatorFormComponent', () => {
+  let component: ComparatorFormComponent;
+  let fixture: ComponentFixture<ComparatorFormComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ComparatorDetailComponent ]
+      declarations: [ ComparatorFormComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComparatorDetailComponent);
+    fixture = TestBed.createComponent(ComparatorFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
