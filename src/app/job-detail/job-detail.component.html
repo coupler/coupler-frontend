@@ -1,0 +1,30 @@
+<ng-template [ngIf]="job">
+  <h2>Linkage: {{linkage.name}}, Job {{job.id}}</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Started At</th>
+        <th>Ended At</th>
+        <th *ngIf="job.error">Error</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{job.status}}</td>
+        <td>{{job.startedAt | date:"yMdjm"}}</td>
+        <td>{{job.endedAt | date:"yMdjm"}}</td>
+        <td *ngIf="job.error">{{job.error}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template [ngIf]="job.linkageResult">
+    <h3>Results</h3>
+    <p>
+      <strong>Number of matches:</strong>
+      {{job.linkageResult.matchCount}}
+    </p>
+  </ng-template>
+</ng-template>

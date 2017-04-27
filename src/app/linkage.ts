@@ -79,4 +79,8 @@ export class Linkage {
   findComparator(id: number): Comparator {
     return this.comparators.find(comparator => comparator.id == id);
   }
+
+  findJob(id: number): Job {
+    return this.jobs.find(job => job.id == id);
+  }
 }

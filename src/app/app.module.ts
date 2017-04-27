@@ -27,6 +27,7 @@ import { ComparatorFormComponent } from './comparator-form/comparator-form.compo
 import { JobService } from './job.service';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { DatasetsListComponent } from './datasets-list/datasets-list.component';
+import { JobDetailComponent } from './job-detail/job-detail.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { DatasetsListComponent } from './datasets-list/datasets-list.component';
     ComparatorFormComponent,
     JobsListComponent,
     DatasetsListComponent,
+    JobDetailComponent
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,9 @@
 <ul>
   <li *ngFor="let job of linkage.jobs" (click)="gotoDetail(job.id)">
+    <div><strong>ID:</strong> {{job.id}}</div>
     <div><strong>Status:</strong> {{job.status}}</div>
-    <div><strong>Started At:</strong> {{job.startedAt}}</div>
-    <div><strong>Ended At:</strong> {{job.endedAt}}</div>
+    <div><strong>Started:</strong> {{job.startedAt | date:"yMdjm"}}</div>
+    <div><strong>Ended:</strong> {{job.endedAt | date:"yMdjm"}}</div>
   </li>
 </ul>
 <p *ngIf="linkage.jobs && linkage.jobs.length == 0">

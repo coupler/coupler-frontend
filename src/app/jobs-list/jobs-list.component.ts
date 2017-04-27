@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Linkage } from '../linkage';
 
@@ -10,5 +11,9 @@ import { Linkage } from '../linkage';
 export class JobsListComponent {
   @Input() linkage: Linkage;
 
-  constructor() { }
+  constructor(private router: Router) { }
+
+  gotoDetail(id: number): void {
+    this.router.navigate(['/linkages', this.linkage.id, 'jobs', id]);
+  }
 }

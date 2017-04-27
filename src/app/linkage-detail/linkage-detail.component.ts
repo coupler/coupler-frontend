@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -17,12 +18,15 @@ import { JobService } from '../job.service';
 export class LinkageDetailComponent implements OnInit {
   linkage: Linkage;
 
+  @ViewChild('deleteConfirmation') confirmDeletionContent: TemplateRef<any>;
+
   constructor(
     private linkageService: LinkageService,
     private jobService: JobService,
     private route: ActivatedRoute,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -41,31 +45,27 @@ export class LinkageDetailComponent implements OnInit {
     this.router.navigate(['/linkages', this.linkage.id, 'edit']);
   }
 
-  createJob(): Promise<Job> {
+  confirmDeletion(): void {
+    this.modalService.open(this.confirmDeletionContent).
+      result.then(result => {
+        this.delete();
+      }, reason => { });
+  }
+
+  delete(): void {
+    this.linkageService.delete(this.linkage).
+      then(() => { this.goBack() });
+  }
+
+  createJob(): void {
     let job = new Job({
       kind: "linkage",
       linkage_id: this.linkage.id
     });
-    return this.jobService.create(job);
-  }
-
-  runJob(job: Job): Promise<Job> {
-    return this.jobService.run(job.id);
-  }
-
-  executeJob(): void {
-    this.createJob().then(job => {
-      this.linkage.jobs.push(job);
-      let interval = setInterval(this.updateJob.bind(this, job), 1000);
-      this.runJob(job).then(job => {
-        clearInterval(interval);
+    this.jobService.create(job).
+      then(result => {
+        job.id = result.id;
+        this.router.navigate(['/linkages', this.linkage.id, 'jobs', job.id]);
       });
-    });
-  }
-
-  updateJob(job: Job): void {
-    this.jobService.getJob(job.id).then(updatedJob => {
-      Object.assign(job, updatedJob);
-    });
   }
 }
