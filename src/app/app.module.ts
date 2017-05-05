@@ -30,6 +30,7 @@ import { DatasetsListComponent } from './datasets-list/datasets-list.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 
 import { LinkageResultService } from './linkage-result.service';
+import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-result-detail.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { LinkageResultService } from './linkage-result.service';
     ComparatorFormComponent,
     JobsListComponent,
     DatasetsListComponent,
-    JobDetailComponent
+    JobDetailComponent,
+    LinkageResultDetailComponent
   ],
   imports: [
     BrowserModule,

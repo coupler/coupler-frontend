@@ -1,0 +1,40 @@
+<div class="wrapper">
+  <div *ngIf="match" class="match">
+    <h4>Match #{{matchIndex + 1}}</h4>
+
+    <div class="records">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let field of linkage.dataset1.fields">{{field.name}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngFor="let field of linkage.dataset1.fields">{{match.record1[field.name]}}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let field of linkage.dataset2.fields">{{field.name}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td *ngFor="let field of linkage.dataset2.fields">{{match.record2[field.name]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Score:</strong> {{match.score}}</p>
+
+    <div class="buttons">
+      <button type="button" class="btn btn-secondary prev" (click)="prev()">Prev</button>
+      <button type="button" class="btn btn-secondary next" (click)="next()">Next</button>
+    </div>
+  </div>
+</div>

@@ -20,11 +20,18 @@
     </tbody>
   </table>
 
-  <ng-template [ngIf]="job.linkageResult">
+  <div *ngIf="job.linkageResult" class="results">
     <h3>Results</h3>
     <p>
       <strong>Number of matches:</strong>
       {{job.linkageResult.matchCount}}
     </p>
-  </ng-template>
+
+    <app-linkage-result-detail
+      [linkageResult]="job.linkageResult"
+      [linkage]="linkage">
+    </app-linkage-result-detail>
+  </div>
+
+  <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
 </ng-template>

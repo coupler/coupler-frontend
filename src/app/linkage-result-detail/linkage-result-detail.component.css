@@ -1,0 +1,31 @@
+table {
+  margin-bottom: 10px;
+}
+
+table th {
+  font-weight: bold;
+  border-bottom: 2px solid gray;
+  padding: 0 5px;
+}
+
+table td {
+  padding: 5px;
+}
+
+.wrapper::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.match {
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #eee;
+  border-radius: 5px;
+  float: left;
+}
+
+.records {
+  overflow-x: auto;
+}
