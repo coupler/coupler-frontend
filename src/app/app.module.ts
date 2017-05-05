@@ -29,6 +29,8 @@ import { JobsListComponent } from './jobs-list/jobs-list.component';
 import { DatasetsListComponent } from './datasets-list/datasets-list.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 
+import { LinkageResultService } from './linkage-result.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +59,8 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
     DatasetService,
     LinkageService,
     ComparatorService,
-    JobService
+    JobService,
+    LinkageResultService
   ],
   bootstrap: [AppComponent]
 })
