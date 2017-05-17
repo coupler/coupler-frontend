@@ -1,11 +1,11 @@
 <ul>
-  <li *ngFor="let job of linkage.jobs" (click)="gotoDetail(job.id)">
+  <li *ngFor="let job of jobs" (click)="gotoDetail(job)">
     <div><strong>ID:</strong> {{job.id}}</div>
     <div><strong>Status:</strong> {{job.status}}</div>
     <div><strong>Started:</strong> {{job.startedAt | date:"yMdjm"}}</div>
     <div><strong>Ended:</strong> {{job.endedAt | date:"yMdjm"}}</div>
   </li>
 </ul>
-<p *ngIf="linkage.jobs && linkage.jobs.length == 0">
-  There are currently no jobs associated with this linkage.
+<p *ngIf="jobs && jobs.length == 0">
+  No jobs have been created yet.
 </p>

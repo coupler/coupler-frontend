@@ -29,6 +29,10 @@ export class Job {
       if (key in Job.attributeMap) {
         let mappedKey = Job.attributeMap[key];
         switch (mappedKey) {
+          case 'startedAt':
+          case 'endedAt':
+            value = new Date(value);
+            break;
           case 'linkageResult':
             value = new LinkageResult(value);
             break;
