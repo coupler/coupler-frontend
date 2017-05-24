@@ -58,10 +58,10 @@ export class LinkageDetailComponent implements OnInit {
   }
 
   createJob(): void {
-    let job = new Job({
-      kind: "linkage",
-      linkage_id: this.linkage.id
-    });
+    let job = new Job();
+    job.kind = "linkage";
+    job.linkageId = this.linkage.id;
+
     this.jobService.create(job).
       then(result => {
         job.id = result.id;

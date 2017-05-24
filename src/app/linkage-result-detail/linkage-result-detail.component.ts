@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Linkage } from '../linkage';
 import { LinkageResult } from '../linkage-result';
 import { LinkageMatch } from '../linkage-match';
-import { LinkageResultService } from '../linkage-result.service';
+import { LinkageMatchService } from '../linkage-match.service';
 
 @Component({
   selector: 'app-linkage-result-detail',
@@ -16,15 +16,15 @@ export class LinkageResultDetailComponent implements OnInit {
   match: LinkageMatch;
   matchIndex = 0;
 
-  constructor(private linkageResultService: LinkageResultService) { }
+  constructor(private linkageMatchService: LinkageMatchService) { }
 
   ngOnInit(): void {
     this.getMatch();
   }
 
   getMatch(): void {
-    this.linkageResultService.
-      getMatch(this.linkageResult, this.matchIndex).
+    this.linkageMatchService.
+      getLinkageMatch(this.linkageResult.id, this.matchIndex).
       then(result => {
         this.match = result;
       });
@@ -39,7 +39,7 @@ export class LinkageResultDetailComponent implements OnInit {
 
   next(): void {
     if (this.matchIndex < this.linkageResult.matchCount) {
-      this.matchIndex++
+      this.matchIndex++;
       this.getMatch();
     }
   }

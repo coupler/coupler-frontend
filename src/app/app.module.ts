@@ -32,6 +32,8 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
 import { LinkageResultService } from './linkage-result.service';
 import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-result-detail.component';
 
+import { LinkageMatchService } from './linkage-match.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +64,8 @@ import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-re
     LinkageService,
     ComparatorService,
     JobService,
-    LinkageResultService
+    LinkageResultService,
+    LinkageMatchService
   ],
   bootstrap: [AppComponent]
 })

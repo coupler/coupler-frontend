@@ -28,7 +28,7 @@ export class DatasetFormComponent implements OnInit {
     this.route.params.
       switchMap((params: Params) => {
         if (params['id'] == 'new') {
-          return Observable.of<Dataset>(new Dataset({}));
+          return Observable.of<Dataset>(new Dataset());
         } else {
           return this.datasetService.getDataset(+params['id']);
         }

@@ -37,7 +37,7 @@ export class ComparatorFormComponent implements OnInit {
       subscribe(linkage => {
         this.linkage = linkage;
         if (this.comparatorId == 'new') {
-          this.comparator = new Comparator({});
+          this.comparator = new Comparator();
           this.comparator.linkageId = this.linkage.id;
         } else {
           this.comparator = linkage.findComparator(+this.comparatorId);
