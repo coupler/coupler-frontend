@@ -7,6 +7,4 @@ Gem::Specification.new do |s|
   s.email         = 'jeremy.f.stephens@vanderbilt.edu'
   s.files         = `git ls-files -z`.split("\x0")
   s.require_paths = ["lib"]
-
-  s.add_dependency 'rake', '~> 12'
 end
