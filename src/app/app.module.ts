@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { APP_BASE_HREF } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -34,6 +35,8 @@ import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-re
 
 import { LinkageMatchService } from './linkage-match.service';
 
+import { environment } from '../environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +63,7 @@ import { LinkageMatchService } from './linkage-match.service';
     NgbModule.forRoot()
   ],
   providers: [
+    { provide: APP_BASE_HREF, useValue: environment.baseUrl },
     DatasetService,
     LinkageService,
     ComparatorService,
