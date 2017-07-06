@@ -1,12 +1,26 @@
-#sidebar nav {
-  padding: 5px;
-  background-color: #eee;
-  border-radius: 0 5px 5px 0;
-  border: 1px solid #ddd;
+#main {
+  padding: 10px;
+}
+
+#sidebar {
+  background: url(/assets/images/sidebar-bottom-main.png)   bottom center no-repeat,
+              url(/assets/images/sidebar-bottom-right.png)  bottom right  no-repeat,
+              url(/assets/images/sidebar-bottom-left.png)   bottom left   no-repeat,
+              url(/assets/images/sidebar-bottom-middle.png) bottom        repeat-x,
+              url(/assets/images/sidebar.png) right repeat-y,
+              #383538;
+  min-height: 500px;
+  height: 100vh;
+  color: white;
+  padding: 10px 20px;
+}
+
+#sidebar a {
+  color: lightblue;
 }
 
 #sidebar ul {
-  margin-bottom: 0;
+  padding: 5px 20px;
   list-style-type: square;
 }
 
