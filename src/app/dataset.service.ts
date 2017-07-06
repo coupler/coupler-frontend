@@ -36,10 +36,10 @@ export class DatasetService {
       catch(this.handleError);
   }
 
-  getDataset(id: number): Promise<Dataset> {
+  getDataset(id: number, includeFields = true): Promise<Dataset> {
     const url = `${this.datasetsUrl}/${id}`;
     return this.http.
-      get(url).
+      get(url, { params: { include_fields: includeFields } }).
       toPromise().
       then(response => this.build(response.json())).
       catch(this.handleError);

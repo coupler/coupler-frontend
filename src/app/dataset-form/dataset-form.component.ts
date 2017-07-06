@@ -30,7 +30,7 @@ export class DatasetFormComponent implements OnInit {
         if (params['id'] == 'new') {
           return Observable.of<Dataset>(new Dataset());
         } else {
-          return this.datasetService.getDataset(+params['id']);
+          return this.datasetService.getDataset(+params['id'], false);
         }
       }).
       subscribe(dataset => this.dataset = dataset);
