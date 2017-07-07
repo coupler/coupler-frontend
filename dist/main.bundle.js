@@ -923,8 +923,7 @@ var DatasetService = (function () {
             then(function (response) {
             var data = response.json();
             return data.map(function (attribs) { return _this.build(attribs); });
-        }).
-            catch(this.handleError);
+        });
     };
     DatasetService.prototype.getDataset = function (id, includeFields) {
         var _this = this;
@@ -1108,7 +1107,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "ul {\n  padding: 0;\n}\nul::after {\n  content: \"\";\n  display: block;\n  height: 0px;\n  clear: both;\n}\n\nli {\n  display: block;\n  float: left;\n  width: 200px;\n  background-color: #eee;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  padding: 5px;\n  margin-right: 5px;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "ul {\n  padding: 0;\n}\nul::after {\n  content: \"\";\n  display: block;\n  height: 0px;\n  clear: both;\n}\n\nli {\n  display: block;\n  float: left;\n  width: 200px;\n  background-color: #eee;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  padding: 5px;\n  margin-right: 5px;\n  cursor: pointer;\n}\n\n.error {\n  background-color: firebrick;\n  color: white;\n}\n.error a {\n  color: white;\n  text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -1121,7 +1120,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/datasets/datasets.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Datasets</h2>\n<app-datasets-list [datasets]=\"datasets\"></app-datasets-list>\n\n<button type=\"button\" class=\"btn btn-primary\" (click)=\"newDataset()\">\n  New dataset\n</button>\n"
+module.exports = "<h2>Datasets</h2>\n<div class=\"datasets\" *ngIf=\"datasets\">\n  <app-datasets-list [datasets]=\"datasets\"></app-datasets-list>\n\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"newDataset()\">\n    New dataset\n  </button>\n</div>\n<div class=\"error p-2\" *ngIf=\"error\">\n  <ng-template [ngIf]=\"!showError\" [ngIfElse]=\"errorTpl\">\n    There was an error communicating with the database\n    (<a href=\"#\" (click)=\"showError = true; false\">details</a>).\n  </ng-template>\n  <ng-template #errorTpl>\n    There was an error communicating with the database:\n    <div>{{ error | json }}</div>\n  </ng-template>\n</div>\n"
 
 /***/ }),
 
@@ -1149,6 +1148,7 @@ var DatasetsComponent = (function () {
     function DatasetsComponent(datasetService, router) {
         this.datasetService = datasetService;
         this.router = router;
+        this.showError = false;
     }
     DatasetsComponent.prototype.ngOnInit = function () {
         this.getDatasets();
@@ -1157,7 +1157,7 @@ var DatasetsComponent = (function () {
         var _this = this;
         this.datasetService.
             getDatasets().
-            then(function (datasets) { return _this.datasets = datasets; });
+            then(function (datasets) { return _this.datasets = datasets; }, function (error) { return _this.error = error; });
     };
     DatasetsComponent.prototype.newDataset = function () {
         this.router.navigate(['/datasets', 'new']);
@@ -1661,7 +1661,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".error {\n  background-color: firebrick;\n  color: white;\n}\n.error a {\n  color: white;\n  text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -1674,7 +1674,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/linkage-form/linkage-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ng-template [ngIf]=\"linkage\">\n  <h2>Linkage: {{linkage.name}}</h2>\n  <form (ngSubmit)=\"save()\" #linkageForm=\"ngForm\">\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-name\">Name</label>\n        <input class=\"form-control\" id=\"linkage-name\"\n               type=\"string\" required [(ngModel)]=\"linkage.name\" name=\"name\">\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-description\">Description</label>\n        <input class=\"form-control\" id=\"linkage-description\"\n               type=\"string\" required [(ngModel)]=\"linkage.description\" name=\"description\">\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-dataset1-id\">Dataset 1</label>\n        <select class=\"form-control\" id=\"linkage-dataset1-id\"\n                required [(ngModel)]=\"linkage.dataset1Id\" name=\"dataset1Id\">\n          <option></option>\n          <option *ngFor=\"let dataset of datasets\" value=\"{{dataset.id}}\">{{dataset.name}}</option>\n        </select>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-dataset2-id\">Dataset 2</label>\n        <select class=\"form-control\" id=\"linkage-dataset2-id\"\n                required [(ngModel)]=\"linkage.dataset2Id\" name=\"dataset2Id\">\n          <option></option>\n          <option *ngFor=\"let dataset of datasets\" value=\"{{dataset.id}}\">{{dataset.name}}</option>\n        </select>\n      </div>\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\"\n            [disabled]=\"!linkageForm.form.valid\">\n      Continue\n    </button>\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"goBack()\">\n      Back\n    </button>\n  </form>\n</ng-template>\n"
+module.exports = "<ng-template [ngIf]=\"linkage\">\n  <h2>Linkage: {{linkage.name}}</h2>\n  <form (ngSubmit)=\"save()\" #linkageForm=\"ngForm\">\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-name\">Name</label>\n        <input class=\"form-control\" id=\"linkage-name\"\n               type=\"string\" required [(ngModel)]=\"linkage.name\" name=\"name\">\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-description\">Description</label>\n        <input class=\"form-control\" id=\"linkage-description\"\n               type=\"string\" required [(ngModel)]=\"linkage.description\" name=\"description\">\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-dataset1-id\">Dataset 1</label>\n        <select class=\"form-control\" id=\"linkage-dataset1-id\"\n                required [(ngModel)]=\"linkage.dataset1Id\" name=\"dataset1Id\">\n          <option></option>\n          <option *ngFor=\"let dataset of datasets\" value=\"{{dataset.id}}\">{{dataset.name}}</option>\n        </select>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"col-sm-6 form-group\">\n        <label for=\"linkage-dataset2-id\">Dataset 2</label>\n        <select class=\"form-control\" id=\"linkage-dataset2-id\"\n                required [(ngModel)]=\"linkage.dataset2Id\" name=\"dataset2Id\">\n          <option></option>\n          <option *ngFor=\"let dataset of datasets\" value=\"{{dataset.id}}\">{{dataset.name}}</option>\n        </select>\n      </div>\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\"\n            [disabled]=\"!linkageForm.form.valid\">\n      Continue\n    </button>\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"goBack()\">\n      Back\n    </button>\n  </form>\n</ng-template>\n<ng-template [ngIf]=\"error\">\n  <h2>Linkage</h2>\n  <div class=\"error p-2\" *ngIf=\"error\">\n    <ng-template [ngIf]=\"!showError\" [ngIfElse]=\"errorTpl\">\n      There was an error communicating with the database\n      (<a href=\"#\" (click)=\"showError = true; false\">details</a>).\n    </ng-template>\n    <ng-template #errorTpl>\n      There was an error communicating with the database:\n      <div>{{ error | json }}</div>\n    </ng-template>\n  </div>\n</ng-template>\n"
 
 /***/ }),
 
@@ -1721,11 +1721,20 @@ var LinkageFormComponent = (function () {
         this.location = location;
         this.router = router;
         this.datasets = [];
+        this.showError = false;
     }
     LinkageFormComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.datasetService.getDatasets().
-            then(function (datasets) { return _this.datasets = datasets; });
+        this.getDatasets().
+            then(function () { return _this.getLinkage(); });
+    };
+    LinkageFormComponent.prototype.getDatasets = function () {
+        var _this = this;
+        return this.datasetService.getDatasets().
+            then(function (datasets) { return _this.datasets = datasets; }, function (error) { return _this.error = error; });
+    };
+    LinkageFormComponent.prototype.getLinkage = function () {
+        var _this = this;
         this.route.params.
             switchMap(function (params) {
             if (!params['id']) {
@@ -1735,7 +1744,7 @@ var LinkageFormComponent = (function () {
                 return _this.linkageService.getLinkage(+params['id']);
             }
         }).
-            subscribe(function (linkage) { return _this.linkage = linkage; });
+            subscribe(function (linkage) { return _this.linkage = linkage; }, function (error) { return _this.error = error; });
     };
     LinkageFormComponent.prototype.save = function () {
         var _this = this;
@@ -2078,8 +2087,7 @@ var LinkageService = (function () {
             return data.map(function (attribs) {
                 return _this.build(attribs);
             });
-        }).
-            catch(this.handleError);
+        });
     };
     LinkageService.prototype.getLinkage = function (id) {
         var _this = this;
@@ -2219,7 +2227,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "ul {\n  margin: 0 0 10px 0;\n  padding: 0;\n}\nul::after {\n  content: \"\";\n  display: block;\n  height: 0px;\n  clear: both;\n}\n\nli {\n  display: block;\n  float: left;\n  width: 200px;\n  background-color: #eee;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  padding: 5px;\n  margin-right: 5px;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "ul {\n  margin: 0 0 10px 0;\n  padding: 0;\n}\nul::after {\n  content: \"\";\n  display: block;\n  height: 0px;\n  clear: both;\n}\n\nli {\n  display: block;\n  float: left;\n  width: 200px;\n  background-color: #eee;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  padding: 5px;\n  margin-right: 5px;\n  cursor: pointer;\n}\n\n.error {\n  background-color: firebrick;\n  color: white;\n}\n.error a {\n  color: white;\n  text-decoration: underline;\n}\n", ""]);
 
 // exports
 
@@ -2232,7 +2240,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/linkages/linkages.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Linkages</h2>\n<ul>\n  <li *ngFor=\"let linkage of linkages\" (click)=\"gotoDetail(linkage.id)\">\n    <div><strong>Name:</strong> {{linkage.name}}</div>\n    <div><strong>Description:</strong> {{linkage.description}}</div>\n  </li>\n</ul>\n<p *ngIf=\"linkages && linkages.length == 0\">\n  There are currently no linkages.\n</p>\n\n<button type=\"button\" class=\"btn btn-primary\" (click)=\"newLinkage()\">\n  New linkage\n</button>\n"
+module.exports = "<h2>Linkages</h2>\n<ng-template [ngIf]=\"linkages\">\n  <ul>\n    <li *ngFor=\"let linkage of linkages\" (click)=\"gotoDetail(linkage.id)\">\n      <div><strong>Name:</strong> {{linkage.name}}</div>\n      <div><strong>Description:</strong> {{linkage.description}}</div>\n    </li>\n  </ul>\n  <p *ngIf=\"linkages && linkages.length == 0\">\n    There are currently no linkages.\n  </p>\n\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"newLinkage()\">\n    New linkage\n  </button>\n</ng-template>\n<div class=\"error p-2\" *ngIf=\"error\">\n  <ng-template [ngIf]=\"!showError\" [ngIfElse]=\"errorTpl\">\n    There was an error communicating with the database\n    (<a href=\"#\" (click)=\"showError = true; false\">details</a>).\n  </ng-template>\n  <ng-template #errorTpl>\n    There was an error communicating with the database:\n    <div>{{ error | json }}</div>\n  </ng-template>\n</div>\n"
 
 /***/ }),
 
@@ -2260,6 +2268,7 @@ var LinkagesComponent = (function () {
     function LinkagesComponent(linkageService, router) {
         this.linkageService = linkageService;
         this.router = router;
+        this.showError = false;
     }
     LinkagesComponent.prototype.ngOnInit = function () {
         this.getLinkages();
@@ -2268,7 +2277,7 @@ var LinkagesComponent = (function () {
         var _this = this;
         this.linkageService.
             getLinkages().
-            then(function (linkages) { return _this.linkages = linkages; });
+            then(function (linkages) { return _this.linkages = linkages; }, function (error) { return _this.error = error; });
     };
     LinkagesComponent.prototype.gotoDetail = function (id) {
         this.router.navigate(['/linkages', id]);
