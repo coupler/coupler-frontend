@@ -1,6 +1,18 @@
 <h2>Datasets</h2>
-<app-datasets-list [datasets]="datasets"></app-datasets-list>
+<div class="datasets" *ngIf="datasets">
+  <app-datasets-list [datasets]="datasets"></app-datasets-list>
 
-<button type="button" class="btn btn-primary" (click)="newDataset()">
-  New dataset
-</button>
+  <button type="button" class="btn btn-primary" (click)="newDataset()">
+    New dataset
+  </button>
+</div>
+<div class="error p-2" *ngIf="error">
+  <ng-template [ngIf]="!showError" [ngIfElse]="errorTpl">
+    There was an error communicating with the database
+    (<a href="#" (click)="showError = true; false">details</a>).
+  </ng-template>
+  <ng-template #errorTpl>
+    There was an error communicating with the database:
+    <div>{{ error | json }}</div>
+  </ng-template>
+</div>

@@ -1,0 +1,8 @@
+.error {
+  background-color: firebrick;
+  color: white;
+}
+.error a {
+  color: white;
+  text-decoration: underline;
+}

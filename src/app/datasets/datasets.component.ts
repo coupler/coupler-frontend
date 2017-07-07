@@ -11,6 +11,8 @@ import { Dataset } from '../dataset';
 })
 export class DatasetsComponent implements OnInit {
   datasets: Dataset[];
+  error: any;
+  showError = false;
 
   constructor(
     private datasetService: DatasetService,
@@ -24,7 +26,10 @@ export class DatasetsComponent implements OnInit {
   getDatasets(): void {
     this.datasetService.
       getDatasets().
-      then(datasets => this.datasets = datasets);
+      then(
+        datasets => this.datasets = datasets,
+        error => this.error = error
+      );
   }
 
   newDataset(): void {

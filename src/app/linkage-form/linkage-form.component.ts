@@ -21,6 +21,8 @@ import { ComparatorService } from '../comparator.service';
 export class LinkageFormComponent implements OnInit {
   linkage: Linkage;
   datasets: Dataset[] = [];
+  error: any;
+  showError = false;
 
   constructor(
     private linkageService: LinkageService,
@@ -31,9 +33,19 @@ export class LinkageFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.datasetService.getDatasets().
-      then(datasets => this.datasets = datasets);
+    this.getDatasets().
+      then(() => this.getLinkage());
+  }
 
+  getDatasets(): Promise<any> {
+    return this.datasetService.getDatasets().
+      then(
+        datasets => this.datasets = datasets,
+        error => this.error = error
+      );
+  }
+
+  getLinkage(): void {
     this.route.params.
       switchMap((params: Params) => {
         if (!params['id']) {
@@ -42,7 +54,10 @@ export class LinkageFormComponent implements OnInit {
           return this.linkageService.getLinkage(+params['id']);
         }
       }).
-      subscribe(linkage => this.linkage = linkage);
+      subscribe(
+        linkage => this.linkage = linkage,
+        error => this.error = error
+      );
   }
 
   save(): void {

@@ -32,8 +32,7 @@ export class DatasetService {
       then(response => {
         let data = response.json();
         return data.map(attribs => this.build(attribs));
-      }).
-      catch(this.handleError);
+      });
   }
 
   getDataset(id: number, includeFields = true): Promise<Dataset> {
