@@ -11,6 +11,8 @@ import { Linkage } from '../linkage';
 })
 export class LinkagesComponent implements OnInit {
   linkages: Linkage[];
+  error: any;
+  showError = false;
 
   constructor(
     private linkageService: LinkageService,
@@ -24,7 +26,10 @@ export class LinkagesComponent implements OnInit {
   getLinkages(): void {
     this.linkageService.
       getLinkages().
-      then(linkages => this.linkages = linkages);
+      then(
+        linkages => this.linkages = linkages,
+        error => this.error = error
+      );
   }
 
   gotoDetail(id: number): void {

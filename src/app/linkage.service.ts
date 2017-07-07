@@ -41,8 +41,7 @@ export class LinkageService {
         return data.map(attribs => {
           return this.build(attribs);
         });
-      }).
-      catch(this.handleError);
+      })
   }
 
   getLinkage(id: number): Promise<Linkage> {
