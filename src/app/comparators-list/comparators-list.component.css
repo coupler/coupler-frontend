@@ -20,3 +20,10 @@ li {
   margin-right: 5px;
   cursor: pointer;
 }
+
+div.set span:after {
+  content: ", ";
+}
+div.set span:last-child:after {
+  content: "";
+}

@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Comparator } from './comparator';
+import { Comparator, ComparatorSet } from './comparator';
 import { environment } from '../environments/environment';
 
 @Injectable()
@@ -13,8 +13,6 @@ export class ComparatorService {
   private attributeMap = {
     id: "id",
     kind: "kind",
-    set_1: "set1",
-    set_2: "set2",
     options: "options",
     order: "order",
     linkage_id: "linkageId"
@@ -73,15 +71,27 @@ export class ComparatorService {
         result[mappedKey] = attribs[key];
       }
     }
+    if ('set_1' in attribs && 'set_2' in attribs) {
+      result.sets = attribs.set_1.map((field1, i) => {
+        let value = { field1: field1, field2: attribs.set_2[i] };
+        return value as ComparatorSet;
+      });
+    }
     return result;
   }
 
   unbuild(comparator: Comparator): any {
-    let result = {};
+    let result: any = {};
     for (let key in this.attributeMap) {
       let mappedKey = this.attributeMap[key];
       result[key] = comparator[mappedKey];
     }
+    result.set_1 = [];
+    result.set_2 = [];
+    comparator.sets.forEach(s => {
+      result.set_1.push(s.field1);
+      result.set_2.push(s.field2);
+    });
     return result;
   }
 

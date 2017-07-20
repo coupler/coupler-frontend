@@ -4,11 +4,15 @@ export enum ComparatorKind {
   within
 }
 
+export class ComparatorSet {
+  field1: string;
+  field2: string;
+}
+
 export class Comparator {
   id: number;
   kind: ComparatorKind;
-  set1: any[] = [];
-  set2: any[] = [];
+  sets: ComparatorSet[] = [];
   options: any = {};
   order: number;
   linkageId: number;

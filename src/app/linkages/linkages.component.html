@@ -1,5 +1,5 @@
 <h2>Linkages</h2>
-<ng-template [ngIf]="linkages">
+<div *ngIf="linkages">
   <ul>
     <li *ngFor="let linkage of linkages" (click)="gotoDetail(linkage.id)">
       <div><strong>Name:</strong> {{linkage.name}}</div>
@@ -13,7 +13,7 @@
   <button type="button" class="btn btn-primary" (click)="newLinkage()">
     New linkage
   </button>
-</ng-template>
+</div>
 <div class="error p-2" *ngIf="error">
   <ng-template [ngIf]="!showError" [ngIfElse]="errorTpl">
     There was an error communicating with the database

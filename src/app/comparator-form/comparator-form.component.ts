@@ -45,6 +45,14 @@ export class ComparatorFormComponent implements OnInit {
       });
   }
 
+  addRow(): void {
+    this.comparator.sets.push({ field1: "", field2: "" });
+  }
+
+  removeRow(index: number): void {
+    this.comparator.sets.splice(index, 1);
+  }
+
   goBack(): void {
     this.location.back();
   }

@@ -56,7 +56,7 @@ export class LinkageService {
       catch(this.handleError);
   }
 
-  create(linkage: Linkage): Promise<Linkage> {
+  create(linkage: Linkage): Promise<any> {
     if (linkage.id) {
       throw new Error('Linkage must not already have `id` when creating.');
     }
@@ -65,17 +65,17 @@ export class LinkageService {
     return this.http.
       post(url, data, {headers: this.headers}).
       toPromise().
-      then(() => linkage).
+      then(response => response.json()).
       catch(this.handleError);
   }
 
-  update(linkage: Linkage): Promise<Linkage> {
+  update(linkage: Linkage): Promise<any> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
     let data = JSON.stringify(this.unbuild(linkage));
     return this.http.
       put(url, data, {headers: this.headers}).
       toPromise().
-      then(() => linkage).
+      then(response => response.json()).
       catch(this.handleError);
   }
 
