@@ -33,7 +33,7 @@ export class ComparatorsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/linkages', this.linkage.id]);
   }
 
   newComparator(): void {
