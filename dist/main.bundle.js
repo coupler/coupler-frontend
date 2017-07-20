@@ -259,7 +259,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".buttons {\n  margin-top: 10px;\n}\n", ""]);
 
 // exports
 
@@ -272,7 +272,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/comparator-form/comparator-form.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ng-template [ngIf]=\"comparator\">\n  <h2>Linkage: {{linkage.name}} (Comparator)</h2>\n  <form (ngSubmit)=\"save()\" #comparatorForm=\"ngForm\">\n    <div class=\"row\">\n      <div class=\"col-sm-3 form-group\">\n        <label for=\"comparator-kind\">Kind</label>\n        <select class=\"form-control\" id=\"comparator-kind\"\n                required [(ngModel)]=\"comparator.kind\" name=\"kind\">\n          <option></option>\n          <option value=\"compare\">Generic comparison</option>\n          <option value=\"strcompare\">String comparison</option>\n          <option value=\"within\">Within range</option>\n        </select>\n      </div>\n    </div>\n    <div class=\"row\" *ngIf=\"comparator.kind == 'compare'\">\n      <div class=\"col-sm-3 form-group\">\n        <label for=\"comparator-set1\">Field from {{linkage.dataset1.name}}</label>\n        <select class=\"form-control\" id=\"comparator-set1\"\n                required [(ngModel)]=\"comparator.set1[0]\" name=\"set1\">\n          <option></option>\n          <option *ngFor=\"let field of linkage.dataset1.fields\" [value]=\"field.name\">\n            {{field.name}} ({{field.kind}})\n          </option>\n        </select>\n      </div>\n      <div class=\"col-sm-2 form-group\">\n        <label for=\"comparator-operation\">Operator</label>\n        <select class=\"form-control\" id=\"comparator-operation\"\n                required [(ngModel)]=\"comparator.options.operation\" name=\"operation\">\n          <option></option>\n          <option value=\"equal\">==</option>\n          <option value=\"not_equal\">!=</option>\n          <option value=\"greater_than\">&gt;</option>\n          <option value=\"greater_than_or_equal\">&gt;=</option>\n          <option value=\"less_than\">&lt;</option>\n          <option value=\"less_than_or_equal\">&lt;=</option>\n        </select>\n      </div>\n      <div class=\"col-sm-3 form-group\">\n        <label for=\"comparator-set2\">Field from {{linkage.dataset2.name}}</label>\n        <select class=\"form-control\" id=\"comparator-set2\"\n                required [(ngModel)]=\"comparator.set2[0]\" name=\"set2\">\n          <option></option>\n          <option *ngFor=\"let field of linkage.dataset2.fields\" [value]=\"field.name\">\n            {{field.name}} ({{field.kind}})\n          </option>\n        </select>\n      </div>\n    </div>\n    <button type=\"submit\" class=\"btn btn-success\"\n            [disabled]=\"!comparatorForm.form.valid\">\n      Save\n    </button>\n    <button type=\"button\" class=\"btn btn-primary\" (click)=\"goBack()\">\n      Cancel\n    </button>\n  </form>\n</ng-template>\n"
+module.exports = "<ng-template [ngIf]=\"comparator\">\n  <h2>Linkage: {{linkage.name}} (Comparator)</h2>\n  <form (ngSubmit)=\"save()\" #comparatorForm=\"ngForm\">\n    <div class=\"row\">\n      <div class=\"col-sm-2 form-group\">\n        <label for=\"comparator-kind\">Kind</label>\n        <select class=\"form-control\" id=\"comparator-kind\"\n                required [(ngModel)]=\"comparator.kind\" name=\"kind\">\n          <option></option>\n          <option value=\"compare\">Generic comparison</option>\n          <option value=\"strcompare\">String comparison</option>\n          <option value=\"within\">Within range</option>\n        </select>\n      </div>\n    </div>\n    <ng-template [ngIf]=\"comparator.kind == 'compare'\">\n      <div class=\"row\">\n        <div class=\"col-sm-2 form-group\">\n          <label for=\"comparator-operation\">Operator</label>\n          <select class=\"form-control\" id=\"comparator-operation\"\n                  required [(ngModel)]=\"comparator.options.operation\" name=\"operation\">\n            <option></option>\n            <option value=\"equal\">==</option>\n            <option value=\"not_equal\">!=</option>\n            <option value=\"greater_than\">&gt;</option>\n            <option value=\"greater_than_or_equal\">&gt;=</option>\n            <option value=\"less_than\">&lt;</option>\n            <option value=\"less_than_or_equal\">&lt;=</option>\n          </select>\n        </div>\n      </div>\n      <ng-template [ngIf]=\"comparator.options.operation\">\n        <h3>Fields</h3>\n        <div class=\"row\" *ngFor=\"let set of comparator.sets; let i = index\">\n          <div class=\"col-sm-3 form-group\">\n            <label for=\"comparator-set-{{i}}-field1\">\n              Field from Dataset 1 ({{linkage.dataset1.name}})\n            </label>\n            <select class=\"form-control\" id=\"comparator-set-{{i}}-field1\"\n              required [(ngModel)]=\"set.field1\" name=\"set-{{i}}-field1\">\n              <option></option>\n              <option *ngFor=\"let field of linkage.dataset1.fields\" [value]=\"field.name\">\n                {{field.name}} ({{field.kind}})\n              </option>\n            </select>\n          </div>\n          <div class=\"col-sm-3 form-group\">\n            <label for=\"comparator-set-{{i}}-field2\">\n              Field from Dataset 2 ({{linkage.dataset2.name}})\n            </label>\n            <select class=\"form-control\" id=\"comparator-set-{{i}}-field2\"\n              required [(ngModel)]=\"set.field2\" name=\"set-{{i}}-field2\">\n              <option></option>\n              <option *ngFor=\"let field of linkage.dataset2.fields\" [value]=\"field.name\">\n                {{field.name}} ({{field.kind}})\n              </option>\n            </select>\n          </div>\n          <div class=\"col-sm-1 form-group\" *ngIf=\"comparator.sets.length > 1\">\n            <label>&nbsp;</label>\n            <button type=\"button\" class=\"btn btn-secondary align-bottom\" (click)=\"removeRow(i)\">\n              <i class=\"fa fa-minus-circle\"></i> Remove\n            </button>\n          </div>\n        </div>\n        <div>\n          <button type=\"button\" class=\"btn btn-secondary\" (click)=\"addRow()\"\n            [disabled]=\"!comparatorForm.form.valid\">\n            <i class=\"fa fa-plus-circle\"></i> Add comparison\n          </button>\n        </div>\n      </ng-template>\n    </ng-template>\n    <div class=\"buttons\">\n      <button type=\"submit\" class=\"btn btn-success\"\n              [disabled]=\"!comparatorForm.form.valid\">\n        Save\n      </button>\n      <button type=\"button\" class=\"btn btn-primary\" (click)=\"goBack()\">\n        Cancel\n      </button>\n    </div>\n  </form>\n</ng-template>\n"
 
 /***/ }),
 
@@ -332,6 +332,12 @@ var ComparatorFormComponent = (function () {
                 _this.comparator = linkage.findComparator(+_this.comparatorId);
             }
         });
+    };
+    ComparatorFormComponent.prototype.addRow = function () {
+        this.comparator.sets.push({ field1: "", field2: "" });
+    };
+    ComparatorFormComponent.prototype.removeRow = function (index) {
+        this.comparator.sets.splice(index, 1);
     };
     ComparatorFormComponent.prototype.goBack = function () {
         this.location.back();
@@ -396,8 +402,6 @@ var ComparatorService = (function () {
         this.attributeMap = {
             id: "id",
             kind: "kind",
-            set_1: "set1",
-            set_2: "set2",
             options: "options",
             order: "order",
             linkage_id: "linkageId"
@@ -452,6 +456,12 @@ var ComparatorService = (function () {
                 result[mappedKey] = attribs[key];
             }
         }
+        if ('set_1' in attribs && 'set_2' in attribs) {
+            result.sets = attribs.set_1.map(function (field1, i) {
+                var value = { field1: field1, field2: attribs.set_2[i] };
+                return value;
+            });
+        }
         return result;
     };
     ComparatorService.prototype.unbuild = function (comparator) {
@@ -460,6 +470,12 @@ var ComparatorService = (function () {
             var mappedKey = this.attributeMap[key];
             result[key] = comparator[mappedKey];
         }
+        result.set_1 = [];
+        result.set_2 = [];
+        comparator.sets.forEach(function (s) {
+            result.set_1.push(s.field1);
+            result.set_2.push(s.field2);
+        });
         return result;
     };
     ComparatorService.prototype.handleError = function (error) {
@@ -482,6 +498,7 @@ var _a;
 
 "use strict";
 /* unused harmony export ComparatorKind */
+/* unused harmony export ComparatorSet */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Comparator; });
 var ComparatorKind;
 (function (ComparatorKind) {
@@ -489,10 +506,15 @@ var ComparatorKind;
     ComparatorKind[ComparatorKind["strcompare"] = 1] = "strcompare";
     ComparatorKind[ComparatorKind["within"] = 2] = "within";
 })(ComparatorKind || (ComparatorKind = {}));
+var ComparatorSet = (function () {
+    function ComparatorSet() {
+    }
+    return ComparatorSet;
+}());
+
 var Comparator = (function () {
     function Comparator() {
-        this.set1 = [];
-        this.set2 = [];
+        this.sets = [];
         this.options = {};
     }
     return Comparator;
@@ -510,7 +532,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "ul {\n  margin: 0 0 10px 0;\n  padding: 0;\n}\nul::after {\n  content: \"\";\n  display: block;\n  height: 0px;\n  clear: both;\n}\n\nli {\n  display: block;\n  float: left;\n  width: 250px;\n  background-color: #eee;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  padding: 5px;\n  margin-right: 5px;\n  cursor: pointer;\n}\n", ""]);
+exports.push([module.i, "ul {\n  margin: 0 0 10px 0;\n  padding: 0;\n}\nul::after {\n  content: \"\";\n  display: block;\n  height: 0px;\n  clear: both;\n}\n\nli {\n  display: block;\n  float: left;\n  width: 250px;\n  background-color: #eee;\n  border: 1px solid #ddd;\n  border-radius: 5px;\n  padding: 5px;\n  margin-right: 5px;\n  cursor: pointer;\n}\n\ndiv.set span:after {\n  content: \", \";\n}\ndiv.set span:last-child:after {\n  content: \"\";\n}\n", ""]);
 
 // exports
 
@@ -523,7 +545,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/comparators-list/comparators-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<ul>\n  <li *ngFor=\"let comparator of linkage.comparators\" (click)=\"gotoDetail(comparator.id)\">\n    <div><strong>Kind:</strong> {{comparator.kind}}</div>\n    <div><strong>Set 1:</strong> {{comparator.set1.join(\", \")}}</div>\n    <div><strong>Set 2:</strong> {{comparator.set2.join(\", \")}}</div>\n    <div *ngIf=\"comparator.kind == 'compare'\">\n      <strong>Operator:</strong> {{comparator.options.operation}}\n    </div>\n  </li>\n</ul>\n<p *ngIf=\"linkage.comparators && linkage.comparators.length == 0\">\n  There are currently no comparators.\n</p>\n"
+module.exports = "<ul>\n  <li *ngFor=\"let comparator of linkage.comparators\" (click)=\"gotoDetail(comparator.id)\">\n    <div><strong>Kind:</strong> {{comparator.kind}}</div>\n    <div *ngIf=\"comparator.kind == 'compare'\">\n      <strong>Operator:</strong> {{comparator.options.operation}}\n    </div>\n    <div class=\"set\">\n      <strong>Set 1:</strong>\n      <span *ngFor=\"let set of comparator.sets\">{{set.field1}}</span>\n    </div>\n    <div class=\"set\">\n      <strong>Set 2:</strong>\n      <span *ngFor=\"let set of comparator.sets\">{{set.field2}}</span>\n    </div>\n  </li>\n</ul>\n<p *ngIf=\"linkage.comparators && linkage.comparators.length == 0\">\n  There are currently no comparators.\n</p>\n"
 
 /***/ }),
 
@@ -2110,7 +2132,7 @@ var LinkageService = (function () {
         return this.http.
             post(url, data, { headers: this.headers }).
             toPromise().
-            then(function () { return linkage; }).
+            then(function (response) { return response.json(); }).
             catch(this.handleError);
     };
     LinkageService.prototype.update = function (linkage) {
@@ -2119,7 +2141,7 @@ var LinkageService = (function () {
         return this.http.
             put(url, data, { headers: this.headers }).
             toPromise().
-            then(function () { return linkage; }).
+            then(function (response) { return response.json(); }).
             catch(this.handleError);
     };
     LinkageService.prototype.delete = function (linkage) {
@@ -2240,7 +2262,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/linkages/linkages.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Linkages</h2>\n<ng-template [ngIf]=\"linkages\">\n  <ul>\n    <li *ngFor=\"let linkage of linkages\" (click)=\"gotoDetail(linkage.id)\">\n      <div><strong>Name:</strong> {{linkage.name}}</div>\n      <div><strong>Description:</strong> {{linkage.description}}</div>\n    </li>\n  </ul>\n  <p *ngIf=\"linkages && linkages.length == 0\">\n    There are currently no linkages.\n  </p>\n\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"newLinkage()\">\n    New linkage\n  </button>\n</ng-template>\n<div class=\"error p-2\" *ngIf=\"error\">\n  <ng-template [ngIf]=\"!showError\" [ngIfElse]=\"errorTpl\">\n    There was an error communicating with the database\n    (<a href=\"#\" (click)=\"showError = true; false\">details</a>).\n  </ng-template>\n  <ng-template #errorTpl>\n    There was an error communicating with the database:\n    <div>{{ error | json }}</div>\n  </ng-template>\n</div>\n"
+module.exports = "<h2>Linkages</h2>\n<div *ngIf=\"linkages\">\n  <ul>\n    <li *ngFor=\"let linkage of linkages\" (click)=\"gotoDetail(linkage.id)\">\n      <div><strong>Name:</strong> {{linkage.name}}</div>\n      <div><strong>Description:</strong> {{linkage.description}}</div>\n    </li>\n  </ul>\n  <p *ngIf=\"linkages && linkages.length == 0\">\n    There are currently no linkages.\n  </p>\n\n  <button type=\"button\" class=\"btn btn-primary\" (click)=\"newLinkage()\">\n    New linkage\n  </button>\n</div>\n<div class=\"error p-2\" *ngIf=\"error\">\n  <ng-template [ngIf]=\"!showError\" [ngIfElse]=\"errorTpl\">\n    There was an error communicating with the database\n    (<a href=\"#\" (click)=\"showError = true; false\">details</a>).\n  </ng-template>\n  <ng-template #errorTpl>\n    There was an error communicating with the database:\n    <div>{{ error | json }}</div>\n  </ng-template>\n</div>\n"
 
 /***/ }),
 
