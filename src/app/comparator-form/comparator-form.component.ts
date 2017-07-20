@@ -39,6 +39,7 @@ export class ComparatorFormComponent implements OnInit {
         if (this.comparatorId == 'new') {
           this.comparator = new Comparator();
           this.comparator.linkageId = this.linkage.id;
+          this.addRow();
         } else {
           this.comparator = linkage.findComparator(+this.comparatorId);
         }
