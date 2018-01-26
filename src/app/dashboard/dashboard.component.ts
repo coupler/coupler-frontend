@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Job } from '../job';
-import { JobService } from '../job.service';
+import { JobService, JobError } from '../job.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,13 +10,15 @@ import { JobService } from '../job.service';
 })
 export class DashboardComponent implements OnInit {
   jobs: Job[];
+  error: JobError;
 
   constructor(private jobService: JobService) { }
 
   ngOnInit() {
-    this.jobService.getJobs().
-      then(jobs => {
-        this.jobs = jobs.sort((a, b) => {
+    this.jobService.getJobs().subscribe(result => {
+      if (result instanceof Array) {
+        /* sort by newest */
+        result.sort((a, b) => {
           if (a.startedAt < b.startedAt) {
             return -1;
           }
@@ -25,7 +27,11 @@ export class DashboardComponent implements OnInit {
           }
           return 0;
         });
-      });
+        this.jobs = result;
+      } else {
+        this.error = result;
+      }
+    });
   }
 
 }

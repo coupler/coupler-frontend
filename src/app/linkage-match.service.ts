@@ -1,33 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-
-import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import { LinkageMatch } from './linkage-match';
 import { environment } from '../environments/environment';
 
+export enum LinkageMatchErrorKind { Client, Validation };
+
+export class LinkageMatchError {
+  constructor(public kind: LinkageMatchErrorKind, error: any) {}
+}
+
 @Injectable()
 export class LinkageMatchService {
   private linkageResultsUrl = `${environment.apiUrl}/linkage_results`;
-  private headers = new Headers({'Content-Type': 'application/json'});
   private attributeMap = {
     record_1: "record1",
     record_2: "record2",
     score: "score"
   };
 
-  constructor(private http: Http) {}
+  constructor(private http: HttpClient) {}
 
-  getLinkageMatch(linkageResultId: number, index: number): Promise<LinkageMatch> {
+  getLinkageMatch(linkageResultId: number, index: number): Observable<LinkageMatch | LinkageMatchError> {
     let url = `${this.linkageResultsUrl}/${linkageResultId}/matches/${index}`;
 
-    return this.http.
-      get(url).
-      toPromise().
-      then(response => {
-        let data = response.json();
-        return(this.build(data));
-      });
+    return this.http.get(url).map(
+      data => this.build(data),
+      this.handleError
+    );
   }
 
   build(attribs: any): LinkageMatch {
@@ -40,5 +42,15 @@ export class LinkageMatchService {
       }
     }
     return result;
+  }
+
+  handleError(err: HttpErrorResponse): LinkageMatchError {
+    if (err.error instanceof Error) {
+      // client-side or network error
+      return new LinkageMatchError(LinkageMatchErrorKind.Client, err.error);
+    } else {
+      // unsuccessful response code
+      return new LinkageMatchError(LinkageMatchErrorKind.Validation, err.error.errors);
+    }
   }
 }

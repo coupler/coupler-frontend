@@ -7,7 +7,7 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
 
 import { Dataset } from '../dataset';
-import { DatasetService } from '../dataset.service';
+import { DatasetService, DatasetErrorKind, DatasetError } from '../dataset.service';
 
 @Component({
   selector: 'app-dataset-form',
@@ -16,7 +16,7 @@ import { DatasetService } from '../dataset.service';
 })
 export class DatasetFormComponent implements OnInit {
   dataset: Dataset;
-  errors: any;
+  error: DatasetError;
 
   constructor(
     private datasetService: DatasetService,
@@ -33,7 +33,13 @@ export class DatasetFormComponent implements OnInit {
           return this.datasetService.getDataset(+params['id'], false);
         }
       }).
-      subscribe(dataset => this.dataset = dataset);
+      subscribe(result => {
+        if (result instanceof Dataset) {
+          this.dataset = result;
+        } else {
+          this.error = result;
+        }
+      });
   }
 
   goBack(): void {
@@ -41,30 +47,18 @@ export class DatasetFormComponent implements OnInit {
   }
 
   save(): void {
-    let promise;
+    let obs;
     if (this.dataset.id) {
-      promise = this.datasetService.update(this.dataset);
+      obs = this.datasetService.update(this.dataset);
     } else {
-      promise = this.datasetService.create(this.dataset);
+      obs = this.datasetService.create(this.dataset);
     }
-    promise.then(
-      result => {
+    obs.subscribe(result => {
+      if (result instanceof Dataset) {
         this.goBack();
-      },
-      result => {
-        let errors = [];
-        for (let key in result.errors) {
-          let keyErrors = result.errors[key];
-          keyErrors.forEach(error => {
-            if (key == "base") {
-              errors.push(error);
-            } else {
-              errors.push(`${key} ${error}`);
-            }
-          });
-        }
-        this.errors = errors;
+      } else {
+        this.error = result;
       }
-    );
+    });
   }
 }

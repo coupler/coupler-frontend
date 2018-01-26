@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-
-import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import { Dataset } from './dataset';
 import { Field } from './field';
 import { environment } from '../environments/environment';
+
+export enum DatasetErrorKind { Client, Validation };
+
+export class DatasetError {
+  constructor(public kind: DatasetErrorKind, error: any) {}
+}
 
 @Injectable()
 export class DatasetService {
@@ -23,70 +29,44 @@ export class DatasetService {
     fields: "fields"
   };
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
-  getDatasets(): Promise<Dataset[]> {
-    return this.http.
-      get(this.datasetsUrl).
-      toPromise().
-      then(response => {
-        let data = response.json();
-        return data.map(attribs => this.build(attribs));
-      });
+  getDatasets(): Observable<Dataset[] | DatasetError> {
+    return this.http.get<any[]>(this.datasetsUrl).map(
+      data => data.map(d => this.build(d)),
+      this.handleError
+    );
   }
 
-  getDataset(id: number, includeFields = true): Promise<Dataset> {
+  getDataset(id: number, includeFields = true): Observable<Dataset | DatasetError> {
     const url = `${this.datasetsUrl}/${id}`;
-    return this.http.
-      get(url, { params: { include_fields: includeFields } }).
-      toPromise().
-      then(response => this.build(response.json())).
-      catch(this.handleError);
+    const options = { params: { include_fields: includeFields ? '1' : '0' } }
+    return this.http.get(url, options).map(
+      data => this.build(data),
+      this.handleError
+    );
   }
 
-  create(dataset: Dataset): Promise<any> {
+  create(dataset: Dataset): Observable<Dataset | DatasetError> {
     if (dataset.id) {
       throw new Error('Dataset must not already have `id` when creating.');
     }
     const url = this.datasetsUrl;
-    let data = JSON.stringify(this.unbuild(dataset));
-    let result = this.http.post(url, data, {headers: this.headers});
-    return new Promise((resolve, reject) => {
-      let value;
-      result.subscribe(
-        response => {
-          // success
-          resolve(response.json());
-        },
-        response => {
-          // error
-          reject(response.json());
-        }
-      );
-    });
+    return this.http.post<{id: number}>(url, this.unbuild(dataset)).map(
+      data => {
+        dataset.id = data.id;
+        return dataset;
+      },
+      this.handleError
+    );
   }
 
-  update(dataset: Dataset): Promise<any> {
+  update(dataset: Dataset): Observable<Dataset | DatasetError> {
     const url = `${this.datasetsUrl}/${dataset.id}`;
-    let data = JSON.stringify(this.unbuild(dataset));
-    let result = this.http.put(url, data, {headers: this.headers});
-    return new Promise((resolve, reject) => {
-      let value;
-      result.subscribe(
-        response => {
-          // success
-          resolve(response.json());
-        },
-        response => {
-          // error
-          reject(response.json());
-        }
-      );
-    });
-  }
-
-  handleError(error: any) {
-    console.error(error);
+    return this.http.put(url, this.unbuild(dataset)).map(
+      data => dataset,
+      this.handleError
+    );
   }
 
   build(attribs: any): Dataset {
@@ -114,5 +94,15 @@ export class DatasetService {
       result[key] = dataset[mappedKey];
     }
     return result;
+  }
+
+  handleError(err: HttpErrorResponse): DatasetError {
+    if (err.error instanceof Error) {
+      // client-side or network error
+      return new DatasetError(DatasetErrorKind.Client, err.error);
+    } else {
+      // unsuccessful response code
+      return new DatasetError(DatasetErrorKind.Validation, err.error.errors);
+    }
   }
 }

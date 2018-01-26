@@ -8,8 +8,8 @@ import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
 import { Comparator } from '../comparator';
-import { LinkageService } from '../linkage.service';
-import { ComparatorService } from '../comparator.service';
+import { LinkageService, LinkageError } from '../linkage.service';
+import { ComparatorService, ComparatorError } from '../comparator.service';
 
 @Component({
   selector: 'app-comparator-form',
@@ -18,8 +18,10 @@ import { ComparatorService } from '../comparator.service';
 })
 export class ComparatorFormComponent implements OnInit {
   linkage: Linkage;
+  linkageError: LinkageError;
   comparatorId: string;
   comparator: Comparator;
+  comparatorError: ComparatorError;
 
   constructor(
     private linkageService: LinkageService,
@@ -34,14 +36,18 @@ export class ComparatorFormComponent implements OnInit {
         this.comparatorId = params['id'];
         return this.linkageService.getLinkage(+params['linkageId']);
       }).
-      subscribe(linkage => {
-        this.linkage = linkage;
-        if (this.comparatorId == 'new') {
-          this.comparator = new Comparator();
-          this.comparator.linkageId = this.linkage.id;
-          this.addRow();
+      subscribe(result => {
+        if (result instanceof Linkage) {
+          this.linkage = result;
+          if (this.comparatorId == 'new') {
+            this.comparator = new Comparator();
+            this.comparator.linkageId = this.linkage.id;
+            this.addRow();
+          } else {
+            this.comparator = this.linkage.findComparator(+this.comparatorId);
+          }
         } else {
-          this.comparator = linkage.findComparator(+this.comparatorId);
+          this.linkageError = result;
         }
       });
   }

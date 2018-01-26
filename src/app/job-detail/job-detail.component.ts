@@ -8,8 +8,8 @@ import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
 import { Job } from '../job';
-import { LinkageService } from '../linkage.service';
-import { JobService } from '../job.service';
+import { LinkageService, LinkageError } from '../linkage.service';
+import { JobService, JobError } from '../job.service';
 
 @Component({
   selector: 'app-job-detail',
@@ -18,8 +18,10 @@ import { JobService } from '../job.service';
 })
 export class JobDetailComponent implements OnInit, OnDestroy {
   linkage: Linkage;
+  linkageError: LinkageError;
   jobId: string;
   job: Job;
+  jobError: JobError;
   private refreshTimer: number;
 
   constructor(
@@ -35,14 +37,18 @@ export class JobDetailComponent implements OnInit, OnDestroy {
         this.jobId = params['id'];
         return this.linkageService.getLinkage(+params['linkageId']);
       }).
-      subscribe(linkage => {
-        this.linkage = linkage;
-        this.job = linkage.findJob(+this.jobId);
-        if (this.job.status == "initialized") {
-          this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
-          this.run();
-        } else if (this.job.status == "running") {
-          this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
+      subscribe(result => {
+        if (result instanceof Linkage) {
+          this.linkage = result;
+          this.job = this.linkage.findJob(+this.jobId);
+          if (this.job.status == "initialized") {
+            this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
+            this.run();
+          } else if (this.job.status == "running") {
+            this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
+          }
+        } else {
+          this.linkageError = result;
         }
       });
   }
@@ -57,19 +63,22 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  run(): Promise<Job> {
+  run(): Observable<any> {
     return this.jobService.run(this.job.id);
   }
 
   refresh(): void {
-    this.jobService.getJob(this.job.id).
-      then(updatedJob => {
-        Object.assign(this.job, updatedJob);
+    this.jobService.getJob(this.job.id).subscribe(result => {
+      if (result instanceof Job) {
+        this.job = result;
         if (this.job.status == "running") {
           this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
         } else {
           this.refreshTimer = undefined;
         }
-      });
+      } else {
+        this.jobError = result;
+      }
+    });
   }
 }

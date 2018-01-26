@@ -1,15 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-
-import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import { Comparator, ComparatorSet } from './comparator';
 import { environment } from '../environments/environment';
 
+export enum ComparatorErrorKind { Client, Validation };
+
+export class ComparatorError {
+  constructor(public kind: ComparatorErrorKind, error: any) {}
+}
+
 @Injectable()
 export class ComparatorService {
   private comparatorsUrl = environment.apiUrl + '/comparators';
-  private headers = new Headers({'Content-Type': 'application/json'});
   private attributeMap = {
     id: "id",
     kind: "kind",
@@ -18,49 +23,45 @@ export class ComparatorService {
     linkage_id: "linkageId"
   };
 
-  constructor(private http: Http) { }
+  constructor(private http: HttpClient) { }
 
-  getComparators(): Promise<Comparator[]> {
-    return this.http.
-      get(this.comparatorsUrl).
-      toPromise().
-      then(response => {
-        let data = response.json();
-        return data.map(attribs => this.build(attribs));
-      }).
-      catch(this.handleError);
+  getComparators(): Observable<Comparator[] | ComparatorError> {
+    const url = this.comparatorsUrl;
+    return this.http.get<any[]>(url).map(
+      data => data.map(d => this.build(d)),
+      this.handleError
+    );
   }
 
-  getComparator(id: number): Promise<Comparator> {
+  getComparator(id: number): Observable<Comparator | ComparatorError> {
     const url = `${this.comparatorsUrl}/${id}`;
-    return this.http.
-      get(url).
-      toPromise().
-      then(response => this.build(response.json())).
-      catch(this.handleError);
+    return this.http.get(url).map(
+      data => this.build(data),
+      this.handleError
+    );
   }
 
-  create(comparator: Comparator): Promise<Comparator> {
+  create(comparator: Comparator): Observable<Comparator | ComparatorError> {
     if (comparator.id) {
       throw new Error('Comparator must not already have `id` when creating.');
     }
     const url = this.comparatorsUrl;
-    let data = JSON.stringify(this.unbuild(comparator));
-    return this.http.
-      post(url, data, {headers: this.headers}).
-      toPromise().
-      then(() => comparator).
-      catch(this.handleError);
+    return this.http.post<{id: number}>(url, this.unbuild(comparator)).map(
+      data => {
+        comparator.id = data.id;
+        return comparator;
+      },
+      this.handleError
+    );
   }
 
-  update(comparator: Comparator): Promise<Comparator> {
+  update(comparator: Comparator): Observable<Comparator | ComparatorError> {
     const url = `${this.comparatorsUrl}/${comparator.id}`;
     let data = JSON.stringify(this.unbuild(comparator));
-    return this.http.
-      put(url, data, {headers: this.headers}).
-      toPromise().
-      then(() => comparator).
-      catch(this.handleError);
+    return this.http.put(url, this.unbuild(comparator)).map(
+      data => comparator,
+      this.handleError
+    );
   }
 
   build(attribs: any): Comparator {
@@ -95,7 +96,13 @@ export class ComparatorService {
     return result;
   }
 
-  handleError(error: any) {
-    console.error(error);
+  handleError(err: HttpErrorResponse): ComparatorError {
+    if (err.error instanceof Error) {
+      // client-side or network error
+      return new ComparatorError(ComparatorErrorKind.Client, err.error);
+    } else {
+      // unsuccessful response code
+      return new ComparatorError(ComparatorErrorKind.Validation, err.error.errors);
+    }
   }
 }

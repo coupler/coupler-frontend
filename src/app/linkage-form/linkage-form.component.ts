@@ -9,9 +9,8 @@ import 'rxjs/add/operator/switchMap';
 import { Linkage } from '../linkage';
 import { Dataset } from '../dataset';
 import { Comparator } from '../comparator';
-import { LinkageService } from '../linkage.service';
-import { DatasetService } from '../dataset.service';
-import { ComparatorService } from '../comparator.service';
+import { LinkageService, LinkageError } from '../linkage.service';
+import { DatasetService, DatasetError } from '../dataset.service';
 
 @Component({
   selector: 'app-linkage-form',
@@ -20,8 +19,9 @@ import { ComparatorService } from '../comparator.service';
 })
 export class LinkageFormComponent implements OnInit {
   linkage: Linkage;
+  linkageError: LinkageError;
   datasets: Dataset[] = [];
-  error: any;
+  datasetError: DatasetError;
   showError = false;
 
   constructor(
@@ -33,16 +33,14 @@ export class LinkageFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getDatasets().
-      then(() => this.getLinkage());
-  }
-
-  getDatasets(): Promise<any> {
-    return this.datasetService.getDatasets().
-      then(
-        datasets => this.datasets = datasets,
-        error => this.error = error
-      );
+    this.datasetService.getDatasets().subscribe(result => {
+      if (result instanceof Array) {
+        this.datasets = result;
+        this.getLinkage();
+      } else {
+        this.datasetError = result;
+      }
+    });
   }
 
   getLinkage(): void {
@@ -54,22 +52,28 @@ export class LinkageFormComponent implements OnInit {
           return this.linkageService.getLinkage(+params['id']);
         }
       }).
-      subscribe(
-        linkage => this.linkage = linkage,
-        error => this.error = error
-      );
+      subscribe(result => {
+        if (result instanceof Linkage) {
+          this.linkage = result;
+        } else {
+          this.linkageError = result;
+        }
+      });
   }
 
   save(): void {
-    let promise;
+    let obs;
     if (this.linkage.id) {
-      promise = this.linkageService.update(this.linkage);
+      obs = this.linkageService.update(this.linkage);
     } else {
-      promise = this.linkageService.create(this.linkage);
+      obs = this.linkageService.create(this.linkage);
     }
-    promise.then(result => {
-      this.linkage.id = result.id;
-      this.goNext()
+    obs.subscribe(result => {
+      if (result instanceof Linkage) {
+        this.goNext();
+      } else {
+        this.linkageError = result;
+      }
     });
   }
 

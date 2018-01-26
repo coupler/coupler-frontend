@@ -7,8 +7,8 @@ import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
 import { Job } from '../job';
-import { LinkageService } from '../linkage.service';
-import { JobService } from '../job.service';
+import { LinkageService, LinkageError } from '../linkage.service';
+import { JobService, JobError } from '../job.service';
 
 @Component({
   selector: 'app-linkage-detail',
@@ -17,6 +17,8 @@ import { JobService } from '../job.service';
 })
 export class LinkageDetailComponent implements OnInit {
   linkage: Linkage;
+  linkageError: LinkageError;
+  jobError: JobError;
 
   @ViewChild('deleteConfirmation') confirmDeletionContent: TemplateRef<any>;
 
@@ -34,7 +36,13 @@ export class LinkageDetailComponent implements OnInit {
       switchMap((params: Params) => {
         return this.linkageService.getLinkage(+params['id']);
       }).
-      subscribe(linkage => this.linkage = linkage);
+      subscribe(result => {
+        if (result instanceof Linkage) {
+          this.linkage = result;
+        } else {
+          this.linkageError = result;
+        }
+      });
   }
 
   goBack(): void {
@@ -53,8 +61,13 @@ export class LinkageDetailComponent implements OnInit {
   }
 
   delete(): void {
-    this.linkageService.delete(this.linkage).
-      then(() => { this.goBack() });
+    this.linkageService.delete(this.linkage).subscribe(result => {
+      if (result instanceof Linkage) {
+        this.goBack();
+      } else {
+        this.linkageError = result;
+      }
+    });
   }
 
   createJob(): void {
@@ -62,10 +75,12 @@ export class LinkageDetailComponent implements OnInit {
     job.kind = "linkage";
     job.linkageId = this.linkage.id;
 
-    this.jobService.create(job).
-      then(result => {
-        job.id = result.id;
-        this.router.navigate(['/linkages', this.linkage.id, 'jobs', job.id]);
-      });
+    this.jobService.create(job).subscribe(result => {
+      if (result instanceof Job) {
+        this.router.navigate(['/linkages', this.linkage.id, 'jobs', result.id]);
+      } else {
+        this.jobError = result;
+      }
+    });
   }
 }

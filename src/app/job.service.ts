@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-
-import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import { Job } from './job';
 import { LinkageResultService } from './linkage-result.service';
 import { environment } from '../environments/environment';
 
+export enum JobErrorKind { Client, Validation };
+
+export class JobError {
+  constructor(public kind: JobErrorKind, error: any) {}
+}
+
 @Injectable()
 export class JobService {
   private jobsUrl = environment.apiUrl + '/jobs';
-  private headers = new Headers({'Content-Type': 'application/json'});
   private attributeMap = {
     id: "id",
     kind: "kind",
@@ -24,60 +29,48 @@ export class JobService {
   };
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private linkageResultService: LinkageResultService
   ) { }
 
-  getJobs(): Promise<Job[]> {
-    return this.http.
-      get(this.jobsUrl).
-      toPromise().
-      then(response => {
-        let data = response.json();
-        return data.map(attribs => this.build(attribs));
-      }).
-      catch(this.handleError);
+  getJobs(): Observable<Job[] | JobError> {
+    return this.http.get<any[]>(this.jobsUrl).map(
+      data => data.map(d => this.build(d)),
+      this.handleError
+    );
   }
 
-  getJob(id: number): Promise<Job> {
+  getJob(id: number): Observable<Job | JobError> {
     const url = `${this.jobsUrl}/${id}`;
-    return this.http.
-      get(url).
-      toPromise().
-      then(response => this.build(response.json())).
-      catch(this.handleError);
+    return this.http.get(url).map(
+      data => this.build(data),
+      this.handleError
+    );
   }
 
-  create(job: Job): Promise<Job> {
+  create(job: Job): Observable<Job | JobError> {
     if (job.id) {
       throw new Error('Job must not already have `id` when creating.');
     }
     const url = this.jobsUrl;
-    let data = JSON.stringify(this.unbuild(job));
-    return this.http.
-      post(url, data, {headers: this.headers}).
-      toPromise().
-      then(response => {
-        let id = response.json().id;
-        job.id = id;
+    return this.http.post<{id: number}>(url, this.unbuild(job)).map(
+      data => {
+        job.id = data.id;
         return job;
-      }).
-      catch(this.handleError);
+      },
+      this.handleError
+    );
   }
 
-  run(id: number): Promise<any> {
+  run(id: number): Observable<any> {
     if (!id) {
       throw new Error('Job must have an `id` when running.');
     }
     const url = `${this.jobsUrl}/${id}/run`;
-    return this.http.
-      post(url, null, {headers: this.headers}).
-      toPromise().
-      catch(this.handleError);
-  }
-
-  handleError(error: any) {
-    console.error(error);
+    return this.http.post(url, null).map(
+      data => data,
+      this.handleError
+    );
   }
 
   build(attribs: any): Job {
@@ -124,5 +117,15 @@ export class JobService {
       result[key] = value;
     }
     return result;
+  }
+
+  handleError(err: HttpErrorResponse): JobError {
+    if (err.error instanceof Error) {
+      // client-side or network error
+      return new JobError(JobErrorKind.Client, err.error);
+    } else {
+      // unsuccessful response code
+      return new JobError(JobErrorKind.Validation, err.error.errors);
+    }
   }
 }

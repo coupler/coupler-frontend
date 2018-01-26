@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
-
-import 'rxjs/add/operator/toPromise';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 import { Linkage } from './linkage';
 import { DatasetService } from './dataset.service';
@@ -9,10 +9,15 @@ import { ComparatorService } from './comparator.service';
 import { JobService } from './job.service';
 import { environment } from '../environments/environment';
 
+export enum LinkageErrorKind { Client, Validation };
+
+export class LinkageError {
+  constructor(public kind: LinkageErrorKind, error: any) {}
+}
+
 @Injectable()
 export class LinkageService {
   private linkagesUrl = environment.apiUrl + '/linkages';
-  private headers = new Headers({'Content-Type': 'application/json'});
   private attributeMap = {
     id: "id",
     name: "name",
@@ -26,66 +31,56 @@ export class LinkageService {
   };
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private datasetService: DatasetService,
     private comparatorService: ComparatorService,
     private jobService: JobService
   ) { }
 
-  getLinkages(): Promise<Linkage[]> {
-    return this.http.
-      get(this.linkagesUrl).
-      toPromise().
-      then(response => {
-        let data = response.json();
-        return data.map(attribs => {
-          return this.build(attribs);
-        });
-      })
+  getLinkages(): Observable<Linkage[] | LinkageError> {
+    return this.http.get<any[]>(this.linkagesUrl).map(
+      data => data.map(d => this.build(d)),
+      this.handleError
+    );
   }
 
-  getLinkage(id: number): Promise<Linkage> {
+  getLinkage(id: number): Observable<Linkage | LinkageError> {
     const url = `${this.linkagesUrl}/${id}`;
-    return this.http.
-      get(url).
-      toPromise().
-      then(response => {
-        let data = response.json();
-        return this.build(data);
-      }).
-      catch(this.handleError);
+    return this.http.get(url).map(
+      data => this.build(data),
+      this.handleError
+    );
   }
 
-  create(linkage: Linkage): Promise<any> {
+  create(linkage: Linkage): Observable<Linkage | LinkageError> {
     if (linkage.id) {
       throw new Error('Linkage must not already have `id` when creating.');
     }
     const url = this.linkagesUrl;
     let data = JSON.stringify(this.unbuild(linkage));
-    return this.http.
-      post(url, data, {headers: this.headers}).
-      toPromise().
-      then(response => response.json()).
-      catch(this.handleError);
+    return this.http.post<{id: number}>(url, this.unbuild(linkage)).map(
+      data => {
+        linkage.id = data.id;
+        return linkage;
+      },
+      this.handleError
+    );
   }
 
-  update(linkage: Linkage): Promise<any> {
+  update(linkage: Linkage): Observable<Linkage | LinkageError> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
-    let data = JSON.stringify(this.unbuild(linkage));
-    return this.http.
-      put(url, data, {headers: this.headers}).
-      toPromise().
-      then(response => response.json()).
-      catch(this.handleError);
+    return this.http.put(url, this.unbuild(linkage)).map(
+      data => linkage,
+      this.handleError
+    );
   }
 
-  delete(linkage: Linkage): Promise<Linkage> {
+  delete(linkage: Linkage): Observable<Linkage | LinkageError> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
-    return this.http.
-      delete(url, {headers: this.headers}).
-      toPromise().
-      then(() => linkage).
-      catch(this.handleError);
+    return this.http.delete(url).map(
+      data => linkage,
+      this.handleError
+    );
   }
 
   build(attribs: any): Linkage {
@@ -145,7 +140,13 @@ export class LinkageService {
     return result;
   }
 
-  handleError(error: any) {
-    console.error(error);
+  handleError(err: HttpErrorResponse): LinkageError {
+    if (err.error instanceof Error) {
+      // client-side or network error
+      return new LinkageError(LinkageErrorKind.Client, err.error);
+    } else {
+      // unsuccessful response code
+      return new LinkageError(LinkageErrorKind.Validation, err.error.errors);
+    }
   }
 }
