@@ -7,7 +7,8 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
 
 import { Dataset } from '../dataset';
-import { DatasetService, DatasetErrorKind, DatasetError } from '../dataset.service';
+import { DatasetService } from '../dataset.service';
+import { ClientError, ValidationError } from '../errors';
 
 @Component({
   selector: 'app-dataset-form',
@@ -16,7 +17,8 @@ import { DatasetService, DatasetErrorKind, DatasetError } from '../dataset.servi
 })
 export class DatasetFormComponent implements OnInit {
   dataset: Dataset;
-  error: DatasetError;
+  clientError: ClientError;
+  validationError: ValidationError;
 
   constructor(
     private datasetService: DatasetService,
@@ -36,8 +38,8 @@ export class DatasetFormComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Dataset) {
           this.dataset = result;
-        } else {
-          this.error = result;
+        } else if (result instanceof ClientError) {
+          this.clientError = result;
         }
       });
   }
@@ -56,8 +58,10 @@ export class DatasetFormComponent implements OnInit {
     obs.subscribe(result => {
       if (result instanceof Dataset) {
         this.goBack();
-      } else {
-        this.error = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      } else if (result instanceof ValidationError) {
+        this.validationError = result;
       }
     });
   }

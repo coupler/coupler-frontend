@@ -3,17 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { AbstractService } from './abstract-service';
+import { ClientError } from './errors';
 import { LinkageMatch } from './linkage-match';
 import { environment } from '../environments/environment';
 
-export enum LinkageMatchErrorKind { Client, Validation };
-
-export class LinkageMatchError {
-  constructor(public kind: LinkageMatchErrorKind, error: any) {}
-}
-
 @Injectable()
-export class LinkageMatchService {
+export class LinkageMatchService extends AbstractService {
   private linkageResultsUrl = `${environment.apiUrl}/linkage_results`;
   private attributeMap = {
     record_1: "record1",
@@ -21,14 +17,16 @@ export class LinkageMatchService {
     score: "score"
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    super();
+  }
 
-  getLinkageMatch(linkageResultId: number, index: number): Observable<LinkageMatch | LinkageMatchError> {
+  getLinkageMatch(linkageResultId: number, index: number): Observable<LinkageMatch | ClientError> {
     let url = `${this.linkageResultsUrl}/${linkageResultId}/matches/${index}`;
 
     return this.http.get(url).map(
       data => this.build(data),
-      this.handleError
+      this.handleClientError
     );
   }
 
@@ -42,15 +40,5 @@ export class LinkageMatchService {
       }
     }
     return result;
-  }
-
-  handleError(err: HttpErrorResponse): LinkageMatchError {
-    if (err.error instanceof Error) {
-      // client-side or network error
-      return new LinkageMatchError(LinkageMatchErrorKind.Client, err.error);
-    } else {
-      // unsuccessful response code
-      return new LinkageMatchError(LinkageMatchErrorKind.Validation, err.error.errors);
-    }
   }
 }

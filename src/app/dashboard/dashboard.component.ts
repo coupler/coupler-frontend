@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Job } from '../job';
-import { JobService, JobError } from '../job.service';
+import { JobService } from '../job.service';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +11,7 @@ import { JobService, JobError } from '../job.service';
 })
 export class DashboardComponent implements OnInit {
   jobs: Job[];
-  error: JobError;
+  clientError: ClientError;
 
   constructor(private jobService: JobService) { }
 
@@ -28,10 +29,9 @@ export class DashboardComponent implements OnInit {
           return 0;
         });
         this.jobs = result;
-      } else {
-        this.error = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }
-
 }

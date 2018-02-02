@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { DatasetService, DatasetError } from '../dataset.service';
+import { DatasetService } from '../dataset.service';
 import { Dataset } from '../dataset';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-datasets',
@@ -11,8 +12,7 @@ import { Dataset } from '../dataset';
 })
 export class DatasetsComponent implements OnInit {
   datasets: Dataset[];
-  error: DatasetError;
-  showError = false;
+  clientError: ClientError;
 
   constructor(
     private datasetService: DatasetService,
@@ -27,8 +27,8 @@ export class DatasetsComponent implements OnInit {
     this.datasetService.getDatasets().subscribe(result => {
       if (result instanceof Array) {
         this.datasets = result;
-      } else {
-        this.error = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }

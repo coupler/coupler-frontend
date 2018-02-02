@@ -8,8 +8,9 @@ import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
 import { Comparator } from '../comparator';
-import { LinkageService, LinkageError } from '../linkage.service';
-import { ComparatorService, ComparatorError } from '../comparator.service';
+import { LinkageService } from '../linkage.service';
+import { ComparatorService } from '../comparator.service';
+import { ClientError, ValidationError } from '../errors';
 
 @Component({
   selector: 'app-comparator-form',
@@ -18,10 +19,10 @@ import { ComparatorService, ComparatorError } from '../comparator.service';
 })
 export class ComparatorFormComponent implements OnInit {
   linkage: Linkage;
-  linkageError: LinkageError;
   comparatorId: string;
   comparator: Comparator;
-  comparatorError: ComparatorError;
+  clientError: ClientError;
+  validationError: ValidationError;
 
   constructor(
     private linkageService: LinkageService,
@@ -47,7 +48,7 @@ export class ComparatorFormComponent implements OnInit {
             this.comparator = this.linkage.findComparator(+this.comparatorId);
           }
         } else {
-          this.linkageError = result;
+          this.clientError = result;
         }
       });
   }
@@ -65,12 +66,20 @@ export class ComparatorFormComponent implements OnInit {
   }
 
   save(): void {
-    let promise;
+    let obs;
     if (this.comparator.id) {
-      promise = this.comparatorService.update(this.comparator);
+      obs = this.comparatorService.update(this.comparator);
     } else {
-      promise = this.comparatorService.create(this.comparator);
+      obs = this.comparatorService.create(this.comparator);
     }
-    promise.then(() => this.goBack());
+    obs.subscribe(result => {
+      if (result instanceof Comparator) {
+        this.goBack();
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      } else if (result instanceof ValidationError) {
+        this.validationError = result;
+      }
+    });
   }
 }

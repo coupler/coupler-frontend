@@ -3,18 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { AbstractService } from './abstract-service';
+import { ClientError, ValidationError } from './errors';
 import { Job } from './job';
 import { LinkageResultService } from './linkage-result.service';
 import { environment } from '../environments/environment';
 
-export enum JobErrorKind { Client, Validation };
-
-export class JobError {
-  constructor(public kind: JobErrorKind, error: any) {}
-}
-
 @Injectable()
-export class JobService {
+export class JobService extends AbstractService {
   private jobsUrl = environment.apiUrl + '/jobs';
   private attributeMap = {
     id: "id",
@@ -31,24 +27,26 @@ export class JobService {
   constructor(
     private http: HttpClient,
     private linkageResultService: LinkageResultService
-  ) { }
+  ) {
+    super();
+  }
 
-  getJobs(): Observable<Job[] | JobError> {
+  getJobs(): Observable<Job[] | ClientError> {
     return this.http.get<any[]>(this.jobsUrl).map(
       data => data.map(d => this.build(d)),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  getJob(id: number): Observable<Job | JobError> {
+  getJob(id: number): Observable<Job | ClientError> {
     const url = `${this.jobsUrl}/${id}`;
     return this.http.get(url).map(
       data => this.build(data),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  create(job: Job): Observable<Job | JobError> {
+  create(job: Job): Observable<Job | ClientError | ValidationError> {
     if (job.id) {
       throw new Error('Job must not already have `id` when creating.');
     }
@@ -117,15 +115,5 @@ export class JobService {
       result[key] = value;
     }
     return result;
-  }
-
-  handleError(err: HttpErrorResponse): JobError {
-    if (err.error instanceof Error) {
-      // client-side or network error
-      return new JobError(JobErrorKind.Client, err.error);
-    } else {
-      // unsuccessful response code
-      return new JobError(JobErrorKind.Validation, err.error.errors);
-    }
   }
 }

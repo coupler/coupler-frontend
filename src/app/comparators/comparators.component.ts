@@ -5,7 +5,8 @@ import { Location } from '@angular/common';
 import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
-import { LinkageService, LinkageError } from '../linkage.service';
+import { LinkageService } from '../linkage.service';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-comparators',
@@ -14,7 +15,7 @@ import { LinkageService, LinkageError } from '../linkage.service';
 })
 export class ComparatorsComponent implements OnInit {
   @Input() linkage: Linkage;
-  error: LinkageError;
+  clientError: ClientError;
 
   constructor(
     private linkageService: LinkageService,
@@ -32,8 +33,8 @@ export class ComparatorsComponent implements OnInit {
         subscribe(result => {
           if (result instanceof Linkage) {
             this.linkage = result;
-          } else {
-            this.error = result;
+          } else if (result instanceof ClientError) {
+            this.clientError = result;
           }
         });
     }

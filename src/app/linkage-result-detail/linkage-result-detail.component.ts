@@ -3,7 +3,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Linkage } from '../linkage';
 import { LinkageResult } from '../linkage-result';
 import { LinkageMatch } from '../linkage-match';
-import { LinkageMatchService, LinkageMatchError } from '../linkage-match.service';
+import { LinkageMatchService } from '../linkage-match.service';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-linkage-result-detail',
@@ -14,7 +15,7 @@ export class LinkageResultDetailComponent implements OnInit {
   @Input() linkage: Linkage;
   @Input() linkageResult: LinkageResult;
   match: LinkageMatch;
-  error: LinkageMatchError;
+  clientError: ClientError;
   matchIndex = 0;
 
   constructor(private linkageMatchService: LinkageMatchService) { }
@@ -29,8 +30,8 @@ export class LinkageResultDetailComponent implements OnInit {
       subscribe(result => {
         if (result instanceof LinkageMatch) {
           this.match = result;
-        } else {
-          this.error = result;
+        } else if (result instanceof ClientError) {
+          this.clientError = result;
         }
       });
   }

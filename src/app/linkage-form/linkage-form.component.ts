@@ -9,8 +9,9 @@ import 'rxjs/add/operator/switchMap';
 import { Linkage } from '../linkage';
 import { Dataset } from '../dataset';
 import { Comparator } from '../comparator';
-import { LinkageService, LinkageError } from '../linkage.service';
-import { DatasetService, DatasetError } from '../dataset.service';
+import { LinkageService } from '../linkage.service';
+import { DatasetService } from '../dataset.service';
+import { ClientError, ValidationError } from '../errors';
 
 @Component({
   selector: 'app-linkage-form',
@@ -19,10 +20,9 @@ import { DatasetService, DatasetError } from '../dataset.service';
 })
 export class LinkageFormComponent implements OnInit {
   linkage: Linkage;
-  linkageError: LinkageError;
   datasets: Dataset[] = [];
-  datasetError: DatasetError;
-  showError = false;
+  clientError: ClientError;
+  validationError: ValidationError;
 
   constructor(
     private linkageService: LinkageService,
@@ -37,8 +37,8 @@ export class LinkageFormComponent implements OnInit {
       if (result instanceof Array) {
         this.datasets = result;
         this.getLinkage();
-      } else {
-        this.datasetError = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }
@@ -55,8 +55,8 @@ export class LinkageFormComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;
-        } else {
-          this.linkageError = result;
+        } else if (result instanceof ClientError) {
+          this.clientError = result;
         }
       });
   }
@@ -71,8 +71,10 @@ export class LinkageFormComponent implements OnInit {
     obs.subscribe(result => {
       if (result instanceof Linkage) {
         this.goNext();
-      } else {
-        this.linkageError = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      } else if (result instanceof ValidationError) {
+        this.validationError = result;
       }
     });
   }

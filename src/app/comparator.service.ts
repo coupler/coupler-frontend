@@ -3,17 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { AbstractService } from './abstract-service';
+import { ClientError, ValidationError } from './errors';
 import { Comparator, ComparatorSet } from './comparator';
 import { environment } from '../environments/environment';
 
-export enum ComparatorErrorKind { Client, Validation };
-
-export class ComparatorError {
-  constructor(public kind: ComparatorErrorKind, error: any) {}
-}
-
 @Injectable()
-export class ComparatorService {
+export class ComparatorService extends AbstractService {
   private comparatorsUrl = environment.apiUrl + '/comparators';
   private attributeMap = {
     id: "id",
@@ -23,25 +19,27 @@ export class ComparatorService {
     linkage_id: "linkageId"
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    super();
+  }
 
-  getComparators(): Observable<Comparator[] | ComparatorError> {
+  getComparators(): Observable<Comparator[] | ClientError> {
     const url = this.comparatorsUrl;
     return this.http.get<any[]>(url).map(
       data => data.map(d => this.build(d)),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  getComparator(id: number): Observable<Comparator | ComparatorError> {
+  getComparator(id: number): Observable<Comparator | ClientError> {
     const url = `${this.comparatorsUrl}/${id}`;
     return this.http.get(url).map(
       data => this.build(data),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  create(comparator: Comparator): Observable<Comparator | ComparatorError> {
+  create(comparator: Comparator): Observable<Comparator | ClientError | ValidationError> {
     if (comparator.id) {
       throw new Error('Comparator must not already have `id` when creating.');
     }
@@ -55,7 +53,7 @@ export class ComparatorService {
     );
   }
 
-  update(comparator: Comparator): Observable<Comparator | ComparatorError> {
+  update(comparator: Comparator): Observable<Comparator | ClientError | ValidationError> {
     const url = `${this.comparatorsUrl}/${comparator.id}`;
     let data = JSON.stringify(this.unbuild(comparator));
     return this.http.put(url, this.unbuild(comparator)).map(
@@ -94,15 +92,5 @@ export class ComparatorService {
       result.set_2.push(s.field2);
     });
     return result;
-  }
-
-  handleError(err: HttpErrorResponse): ComparatorError {
-    if (err.error instanceof Error) {
-      // client-side or network error
-      return new ComparatorError(ComparatorErrorKind.Client, err.error);
-    } else {
-      // unsuccessful response code
-      return new ComparatorError(ComparatorErrorKind.Validation, err.error.errors);
-    }
   }
 }

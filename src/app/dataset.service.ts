@@ -3,18 +3,14 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { AbstractService } from './abstract-service';
 import { Dataset } from './dataset';
 import { Field } from './field';
+import { ClientError, ValidationError } from './errors';
 import { environment } from '../environments/environment';
 
-export enum DatasetErrorKind { Client, Validation };
-
-export class DatasetError {
-  constructor(public kind: DatasetErrorKind, error: any) {}
-}
-
 @Injectable()
-export class DatasetService {
+export class DatasetService extends AbstractService {
   private datasetsUrl = environment.apiUrl + '/datasets';
   private headers = new Headers({'Content-Type': 'application/json'});
   private attributeMap = {
@@ -29,25 +25,27 @@ export class DatasetService {
     fields: "fields"
   };
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    super();
+  }
 
-  getDatasets(): Observable<Dataset[] | DatasetError> {
+  getDatasets(): Observable<Dataset[] | ClientError> {
     return this.http.get<any[]>(this.datasetsUrl).map(
       data => data.map(d => this.build(d)),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  getDataset(id: number, includeFields = true): Observable<Dataset | DatasetError> {
+  getDataset(id: number, includeFields = true): Observable<Dataset | ClientError> {
     const url = `${this.datasetsUrl}/${id}`;
     const options = { params: { include_fields: includeFields ? '1' : '0' } }
     return this.http.get(url, options).map(
       data => this.build(data),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  create(dataset: Dataset): Observable<Dataset | DatasetError> {
+  create(dataset: Dataset): Observable<Dataset | ClientError | ValidationError> {
     if (dataset.id) {
       throw new Error('Dataset must not already have `id` when creating.');
     }
@@ -61,7 +59,7 @@ export class DatasetService {
     );
   }
 
-  update(dataset: Dataset): Observable<Dataset | DatasetError> {
+  update(dataset: Dataset): Observable<Dataset | ClientError | ValidationError> {
     const url = `${this.datasetsUrl}/${dataset.id}`;
     return this.http.put(url, this.unbuild(dataset)).map(
       data => dataset,
@@ -94,15 +92,5 @@ export class DatasetService {
       result[key] = dataset[mappedKey];
     }
     return result;
-  }
-
-  handleError(err: HttpErrorResponse): DatasetError {
-    if (err.error instanceof Error) {
-      // client-side or network error
-      return new DatasetError(DatasetErrorKind.Client, err.error);
-    } else {
-      // unsuccessful response code
-      return new DatasetError(DatasetErrorKind.Validation, err.error.errors);
-    }
   }
 }

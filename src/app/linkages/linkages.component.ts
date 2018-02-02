@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { LinkageService, LinkageError } from '../linkage.service';
+import { LinkageService } from '../linkage.service';
 import { Linkage } from '../linkage';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-linkages',
@@ -11,8 +12,7 @@ import { Linkage } from '../linkage';
 })
 export class LinkagesComponent implements OnInit {
   linkages: Linkage[];
-  error: LinkageError;
-  showError = false;
+  clientError: ClientError;
 
   constructor(
     private linkageService: LinkageService,
@@ -23,8 +23,8 @@ export class LinkagesComponent implements OnInit {
     this.linkageService.getLinkages().subscribe(result => {
       if (result instanceof Array) {
         this.linkages = result;
-      } else {
-        this.error = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }

@@ -3,20 +3,16 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { AbstractService } from './abstract-service';
+import { ClientError, ValidationError } from './errors';
 import { Linkage } from './linkage';
 import { DatasetService } from './dataset.service';
 import { ComparatorService } from './comparator.service';
 import { JobService } from './job.service';
 import { environment } from '../environments/environment';
 
-export enum LinkageErrorKind { Client, Validation };
-
-export class LinkageError {
-  constructor(public kind: LinkageErrorKind, error: any) {}
-}
-
 @Injectable()
-export class LinkageService {
+export class LinkageService extends AbstractService {
   private linkagesUrl = environment.apiUrl + '/linkages';
   private attributeMap = {
     id: "id",
@@ -35,24 +31,26 @@ export class LinkageService {
     private datasetService: DatasetService,
     private comparatorService: ComparatorService,
     private jobService: JobService
-  ) { }
+  ) {
+    super();
+  }
 
-  getLinkages(): Observable<Linkage[] | LinkageError> {
+  getLinkages(): Observable<Linkage[] | ClientError> {
     return this.http.get<any[]>(this.linkagesUrl).map(
       data => data.map(d => this.build(d)),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  getLinkage(id: number): Observable<Linkage | LinkageError> {
+  getLinkage(id: number): Observable<Linkage | ClientError> {
     const url = `${this.linkagesUrl}/${id}`;
     return this.http.get(url).map(
       data => this.build(data),
-      this.handleError
+      this.handleClientError
     );
   }
 
-  create(linkage: Linkage): Observable<Linkage | LinkageError> {
+  create(linkage: Linkage): Observable<Linkage | ClientError | ValidationError> {
     if (linkage.id) {
       throw new Error('Linkage must not already have `id` when creating.');
     }
@@ -67,7 +65,7 @@ export class LinkageService {
     );
   }
 
-  update(linkage: Linkage): Observable<Linkage | LinkageError> {
+  update(linkage: Linkage): Observable<Linkage | ClientError | ValidationError> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
     return this.http.put(url, this.unbuild(linkage)).map(
       data => linkage,
@@ -75,11 +73,11 @@ export class LinkageService {
     );
   }
 
-  delete(linkage: Linkage): Observable<Linkage | LinkageError> {
+  delete(linkage: Linkage): Observable<Linkage | ClientError> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
     return this.http.delete(url).map(
       data => linkage,
-      this.handleError
+      this.handleClientError
     );
   }
 
@@ -138,15 +136,5 @@ export class LinkageService {
       result[key] = value;
     }
     return result;
-  }
-
-  handleError(err: HttpErrorResponse): LinkageError {
-    if (err.error instanceof Error) {
-      // client-side or network error
-      return new LinkageError(LinkageErrorKind.Client, err.error);
-    } else {
-      // unsuccessful response code
-      return new LinkageError(LinkageErrorKind.Validation, err.error.errors);
-    }
   }
 }

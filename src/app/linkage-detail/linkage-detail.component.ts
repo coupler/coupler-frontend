@@ -7,8 +7,9 @@ import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
 import { Job } from '../job';
-import { LinkageService, LinkageError } from '../linkage.service';
-import { JobService, JobError } from '../job.service';
+import { LinkageService } from '../linkage.service';
+import { JobService } from '../job.service';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-linkage-detail',
@@ -17,8 +18,7 @@ import { JobService, JobError } from '../job.service';
 })
 export class LinkageDetailComponent implements OnInit {
   linkage: Linkage;
-  linkageError: LinkageError;
-  jobError: JobError;
+  clientError: ClientError;
 
   @ViewChild('deleteConfirmation') confirmDeletionContent: TemplateRef<any>;
 
@@ -39,8 +39,8 @@ export class LinkageDetailComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;
-        } else {
-          this.linkageError = result;
+        } else if (result instanceof ClientError) {
+          this.clientError = result;
         }
       });
   }
@@ -64,8 +64,8 @@ export class LinkageDetailComponent implements OnInit {
     this.linkageService.delete(this.linkage).subscribe(result => {
       if (result instanceof Linkage) {
         this.goBack();
-      } else {
-        this.linkageError = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }
@@ -78,8 +78,8 @@ export class LinkageDetailComponent implements OnInit {
     this.jobService.create(job).subscribe(result => {
       if (result instanceof Job) {
         this.router.navigate(['/linkages', this.linkage.id, 'jobs', result.id]);
-      } else {
-        this.jobError = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }

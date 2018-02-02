@@ -8,8 +8,9 @@ import 'rxjs/add/operator/switchMap';
 
 import { Linkage } from '../linkage';
 import { Job } from '../job';
-import { LinkageService, LinkageError } from '../linkage.service';
-import { JobService, JobError } from '../job.service';
+import { LinkageService } from '../linkage.service';
+import { JobService } from '../job.service';
+import { ClientError } from '../errors';
 
 @Component({
   selector: 'app-job-detail',
@@ -18,10 +19,9 @@ import { JobService, JobError } from '../job.service';
 })
 export class JobDetailComponent implements OnInit, OnDestroy {
   linkage: Linkage;
-  linkageError: LinkageError;
   jobId: string;
   job: Job;
-  jobError: JobError;
+  clientError: ClientError;
   private refreshTimer: number;
 
   constructor(
@@ -47,8 +47,8 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           } else if (this.job.status == "running") {
             this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
           }
-        } else {
-          this.linkageError = result;
+        } else if (result instanceof ClientError) {
+          this.clientError = result;
         }
       });
   }
@@ -76,8 +76,8 @@ export class JobDetailComponent implements OnInit, OnDestroy {
         } else {
           this.refreshTimer = undefined;
         }
-      } else {
-        this.jobError = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
       }
     });
   }
