@@ -1,4 +1,6 @@
 <h2>Linkages</h2>
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <div *ngIf="linkages">
   <ul>
     <li *ngFor="let linkage of linkages" (click)="gotoDetail(linkage.id)">

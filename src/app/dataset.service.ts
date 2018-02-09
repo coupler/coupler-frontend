@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { AbstractService } from './abstract-service';
 import { Dataset } from './dataset';
@@ -30,19 +31,17 @@ export class DatasetService extends AbstractService {
   }
 
   getDatasets(): Observable<Dataset[] | ClientError> {
-    return this.http.get<any[]>(this.datasetsUrl).map(
-      data => data.map(d => this.build(d)),
-      this.handleClientError
-    );
+    return this.http.get<any[]>(this.datasetsUrl).
+      map(data => data.map(d => this.build(d))).
+      catch(this.handleClientError);
   }
 
   getDataset(id: number, includeFields = true): Observable<Dataset | ClientError> {
     const url = `${this.datasetsUrl}/${id}`;
-    const options = { params: { include_fields: includeFields ? '1' : '0' } }
-    return this.http.get(url, options).map(
-      data => this.build(data),
-      this.handleClientError
-    );
+    const options = { params: { include_fields: includeFields ? 'true' : 'false' } }
+    return this.http.get(url, options).
+      map(data => this.build(data)).
+      catch(this.handleClientError);
   }
 
   create(dataset: Dataset): Observable<Dataset | ClientError | ValidationError> {
@@ -50,21 +49,19 @@ export class DatasetService extends AbstractService {
       throw new Error('Dataset must not already have `id` when creating.');
     }
     const url = this.datasetsUrl;
-    return this.http.post<{id: number}>(url, this.unbuild(dataset)).map(
-      data => {
+    return this.http.post<{id: number}>(url, this.unbuild(dataset)).
+      map(data => {
         dataset.id = data.id;
         return dataset;
-      },
-      this.handleError
-    );
+      }).
+      catch(this.handleError);
   }
 
   update(dataset: Dataset): Observable<Dataset | ClientError | ValidationError> {
     const url = `${this.datasetsUrl}/${dataset.id}`;
-    return this.http.put(url, this.unbuild(dataset)).map(
-      data => dataset,
-      this.handleError
-    );
+    return this.http.put(url, this.unbuild(dataset)).
+      map(data => dataset).
+      catch(this.handleError);
   }
 
   build(attribs: any): Dataset {

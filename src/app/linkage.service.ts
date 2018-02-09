@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { AbstractService } from './abstract-service';
 import { ClientError, ValidationError } from './errors';
@@ -36,18 +37,16 @@ export class LinkageService extends AbstractService {
   }
 
   getLinkages(): Observable<Linkage[] | ClientError> {
-    return this.http.get<any[]>(this.linkagesUrl).map(
-      data => data.map(d => this.build(d)),
-      this.handleClientError
-    );
+    return this.http.get<any[]>(this.linkagesUrl).
+      map(data => data.map(d => this.build(d))).
+      catch(this.handleClientError);
   }
 
   getLinkage(id: number): Observable<Linkage | ClientError> {
     const url = `${this.linkagesUrl}/${id}`;
-    return this.http.get(url).map(
-      data => this.build(data),
-      this.handleClientError
-    );
+    return this.http.get(url).
+      map(data => this.build(data)).
+      catch(this.handleClientError);
   }
 
   create(linkage: Linkage): Observable<Linkage | ClientError | ValidationError> {
@@ -56,29 +55,26 @@ export class LinkageService extends AbstractService {
     }
     const url = this.linkagesUrl;
     let data = JSON.stringify(this.unbuild(linkage));
-    return this.http.post<{id: number}>(url, this.unbuild(linkage)).map(
-      data => {
+    return this.http.post<{id: number}>(url, this.unbuild(linkage)).
+      map(data => {
         linkage.id = data.id;
         return linkage;
-      },
-      this.handleError
-    );
+      }).
+      catch(this.handleError);
   }
 
   update(linkage: Linkage): Observable<Linkage | ClientError | ValidationError> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
-    return this.http.put(url, this.unbuild(linkage)).map(
-      data => linkage,
-      this.handleError
-    );
+    return this.http.put(url, this.unbuild(linkage)).
+      map(data => linkage).
+      catch(this.handleError);
   }
 
   delete(linkage: Linkage): Observable<Linkage | ClientError> {
     const url = `${this.linkagesUrl}/${linkage.id}`;
-    return this.http.delete(url).map(
-      data => linkage,
-      this.handleClientError
-    );
+    return this.http.delete(url).
+      map(data => linkage).
+      catch(this.handleClientError);
   }
 
   build(attribs: any): Linkage {

@@ -1,5 +1,9 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <ng-template [ngIf]="linkage">
   <h2>Linkage: {{linkage.name}}</h2>
+  <app-validation-error *ngIf="validationError" [error]="validationError">
+  </app-validation-error>
   <form (ngSubmit)="save()" #linkageForm="ngForm">
     <div class="row">
       <div class="col-sm-6 form-group">

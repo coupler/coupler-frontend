@@ -1,5 +1,9 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <ng-template [ngIf]="comparator">
   <h2>Linkage: {{linkage.name}} (Comparator)</h2>
+  <app-validation-error *ngIf="validationError" [error]="validationError">
+  </app-validation-error>
   <form (ngSubmit)="save()" #comparatorForm="ngForm">
     <div class="row">
       <div class="col-sm-2 form-group">

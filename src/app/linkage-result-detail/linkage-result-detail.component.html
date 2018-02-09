@@ -1,3 +1,5 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <div *ngIf="match" class="match">
   <h4>Match #{{matchIndex + 1}}</h4>
 

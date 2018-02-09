@@ -1,4 +1,7 @@
 <h2>Dashboard</h2>
 
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
+
 <h3>Recent Jobs</h3>
 <app-jobs-list [jobs]="jobs"></app-jobs-list>

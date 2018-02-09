@@ -1,3 +1,5 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <ng-template [ngIf]="linkage">
   <h2>
     Linkage: {{linkage.name}}

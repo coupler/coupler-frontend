@@ -3,5 +3,5 @@ export class ClientError {
 }
 
 export class ValidationError {
-  constructor(public errors: any[]) {}
+  constructor(public errors: string[]) {}
 }

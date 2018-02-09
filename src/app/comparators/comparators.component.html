@@ -1,3 +1,5 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <div *ngIf="linkage">
   <h2>Linkage: {{linkage.name}} (Comparators)</h2>
   <app-comparators-list [linkage]="linkage"></app-comparators-list>

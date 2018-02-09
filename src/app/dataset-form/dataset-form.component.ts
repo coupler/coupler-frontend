@@ -59,9 +59,13 @@ export class DatasetFormComponent implements OnInit {
       if (result instanceof Dataset) {
         this.goBack();
       } else if (result instanceof ClientError) {
+        console.log('client error:', result);
         this.clientError = result;
       } else if (result instanceof ValidationError) {
+        console.log('validation error:', result);
         this.validationError = result;
+      } else {
+        console.log('unknown error:', result);
       }
     });
   }

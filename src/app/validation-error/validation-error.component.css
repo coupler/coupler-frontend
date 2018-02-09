@@ -1,0 +1,24 @@
+.error {
+  display: inline-block;
+  background: #ddd;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.error .header {
+  background: #cc0000;
+  color: white;
+  border-bottom: #333;
+  padding: 5px 10px;
+  color: bold;
+}
+
+.error .content {
+  padding: 5px;
+}
+
+.error .content ul {
+  margin: 0;
+  list-style-type: square;
+  padding-left: 30px;
+}

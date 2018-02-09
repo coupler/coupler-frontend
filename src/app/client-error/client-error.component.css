@@ -1,0 +1,7 @@
+div.error {
+  display: inline-block;
+  background: #cc0000;
+  border: 1px solid #bb0000;
+  color: white;
+  padding: 5px;
+}

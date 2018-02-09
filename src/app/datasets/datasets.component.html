@@ -1,4 +1,6 @@
 <h2>Datasets</h2>
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
 <div class="datasets" *ngIf="datasets">
   <app-datasets-list [datasets]="datasets"></app-datasets-list>
 

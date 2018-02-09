@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import { AbstractService } from './abstract-service';
 import { ClientError, ValidationError } from './errors';
@@ -25,18 +26,16 @@ export class ComparatorService extends AbstractService {
 
   getComparators(): Observable<Comparator[] | ClientError> {
     const url = this.comparatorsUrl;
-    return this.http.get<any[]>(url).map(
-      data => data.map(d => this.build(d)),
-      this.handleClientError
-    );
+    return this.http.get<any[]>(url).
+      map(data => data.map(d => this.build(d))).
+      catch(this.handleClientError);
   }
 
   getComparator(id: number): Observable<Comparator | ClientError> {
     const url = `${this.comparatorsUrl}/${id}`;
-    return this.http.get(url).map(
-      data => this.build(data),
-      this.handleClientError
-    );
+    return this.http.get(url).
+      map(data => this.build(data)).
+      catch(this.handleClientError);
   }
 
   create(comparator: Comparator): Observable<Comparator | ClientError | ValidationError> {
@@ -44,22 +43,20 @@ export class ComparatorService extends AbstractService {
       throw new Error('Comparator must not already have `id` when creating.');
     }
     const url = this.comparatorsUrl;
-    return this.http.post<{id: number}>(url, this.unbuild(comparator)).map(
-      data => {
+    return this.http.post<{id: number}>(url, this.unbuild(comparator)).
+      map(data => {
         comparator.id = data.id;
         return comparator;
-      },
-      this.handleError
-    );
+      }).
+      catch(this.handleError);
   }
 
   update(comparator: Comparator): Observable<Comparator | ClientError | ValidationError> {
     const url = `${this.comparatorsUrl}/${comparator.id}`;
     let data = JSON.stringify(this.unbuild(comparator));
-    return this.http.put(url, this.unbuild(comparator)).map(
-      data => comparator,
-      this.handleError
-    );
+    return this.http.put(url, this.unbuild(comparator)).
+      map(data => comparator).
+      catch(this.handleError);
   }
 
   build(attribs: any): Comparator {

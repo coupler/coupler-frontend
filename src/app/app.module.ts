@@ -36,6 +36,8 @@ import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-re
 import { LinkageMatchService } from './linkage-match.service';
 
 import { environment } from '../environments/environment';
+import { ClientErrorComponent } from './client-error/client-error.component';
+import { ValidationErrorComponent } from './validation-error/validation-error.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,9 @@ import { environment } from '../environments/environment';
     JobsListComponent,
     DatasetsListComponent,
     JobDetailComponent,
-    LinkageResultDetailComponent
+    LinkageResultDetailComponent,
+    ClientErrorComponent,
+    ValidationErrorComponent
   ],
   imports: [
     BrowserModule,
