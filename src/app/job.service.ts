@@ -58,16 +58,6 @@ export class JobService extends AbstractService {
       catch(this.handleError);
   }
 
-  run(id: number): Observable<any> {
-    if (!id) {
-      throw new Error('Job must have an `id` when running.');
-    }
-    const url = `${this.jobsUrl}/${id}/run`;
-    return this.http.post(url, null).
-      map(data => data).
-      catch(this.handleError);
-  }
-
   build(attribs: any): Job {
     let result = new Job();
     for (let key in attribs) {

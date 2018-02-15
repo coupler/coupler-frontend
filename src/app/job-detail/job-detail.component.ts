@@ -41,10 +41,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
         if (result instanceof Linkage) {
           this.linkage = result;
           this.job = this.linkage.findJob(+this.jobId);
-          if (this.job.status == "initialized") {
-            this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
-            this.run();
-          } else if (this.job.status == "running") {
+          if (this.job.status == "running" || this.job.status == "initialized") {
             this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
           }
         } else if (result instanceof ClientError) {
@@ -63,15 +60,11 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     this.location.back();
   }
 
-  run(): Observable<any> {
-    return this.jobService.run(this.job.id);
-  }
-
   refresh(): void {
     this.jobService.getJob(this.job.id).subscribe(result => {
       if (result instanceof Job) {
         this.job = result;
-        if (this.job.status == "running") {
+        if (this.job.status == "running" || this.job.status == "initialized") {
           this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
         } else {
           this.refreshTimer = undefined;
