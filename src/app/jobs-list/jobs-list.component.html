@@ -2,8 +2,8 @@
   <li *ngFor="let job of jobs" (click)="gotoDetail(job)">
     <div><strong>ID:</strong> {{job.id}}</div>
     <div><strong>Status:</strong> {{job.status}}</div>
-    <div><strong>Started:</strong> {{job.startedAt | date:"yMdjm"}}</div>
-    <div><strong>Ended:</strong> {{job.endedAt | date:"yMdjm"}}</div>
+    <div><strong>Started:</strong> {{job.startedAt | date:"short"}}</div>
+    <div><strong>Ended:</strong> {{job.endedAt | date:"short"}}</div>
   </li>
 </ul>
 <p *ngIf="jobs && jobs.length == 0">
