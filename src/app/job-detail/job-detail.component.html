@@ -15,14 +15,14 @@
     <tbody>
       <tr>
         <td>{{job.status}}</td>
-        <td>{{job.startedAt | date:"yMdjm"}}</td>
-        <td>{{job.endedAt | date:"yMdjm"}}</td>
+        <td>{{job.startedAt | date:"short"}}</td>
+        <td>{{job.endedAt | date:"short"}}</td>
         <td *ngIf="job.error">{{job.error}}</td>
       </tr>
     </tbody>
   </table>
 
-  <div *ngIf="job.linkageResult" class="results">
+  <div *ngIf="job.linkageResult && job.status == 'finished'" class="results">
     <h3>Results</h3>
     <p>
       <strong>Number of matches:</strong>
