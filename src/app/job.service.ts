@@ -67,7 +67,9 @@ export class JobService extends AbstractService {
         switch (mappedKey) {
           case 'startedAt':
           case 'endedAt':
-            value = new Date(value);
+            if (value) {
+              value = new Date(value);
+            }
             break;
           case 'linkageResult':
             value = this.linkageResultService.build(value);
