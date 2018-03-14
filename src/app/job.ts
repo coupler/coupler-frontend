@@ -10,4 +10,8 @@ export class Job {
   startedAt: Date;
   endedAt: Date;
   linkageResult: LinkageResult;
+
+  isStopped(): boolean {
+    return this.status === "finished" || this.status === "failed";
+  }
 }

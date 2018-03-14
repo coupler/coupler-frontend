@@ -14,9 +14,26 @@
     </thead>
     <tbody>
       <tr>
-        <td>{{job.status}}</td>
-        <td>{{job.startedAt | date:"short"}}</td>
-        <td>{{job.endedAt | date:"short"}}</td>
+        <td>
+          {{job.status}}
+          <i *ngIf="!job.isStopped()" class="fa fa-cog fa-spin" style="font-size: larger"></i>
+        </td>
+        <td>
+          <ng-template [ngIf]="job.startedAt" [ngIfElse]="jobNotStarted">
+            {{job.startedAt | date:"short"}}
+          </ng-template>
+          <ng-template #jobNotStarted>
+            Not yet started
+          </ng-template>
+        </td>
+        <td>
+          <ng-template [ngIf]="job.endedAt" [ngIfElse]="jobNotEnded">
+            {{job.endedAt | date:"short"}}
+          </ng-template>
+          <ng-template #jobNotEnded>
+            Not yet ended
+          </ng-template>
+        </td>
         <td *ngIf="job.error">{{job.error}}</td>
       </tr>
     </tbody>
