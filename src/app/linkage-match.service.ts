@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 import { AbstractService } from './abstract-service';
 import { ClientError } from './errors';
@@ -25,9 +24,10 @@ export class LinkageMatchService extends AbstractService {
   getLinkageMatch(linkageResultId: number, index: number): Observable<LinkageMatch | ClientError> {
     let url = `${this.linkageResultsUrl}/${linkageResultId}/matches/${index}`;
 
-    return this.http.get(url).
-      map(data => this.build(data)).
-      catch(this.handleClientError);
+    return this.http.get(url).pipe(
+      map(data => this.build(data)),
+      catchError(this.handleClientError)
+    );
   }
 
   build(attribs: any): LinkageMatch {

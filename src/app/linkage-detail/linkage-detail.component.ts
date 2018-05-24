@@ -2,8 +2,7 @@ import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
-import 'rxjs/add/operator/switchMap';
+import { switchMap } from 'rxjs/operators';
 
 import { Linkage } from '../linkage';
 import { Job } from '../job';
@@ -32,10 +31,10 @@ export class LinkageDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.
+    this.route.params.pipe(
       switchMap((params: Params) => {
         return this.linkageService.getLinkage(+params['id']);
-      }).
+      })).
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;

@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
-
-import 'rxjs/add/operator/switchMap';
+import { switchMap } from 'rxjs/operators';
 
 import { Linkage } from '../linkage';
 import { LinkageService } from '../linkage.service';
@@ -26,10 +25,10 @@ export class ComparatorsComponent implements OnInit {
 
   ngOnInit() {
     if (!this.linkage) {
-      this.route.params.
+      this.route.params.pipe(
         switchMap((params: Params) => {
           return this.linkageService.getLinkage(+params['linkageId']);
-        }).
+        })).
         subscribe(result => {
           if (result instanceof Linkage) {
             this.linkage = result;

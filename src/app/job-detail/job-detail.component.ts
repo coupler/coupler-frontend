@@ -1,10 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { Linkage } from '../linkage';
 import { Job } from '../job';
@@ -32,11 +30,11 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.route.params.
+    this.route.params.pipe(
       switchMap((params: Params) => {
         this.jobId = params['id'];
         return this.linkageService.getLinkage(+params['linkageId']);
-      }).
+      })).
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;

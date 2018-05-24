@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { Linkage } from '../linkage';
 import { Comparator } from '../comparator';
@@ -32,11 +30,11 @@ export class ComparatorFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.
+    this.route.params.pipe(
       switchMap((params: Params) => {
         this.comparatorId = params['id'];
         return this.linkageService.getLinkage(+params['linkageId']);
-      }).
+      })).
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;

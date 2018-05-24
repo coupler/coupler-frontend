@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
+import { of as observableOf,  Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { Linkage } from '../linkage';
 import { Dataset } from '../dataset';
@@ -44,14 +42,14 @@ export class LinkageFormComponent implements OnInit {
   }
 
   getLinkage(): void {
-    this.route.params.
+    this.route.params.pipe(
       switchMap((params: Params) => {
         if (!params['id']) {
-          return Observable.of<Linkage>(new Linkage());
+          return observableOf<Linkage>(new Linkage());
         } else {
           return this.linkageService.getLinkage(+params['id']);
         }
-      }).
+      })).
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;

@@ -1,10 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
+import { of as observableOf,  Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { Dataset } from '../dataset';
 import { DatasetService } from '../dataset.service';
@@ -27,14 +25,14 @@ export class DatasetFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.
+    this.route.params.pipe(
       switchMap((params: Params) => {
         if (params['id'] == 'new') {
-          return Observable.of<Dataset>(new Dataset());
+          return observableOf<Dataset>(new Dataset());
         } else {
           return this.datasetService.getDataset(+params['id'], false);
         }
-      }).
+      })).
       subscribe(result => {
         if (result instanceof Dataset) {
           this.dataset = result;
