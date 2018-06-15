@@ -14,8 +14,10 @@ export class Dataset {
   username: string;
   password: string;
   databaseName: string;
+  datasetPath: string;
   tableName: string;
   fields: Field[];
+  csvImportId: number;
 
   annotatedType(): string {
     switch (this.kind) {

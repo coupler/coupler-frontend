@@ -1,3 +1,7 @@
+.label {
+  font-weight: bold;
+}
+
 div.errors {
   margin-bottom: 1em;
 }

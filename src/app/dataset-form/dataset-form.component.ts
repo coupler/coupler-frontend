@@ -4,7 +4,8 @@ import { Location } from '@angular/common';
 import { of as observableOf,  Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Dataset } from '../dataset';
+import { Dataset, DatasetKind } from '../dataset';
+import { CsvImport } from '../csv-import';
 import { DatasetService } from '../dataset.service';
 import { ClientError, ValidationError } from '../errors';
 
@@ -28,7 +29,8 @@ export class DatasetFormComponent implements OnInit {
     this.route.params.pipe(
       switchMap((params: Params) => {
         if (params['id'] == 'new') {
-          return observableOf<Dataset>(new Dataset());
+          let dataset = new Dataset();
+          return observableOf<Dataset>(dataset);
         } else {
           return this.datasetService.getDataset(+params['id'], false);
         }
@@ -66,5 +68,10 @@ export class DatasetFormComponent implements OnInit {
         console.log('unknown error:', result);
       }
     });
+  }
+
+  csvReady(csvImport: CsvImport): void {
+    this.dataset.csvImportId = csvImport.id;
+    this.save();
   }
 }

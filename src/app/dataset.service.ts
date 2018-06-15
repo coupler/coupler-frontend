@@ -21,8 +21,10 @@ export class DatasetService extends AbstractService {
     username: "username",
     password: "password",
     database_name: "databaseName",
+    database_path: "databasePath",
     table_name: "tableName",
-    fields: "fields"
+    fields: "fields",
+    csv_import_id: "csvImportId"
   };
 
   constructor(private http: HttpClient) {
