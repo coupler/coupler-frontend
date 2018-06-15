@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { AbstractService } from './abstract-service';
-import { Dataset } from './dataset';
+import { Dataset, DatasetKind } from './dataset';
 import { Field } from './field';
 import { ClientError, ValidationError } from './errors';
 import { environment } from '../environments/environment';
@@ -74,6 +74,8 @@ export class DatasetService extends AbstractService {
         let value = attribs[key];
         if (key == "fields") {
           value = value as Field[];
+        } else if (key == "type") {
+          value = value as DatasetKind;
         }
         let mappedKey = this.attributeMap[key];
         result[mappedKey] = value;

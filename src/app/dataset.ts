@@ -1,7 +1,9 @@
 import { Field } from './field';
 
 export enum DatasetKind {
-  mysql
+  MySQL = "mysql",
+  SQLite3 = "sqlite3",
+  CSV = "csv"
 }
 
 export class Dataset {
