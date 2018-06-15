@@ -1,0 +1,27 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 0.5rem 1rem 0 0;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  background-color: #efefef;
+  flex: 1 1 0;
+}
+
+.field h4 {
+
+}
+
+.form-check-input {
+  margin-left: 0;
+}
+
+div.preview {
+  max-height: 300px;
+  overflow: auto;
+}
+
+table th, table td {
+  padding: 0.5em;
+}
