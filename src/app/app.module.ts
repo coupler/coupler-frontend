@@ -34,6 +34,7 @@ import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-re
 
 import { LinkageMatchService } from './linkage-match.service';
 
+import { CsvImportService } from './csv-import.service';
 import { ClientErrorComponent } from './client-error/client-error.component';
 import { ValidationErrorComponent } from './validation-error/validation-error.component';
 
@@ -70,7 +71,8 @@ import { ValidationErrorComponent } from './validation-error/validation-error.co
     ComparatorService,
     JobService,
     LinkageResultService,
-    LinkageMatchService
+    LinkageMatchService,
+    CsvImportService
   ],
   bootstrap: [AppComponent]
 })
