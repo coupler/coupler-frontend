@@ -16,4 +16,18 @@ export class Dataset {
   databaseName: string;
   tableName: string;
   fields: Field[];
+
+  annotatedType(): string {
+    switch (this.kind) {
+      case DatasetKind.MySQL:
+        return 'MySQL';
+
+      case DatasetKind.SQLite3:
+        return 'SQLite3 (from CSV)';
+
+      case DatasetKind.CSV:
+        return 'CSV';
+    }
+    return '';
+  }
 }
