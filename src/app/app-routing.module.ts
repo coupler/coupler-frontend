@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TutorialComponent } from './tutorial/tutorial.component';
 import { DatasetsComponent } from './datasets/datasets.component';
+import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
 import { DatasetFormComponent } from './dataset-form/dataset-form.component';
 import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
@@ -17,7 +18,9 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'tutorial', component: TutorialComponent },
   { path: 'datasets', component: DatasetsComponent },
-  { path: 'datasets/:id', component: DatasetFormComponent },
+  { path: 'datasets/new', component: DatasetFormComponent },
+  { path: 'datasets/:id', component: DatasetDetailComponent },
+  { path: 'datasets/:id/edit', component: DatasetFormComponent },
   { path: 'linkages', component: LinkagesComponent },
   { path: 'linkages/new', component: LinkageFormComponent },
   { path: 'linkages/:id', component: LinkageDetailComponent },

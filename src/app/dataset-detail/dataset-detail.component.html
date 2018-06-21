@@ -1,0 +1,42 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
+<app-validation-error *ngIf="validationError" [error]="validationError">
+</app-validation-error>
+<ng-template [ngIf]="dataset">
+  <h2>
+    Dataset: {{dataset.name}}
+    <i class="fa fa-pencil-square-o" (click)="edit()"></i>
+  </h2>
+  <div>
+    <div class="d-inline-flex flex-column">
+      <p class="label">Type</p>
+      <p>{{dataset.annotatedType()}}</p>
+    </div>
+  </div>
+  <ng-template [ngIf]="dataset.kind == 'mysql'">
+    <div class="row">
+      <div class="col-sm-2">
+        <p class="label">Database Name</p>
+        <p>{{dataset.databaseName}}</p>
+      </div>
+      <div class="col-sm-2">
+        <p class="label">Table Name</p>
+        <p>{{dataset.tableName}}</p>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template [ngIf]="dataset.kind == 'sqlite3'">
+    <div>
+      <div class="d-inline-flex flex-column">
+        <p class="label">Database Path</p>
+        <p>{{dataset.databasePath}}</p>
+      </div>
+    </div>
+    <div>
+      <div class="d-inline-flex flex-column">
+        <p class="label">Table Name</p>
+        <p>{{dataset.tableName}}</p>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>
