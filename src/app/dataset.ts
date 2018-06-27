@@ -1,4 +1,4 @@
-import { Field } from './field';
+import { DataColumn } from './data-table';
 
 export enum DatasetKind {
   MySQL = "mysql",
@@ -16,7 +16,7 @@ export class Dataset {
   databaseName: string;
   datasetPath: string;
   tableName: string;
-  fields: Field[];
+  fields: DataColumn[];
   csvImportId: number;
 
   annotatedType(): string {

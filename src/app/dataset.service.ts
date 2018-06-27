@@ -5,7 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { AbstractService } from './abstract-service';
 import { Dataset, DatasetKind } from './dataset';
-import { Field } from './field';
+import { DataColumnType, DataColumn } from './data-table';
 import { ClientError, ValidationError } from './errors';
 import { environment } from '../environments/environment';
 
@@ -47,6 +47,18 @@ export class DatasetService extends AbstractService {
     );
   }
 
+  getRecords(id: number, limit: number, offset: number): Observable<any[] | ClientError | ValidationError> {
+    const url = `${this.datasetsUrl}/${id}/records`;
+    const params = {
+      limit: limit.toString(),
+      offset: offset.toString()
+    };
+    const options = { params: params }
+    return this.http.get<any[]>(url, options).pipe(
+      catchError(this.handleClientError)
+    );
+  }
+
   create(dataset: Dataset): Observable<Dataset | ClientError | ValidationError> {
     if (dataset.id) {
       throw new Error('Dataset must not already have `id` when creating.');
@@ -75,7 +87,7 @@ export class DatasetService extends AbstractService {
       if (key in this.attributeMap) {
         let value = attribs[key];
         if (key == "fields") {
-          value = value as Field[];
+          value = value.map(v => this.buildField(v));
         } else if (key == "type") {
           value = value as DatasetKind;
         }
@@ -84,6 +96,30 @@ export class DatasetService extends AbstractService {
       }
     }
     return result;
+  }
+
+  buildField(attribs: any): DataColumn {
+    let colType: DataColumnType;
+    switch (attribs.kind) {
+      case "integer":
+        colType = DataColumnType.Integer;
+        break;
+      case "number":
+        colType = DataColumnType.Number;
+        break;
+      case "string":
+      case "text":
+        colType = DataColumnType.Text;
+        break;
+      default:
+        console.log('invalid data column type:', attribs.kind);
+        throw new Error("invalid data column type: " + attribs.kind);
+    }
+    return {
+      name: attribs.name,
+      type: colType,
+      primaryKey: attribs.primary_key
+    } as DataColumn;
   }
 
   unbuild(dataset: Dataset): any {
