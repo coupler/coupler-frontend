@@ -41,6 +41,7 @@ import { ClientErrorComponent } from './client-error/client-error.component';
 import { ValidationErrorComponent } from './validation-error/validation-error.component';
 import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
 import { DataTableComponent } from './data-table/data-table.component';
+import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { DataTableComponent } from './data-table/data-table.component';
     ValidationErrorComponent,
     CsvImportFormComponent,
     DatasetDetailComponent,
-    DataTableComponent
+    DataTableComponent,
+    DatasetBrowserComponent
   ],
   imports: [
     BrowserModule,

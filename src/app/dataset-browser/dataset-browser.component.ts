@@ -3,18 +3,22 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 
+import { ClientError, ValidationError } from '../errors';
 import { Dataset, DatasetKind } from '../dataset';
+import { DataColumnType, DataColumn, DataTable } from '../data-table';
 import { DatasetService } from '../dataset.service';
-import { ClientError } from '../errors';
 
 @Component({
-  selector: 'app-dataset-detail',
-  templateUrl: './dataset-detail.component.html',
-  styleUrls: ['./dataset-detail.component.css']
+  selector: 'app-dataset-browser',
+  templateUrl: './dataset-browser.component.html',
+  styleUrls: ['./dataset-browser.component.css']
 })
-export class DatasetDetailComponent implements OnInit {
+export class DatasetBrowserComponent implements OnInit {
   clientError: ClientError;
+  validationError: ValidationError;
   dataset: Dataset;
+  dataTable: DataTable;
+  numPages: number;
 
   constructor(
     private datasetService: DatasetService,
@@ -31,13 +35,28 @@ export class DatasetDetailComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Dataset) {
           this.dataset = result;
+          this.setupDataTable();
         } else if (result instanceof ClientError) {
           this.clientError = result;
         }
       });
   }
 
-  edit(): void {
-    this.router.navigate(['/datasets', this.dataset.id, 'edit']);
+  setupDataTable(): void {
+    let dataTable = new DataTable(this.dataset.fields);
+    this.datasetService.getRecords(this.dataset.id, 10, 0).subscribe(result => {
+      if (result instanceof ClientError) {
+        this.clientError = result;
+      } else if (result instanceof ValidationError) {
+        this.validationError = result;
+      } else {
+        dataTable.addRows(result);
+        this.dataTable = dataTable;
+      }
+    });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

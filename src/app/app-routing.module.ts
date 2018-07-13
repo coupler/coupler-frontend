@@ -6,6 +6,7 @@ import { TutorialComponent } from './tutorial/tutorial.component';
 import { DatasetsComponent } from './datasets/datasets.component';
 import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
 import { DatasetFormComponent } from './dataset-form/dataset-form.component';
+import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.component';
 import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 import { LinkageFormComponent } from './linkage-form/linkage-form.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'datasets/new', component: DatasetFormComponent },
   { path: 'datasets/:id', component: DatasetDetailComponent },
   { path: 'datasets/:id/edit', component: DatasetFormComponent },
+  { path: 'datasets/:id/browse', component: DatasetBrowserComponent },
   { path: 'linkages', component: LinkagesComponent },
   { path: 'linkages/new', component: LinkageFormComponent },
   { path: 'linkages/:id', component: LinkageDetailComponent },
