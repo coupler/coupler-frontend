@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 
@@ -18,7 +18,6 @@ export class DatasetDetailComponent implements OnInit {
 
   constructor(
     private datasetService: DatasetService,
-    private router: Router,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -37,7 +36,7 @@ export class DatasetDetailComponent implements OnInit {
       });
   }
 
-  edit(): void {
-    this.router.navigate(['/datasets', this.dataset.id, 'edit']);
+  goBack(): void {
+    this.location.back();
   }
 }
