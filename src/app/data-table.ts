@@ -28,7 +28,7 @@ export class DataTable {
     let offlim = offset + limit;
     let len = this.rows.length;
     if (offlim > len) {
-      let done = new EventEmitter();
+      let done = new EventEmitter<any[]>();
       this.onFetch.emit({
         offset: len,
         limit: offlim - len,
