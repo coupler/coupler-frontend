@@ -18,7 +18,9 @@ export class DatasetBrowserComponent implements OnInit {
   validationError: ValidationError;
   dataset: Dataset;
   dataTable: DataTable;
+  pageSize = 10;
   numPages: number;
+  numRecords: number;
 
   constructor(
     private datasetService: DatasetService,
@@ -35,28 +37,43 @@ export class DatasetBrowserComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Dataset) {
           this.dataset = result;
-          this.setupDataTable();
+          this.setupRecordCount();
         } else if (result instanceof ClientError) {
           this.clientError = result;
         }
       });
   }
 
-  setupDataTable(): void {
-    let dataTable = new DataTable(this.dataset.fields);
-    this.datasetService.getRecords(this.dataset.id, 10, 0).subscribe(result => {
+  goBack(): void {
+    this.location.back();
+  }
+
+  private setupRecordCount(): void {
+    this.datasetService.countRecords(this.dataset.id).subscribe(result => {
       if (result instanceof ClientError) {
         this.clientError = result;
-      } else if (result instanceof ValidationError) {
-        this.validationError = result;
       } else {
-        dataTable.addRows(result);
-        this.dataTable = dataTable;
+        this.numRecords = result;
+        this.numPages = Math.ceil(result / this.pageSize);
+        this.setupDataTable();
       }
     });
   }
 
-  goBack(): void {
-    this.location.back();
+  private setupDataTable(): void {
+    this.dataTable = new DataTable(this.dataset.fields, this.numRecords);
+    this.dataTable.onFetch.subscribe(params => {
+      this.datasetService.
+        getRecords(this.dataset.id, params.offset, params.limit).
+        subscribe(result => {
+          if (result instanceof ClientError) {
+            this.clientError = result;
+          } else if (result instanceof ValidationError) {
+            this.validationError = result;
+          } else {
+            params.done.emit(result);
+          }
+        });
+    });
   }
 }

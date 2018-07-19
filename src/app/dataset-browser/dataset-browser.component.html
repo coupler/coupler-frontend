@@ -4,7 +4,10 @@
   <h2>
     Dataset Browser: {{dataset.name}}
   </h2>
-  <app-data-table [dataTable]="dataTable" [numPages]="numPages"></app-data-table>
+  <app-data-table
+    [dataTable]="dataTable" [pageSize]="pageSize"
+    [numPages]="numPages">
+  </app-data-table>
 </ng-template>
 
 <a class="btn btn-secondary" (click)="goBack()">Back</a>

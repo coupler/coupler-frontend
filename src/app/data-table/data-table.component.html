@@ -1,14 +1,27 @@
-<table *ngIf="dataTable">
-  <thead>
-    <tr>
-      <th *ngFor="let column of dataTable.columns">{{column.name}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let row of rows; index as i">
-      <td *ngFor="let column of dataTable.columns">
-        {{row[column.name]}}
-      </td>
-    </tr>
-  </tbody>
-</table>
+<div *ngIf="dataTable" class="d-flex flex-row mb-5">
+  <div class="d-flex flex-column">
+    <div class="d-flex flex-row mb-2" style="flex: 1">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let column of dataTable.columns">{{column.name}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; index as i">
+            <td *ngFor="let column of dataTable.columns">
+              {{row[column.name]}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex flex-row justify-content-between" style="flex: 1">
+      <button type="button" class="btn btn-secondary" [disabled]="currentPage == 0"
+        (click)="prevPage()">Prev</button>
+      <div>Page {{currentPage + 1}} of {{numPages}}</div>
+      <button type="button" class="btn btn-secondary" [disabled]="currentPage+1 == numPages"
+        (click)="nextPage()">Next</button>
+    </div>
+  </div>
+</div>

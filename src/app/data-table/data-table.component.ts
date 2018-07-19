@@ -12,19 +12,32 @@ export class DataTableComponent implements OnChanges {
   @Input() numPages: number;
   @Input() pageSize = 10;
   @Input() currentPage = 0;
-  @Output() onPageChange = new EventEmitter();
   rows: any[];
 
   constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     let change = changes.dataTable;
-    if (change.currentValue) {
+    if (change && change.currentValue) {
       this.getRows();
     }
   }
 
+  nextPage(): void {
+    this.currentPage++;
+    this.getRows();
+  }
+
+  prevPage(): void {
+    this.currentPage--;
+    this.getRows();
+  }
+
   private getRows(): void {
-    this.rows = this.dataTable.getRows(this.pageSize, this.currentPage * this.pageSize);
+    this.dataTable.
+      getRows(this.currentPage * this.pageSize, this.pageSize).
+      subscribe(rows => {
+        this.rows = rows;
+      });
   }
 }

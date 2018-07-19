@@ -47,7 +47,15 @@ export class DatasetService extends AbstractService {
     );
   }
 
-  getRecords(id: number, limit: number, offset: number): Observable<any[] | ClientError | ValidationError> {
+  countRecords(id: number): Observable<number | ClientError> {
+    const url = `${this.datasetsUrl}/${id}/count_records`;
+    return this.http.get<number>(url).pipe(
+      map(data => data),
+      catchError(this.handleClientError)
+    );
+  }
+
+  getRecords(id: number, offset: number, limit: number): Observable<any[] | ClientError | ValidationError> {
     const url = `${this.datasetsUrl}/${id}/records`;
     const params = {
       limit: limit.toString(),
