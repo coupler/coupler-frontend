@@ -1,16 +1,14 @@
-<ul>
+<ul class="comparators">
   <li *ngFor="let comparator of linkage.comparators" (click)="gotoDetail(comparator.id)">
     <div><strong>Kind:</strong> {{comparator.kind}}</div>
     <div *ngIf="comparator.kind == 'compare'">
       <strong>Operator:</strong> {{comparator.options.operation}}
     </div>
     <div class="set">
-      <strong>Set 1:</strong>
-      <span *ngFor="let set of comparator.sets">{{set.field1}}</span>
+      <strong>Set 1:</strong> {{set1(comparator)}}
     </div>
     <div class="set">
-      <strong>Set 2:</strong>
-      <span *ngFor="let set of comparator.sets">{{set.field2}}</span>
+      <strong>Set 2:</strong> {{set2(comparator)}}
     </div>
   </li>
 </ul>

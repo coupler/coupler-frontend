@@ -1,15 +1,15 @@
-ul {
+ul.comparators {
   margin: 0 0 10px 0;
   padding: 0;
 }
-ul::after {
+ul.comparators::after {
   content: "";
   display: block;
   height: 0px;
   clear: both;
 }
 
-li {
+ul.comparators > li {
   display: block;
   float: left;
   width: 250px;
@@ -19,11 +19,4 @@ li {
   padding: 5px;
   margin-right: 5px;
   cursor: pointer;
-}
-
-div.set span:after {
-  content: ", ";
-}
-div.set span:last-child:after {
-  content: "";
 }
