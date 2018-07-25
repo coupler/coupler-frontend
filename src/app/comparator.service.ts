@@ -62,6 +62,14 @@ export class ComparatorService extends AbstractService {
     );
   }
 
+  delete(comparator: Comparator): Observable<Comparator | ClientError | ValidationError> {
+    const url = `${this.comparatorsUrl}/${comparator.id}`;
+    return this.http.delete(url).pipe(
+      map(data => comparator),
+      catchError(this.handleError)
+    );
+  }
+
   build(attribs: any): Comparator {
     let result = new Comparator();
     for (let key in attribs) {

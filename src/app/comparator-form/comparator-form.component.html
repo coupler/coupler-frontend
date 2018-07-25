@@ -44,7 +44,7 @@
               required [(ngModel)]="set.field1" name="set-{{i}}-field1">
               <option></option>
               <option *ngFor="let field of linkage.dataset1.fields" [value]="field.name">
-                {{field.name}} ({{field.kind}})
+                {{field.name}} ({{field.type}})
               </option>
             </select>
           </div>
@@ -56,7 +56,7 @@
               required [(ngModel)]="set.field2" name="set-{{i}}-field2">
               <option></option>
               <option *ngFor="let field of linkage.dataset2.fields" [value]="field.name">
-                {{field.name}} ({{field.kind}})
+                {{field.name}} ({{field.type}})
               </option>
             </select>
           </div>
@@ -75,14 +75,101 @@
         </div>
       </ng-template>
     </ng-template>
-    <div class="buttons">
-      <button type="submit" class="btn btn-success"
+    <ng-template [ngIf]="comparator.kind == 'strcompare'">
+      <div class="row">
+        <div class="col-sm-2 form-group">
+          <label for="comparator-operation">Operation</label>
+          <select class="form-control" id="comparator-operation"
+                  required [(ngModel)]="comparator.options.operation" name="operation">
+            <option></option>
+            <option value="jarowinkler">Jaro-Winkler</option>
+            <option value="reverse_jarowinkler">Reverse Jaro-Winkler</option>
+            <option value="damerau_levenshtein">Damerau-Levenshtein</option>
+          </select>
+        </div>
+      </div>
+      <ng-template [ngIf]="comparator.options.operation">
+        <h3>Fields</h3>
+        <div class="row" *ngFor="let set of comparator.sets; let i = index">
+          <div class="col-sm-3 form-group">
+            <label for="comparator-set-{{i}}-field1">
+              Field from Dataset 1 ({{linkage.dataset1.name}})
+            </label>
+            <select class="form-control" id="comparator-set-{{i}}-field1"
+              required [(ngModel)]="set.field1" name="set-{{i}}-field1">
+              <option></option>
+              <option *ngFor="let field of linkage.dataset1.fields" [value]="field.name">
+                {{field.name}} ({{field.type}})
+              </option>
+            </select>
+          </div>
+          <div class="col-sm-3 form-group">
+            <label for="comparator-set-{{i}}-field2">
+              Field from Dataset 2 ({{linkage.dataset2.name}})
+            </label>
+            <select class="form-control" id="comparator-set-{{i}}-field2"
+              required [(ngModel)]="set.field2" name="set-{{i}}-field2">
+              <option></option>
+              <option *ngFor="let field of linkage.dataset2.fields" [value]="field.name">
+                {{field.name}} ({{field.type}})
+              </option>
+            </select>
+          </div>
+        </div>
+      </ng-template>
+    </ng-template>
+    <ng-template [ngIf]="comparator.kind == 'within'">
+      <h3>Fields</h3>
+      <div class="row" *ngFor="let set of comparator.sets; let i = index">
+        <div class="col-sm-3 form-group">
+          <label for="comparator-set-{{i}}-field1">
+            Field from Dataset 1 ({{linkage.dataset1.name}})
+          </label>
+          <select class="form-control" id="comparator-set-{{i}}-field1"
+            required [(ngModel)]="set.field1" name="set-{{i}}-field1">
+            <option></option>
+            <option *ngFor="let field of linkage.dataset1.fields" [value]="field.name">
+              {{field.name}} ({{field.type}})
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="comparator-set-{{i}}-field2">
+            Field from Dataset 2 ({{linkage.dataset2.name}})
+          </label>
+          <select class="form-control" id="comparator-set-{{i}}-field2"
+            required [(ngModel)]="set.field2" name="set-{{i}}-field2">
+            <option></option>
+            <option *ngFor="let field of linkage.dataset2.fields" [value]="field.name">
+              {{field.name}} ({{field.type}})
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-2">
+          <label for="comparator-within-value">Value</label>
+          <input type="number" class="form-control" id="comparator-within-value"
+            required [(ngModel)]="comparator.options.value" name="option-value">
+        </div>
+      </div>
+    </ng-template>
+    <div class="mt-2 mb-2">
+      <button type="submit" class="btn btn-primary mr-2"
               [disabled]="!comparatorForm.form.valid">
         Save
       </button>
-      <button type="button" class="btn btn-primary" (click)="goBack()">
+      <button type="button" class="btn btn-secondary mr-5" (click)="goBack()">
         Cancel
       </button>
     </div>
+    <ng-template [ngIf]="comparator.id">
+      or
+      <div class="mt-2">
+        <button type="button" class="btn btn-danger" (click)="confirm('Are you sure?') && delete()">
+          Delete
+        </button>
+      </div>
+    </ng-template>
   </form>
 </ng-template>

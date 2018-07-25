@@ -80,4 +80,20 @@ export class ComparatorFormComponent implements OnInit {
       }
     });
   }
+
+  confirm(prompt: string): boolean {
+    return window.confirm(prompt);
+  }
+
+  delete(): void {
+    this.comparatorService.delete(this.comparator).subscribe(result => {
+      if (result instanceof Comparator) {
+        this.goBack();
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      } else if (result instanceof ValidationError) {
+        this.validationError = result;
+      }
+    });
+  }
 }
