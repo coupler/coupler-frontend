@@ -3,8 +3,6 @@
 <ng-template [ngIf]="linkage">
   <h2>
     Linkage: {{linkage.name}}
-    <i class="fa fa-pencil-square-o" (click)="edit()"></i>
-    <i class="fa fa-trash" (click)="confirmDeletion()"></i>
   </h2>
   <p>{{linkage.description}}</p>
 
@@ -17,12 +15,16 @@
   <h4>Jobs</h4>
   <app-jobs-list [jobs]="linkage.jobs"></app-jobs-list>
 
-  <button type="button" class="btn btn-success" (click)="createJob()">
+  <button type="button" class="btn btn-primary mr-2" (click)="edit()">
+    <i class="fa fa-pencil-square-o"></i> Edit
+  </button>
+  <button type="button" class="btn btn-primary mr-2" (click)="createJob()">
     Run
   </button>
-  <button type="button" class="btn btn-primary" (click)="goBack()">
+  <button type="button" class="btn btn-secondary" (click)="goBack()">
     Back
   </button>
+  <!-- <i class="fa fa-trash" (click)="confirmDeletion()"></i> -->
 
   <ng-template #deleteConfirmation let-c="close" let-d="dismiss">
     <div class="modal-header">

@@ -13,12 +13,14 @@
     </div>
   </div>
   <ng-template [ngIf]="dataset.kind == 'mysql'">
-    <div class="row">
-      <div class="col-sm-2">
+    <div>
+      <div class="d-inline-flex flex-column">
         <p class="label">Database Name</p>
         <p>{{dataset.databaseName}}</p>
       </div>
-      <div class="col-sm-2">
+    </div>
+    <div>
+      <div class="d-inline-flex flex-column">
         <p class="label">Table Name</p>
         <p>{{dataset.tableName}}</p>
       </div>

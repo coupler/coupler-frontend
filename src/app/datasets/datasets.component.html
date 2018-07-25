@@ -4,9 +4,9 @@
 <div class="datasets" *ngIf="datasets">
   <app-datasets-list [datasets]="datasets"></app-datasets-list>
 
-  <button type="button" class="btn btn-primary" (click)="newDataset()">
+  <a class="btn btn-primary" routerLink="/datasets/new">
     New dataset
-  </button>
+  </a>
 </div>
 <div class="error p-2" *ngIf="error">
   <ng-template [ngIf]="!showError" [ngIfElse]="errorTpl">

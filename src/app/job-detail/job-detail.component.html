@@ -46,7 +46,7 @@
       {{job.linkageResult.matchCount}}
     </p>
 
-    <app-linkage-result-detail
+    <app-linkage-result-detail *ngIf="job.linkageResult.matchCount > 0"
       [linkageResult]="job.linkageResult"
       [linkage]="linkage">
     </app-linkage-result-detail>
