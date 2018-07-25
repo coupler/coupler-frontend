@@ -1,7 +1,5 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
-<app-validation-error *ngIf="validationError" [error]="validationError">
-</app-validation-error>
 <ng-template [ngIf]="dataset">
   <h2>
     Dataset: {{dataset.name}}
