@@ -76,10 +76,9 @@
         </div>
       </div>
       <div>
-        <div class="d-inline-flex flex-column form-group">
-          <label class="label" for="dataset-table-name">Table Name</label>
-          <input class="form-control" id="dataset-table-name"
-                 required [(ngModel)]="dataset.tableName" name="tableName">
+        <div class="d-inline-flex flex-column">
+          <p class="label">Table Name</p>
+          <p>{{dataset.tableName}}</p>
         </div>
       </div>
     </ng-template>

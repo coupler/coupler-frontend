@@ -31,8 +31,9 @@ export class DatasetService extends AbstractService {
     super();
   }
 
-  getDatasets(): Observable<Dataset[] | ClientError> {
-    return this.http.get<any[]>(this.datasetsUrl).pipe(
+  getDatasets(includeFields = false): Observable<Dataset[] | ClientError> {
+    const options = { params: { include_fields: includeFields ? 'true' : 'false' } }
+    return this.http.get<any[]>(this.datasetsUrl, options).pipe(
       map(data => data.map(d => this.build(d))),
       catchError(this.handleClientError)
     );

@@ -1,45 +1,37 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
 <ng-template [ngIf]="dataset">
-  <h2>
+  <h2 class="mb-4">
     Dataset: {{dataset.name}}
   </h2>
-  <div>
-    <div class="d-inline-flex flex-column">
-      <p class="label">Type</p>
-      <p>{{dataset.annotatedType()}}</p>
-    </div>
-  </div>
+
+  <h5>Type</h5>
+  <p>{{dataset.annotatedType()}}</p>
+
   <ng-template [ngIf]="dataset.kind == 'mysql'">
-    <div>
-      <div class="d-inline-flex flex-column">
-        <p class="label">Database Name</p>
-        <p>{{dataset.databaseName}}</p>
-      </div>
-    </div>
-    <div>
-      <div class="d-inline-flex flex-column">
-        <p class="label">Table Name</p>
-        <p>{{dataset.tableName}}</p>
-      </div>
-    </div>
+    <h5>Database Name</h5>
+    <p>{{dataset.databaseName}}</p>
+
+    <h5>Table Name</h5>
+    <p>{{dataset.tableName}}</p>
   </ng-template>
   <ng-template [ngIf]="dataset.kind == 'sqlite3'">
-    <div>
-      <div class="d-inline-flex flex-column">
-        <p class="label">Database Path</p>
-        <p>{{dataset.databasePath}}</p>
-      </div>
-    </div>
-    <div>
-      <div class="d-inline-flex flex-column">
-        <p class="label">Table Name</p>
-        <p>{{dataset.tableName}}</p>
-      </div>
-    </div>
+    <h5>Database Path</h5>
+    <p>{{dataset.databasePath}}</p>
+
+    <h5>Table Name</h5>
+    <p>{{dataset.tableName}}</p>
   </ng-template>
 
-  <a class="btn btn-primary mr-2" [routerLink]="['/datasets', dataset.id, 'edit']">Edit</a>
-  <a class="btn btn-primary mr-2" [routerLink]="['/datasets', dataset.id, 'browse']">Browse data</a>
-  <button type="button" class="btn btn-secondary" (click)="goBack()">Back</button>
+  <div class="mt-4">
+    <a class="btn btn-primary mr-2" [routerLink]="['/datasets', dataset.id, 'edit']">
+      <i class="fa fa-edit"></i> Edit
+    </a>
+    <a class="btn btn-primary mr-2" [routerLink]="['/datasets', dataset.id, 'browse']">
+      <i class="fa fa-table"></i> Browse data
+    </a>
+    <a class="btn btn-secondary" (click)="goBack()">
+      <i class="fa fa-chevron-left"></i> Back
+    </a>
+  </div>
 </ng-template>
