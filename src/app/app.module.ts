@@ -22,7 +22,7 @@ import { LinkageFormComponent } from './linkage-form/linkage-form.component';
 import { ComparatorService } from './comparator.service';
 import { ComparatorsListComponent } from './comparators-list/comparators-list.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
-import { ComparatorFormComponent } from './comparator-form/comparator-form.component';
+import { ComparatorEditComponent } from './comparator-edit/comparator-edit.component';
 
 import { JobService } from './job.service';
 import { JobsListComponent } from './jobs-list/jobs-list.component';
@@ -42,6 +42,8 @@ import { ValidationErrorComponent } from './validation-error/validation-error.co
 import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
 import { DataTableComponent } from './data-table/data-table.component';
 import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.component';
+import { ComparatorFormComponent } from './comparator-form/comparator-form.component';
+import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +57,7 @@ import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.compo
     LinkageFormComponent,
     ComparatorsListComponent,
     ComparatorsComponent,
-    ComparatorFormComponent,
+    ComparatorEditComponent,
     JobsListComponent,
     DatasetsListComponent,
     JobDetailComponent,
@@ -65,7 +67,9 @@ import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.compo
     CsvImportFormComponent,
     DatasetDetailComponent,
     DataTableComponent,
-    DatasetBrowserComponent
+    DatasetBrowserComponent,
+    ComparatorFormComponent,
+    ComparatorDetailComponent
   ],
   imports: [
     BrowserModule,

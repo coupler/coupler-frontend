@@ -1,0 +1,8 @@
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
+<ng-template [ngIf]="comparator">
+  <h2>Linkage: {{linkage.name}} (Comparator)</h2>
+  <app-comparator-form [linkage]="linkage" [comparator]="comparator"
+    (save)="save()" (cancel)="goBack()" (delete)="delete()">
+  </app-comparator-form>
+</ng-template>

@@ -11,7 +11,7 @@ import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 import { LinkageFormComponent } from './linkage-form/linkage-form.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
-import { ComparatorFormComponent } from './comparator-form/comparator-form.component';
+import { ComparatorEditComponent } from './comparator-edit/comparator-edit.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
 
 const routes: Routes = [
@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: 'linkages/:id', component: LinkageDetailComponent },
   { path: 'linkages/:id/edit', component: LinkageFormComponent },
   { path: 'linkages/:linkageId/comparators', component: ComparatorsComponent },
-  { path: 'linkages/:linkageId/comparators/:id', component: ComparatorFormComponent },
+  { path: 'linkages/:linkageId/comparators/:id', component: ComparatorEditComponent },
   { path: 'linkages/:linkageId/jobs/:id', component: JobDetailComponent }
 ];
 

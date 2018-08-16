@@ -1,0 +1,19 @@
+<p>
+  <strong>Type:</strong> {{comparator.kindDescription()}}
+</p>
+
+<p *ngIf="comparator.kind === 'compare' || comparator.kind === 'strcompare'">
+  <strong>Operator:</strong> {{comparator.options.operation}}
+</p>
+
+<p>
+  <strong>Set 1:</strong> {{comparator.set1Description()}}
+</p>
+
+<p>
+  <strong>Set 2:</strong> {{comparator.set2Description()}}
+</p>
+
+<p *ngIf="comparator.kind === 'within'">
+  <strong>Value:</strong> {{comparator.options.value}}
+</p>
