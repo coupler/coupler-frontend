@@ -1,5 +1,5 @@
-<div class="d-flex flex-row">
-  <div *ngFor="let dataset of datasets" class="d-flex flex-column dataset"
+<div class="d-flex flex-row list">
+  <div *ngFor="let dataset of datasets" class="d-flex flex-column list-element"
     (click)="gotoDetail(dataset.id)">
     <div><strong>Name:</strong> {{dataset.name}}</div>
     <div><strong>Type:</strong> {{dataset.annotatedType()}}</div>

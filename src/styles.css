@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.list > .list-element {
+  background-color: #f6f6f6;
+  border: 2px solid #b3b3ff;
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: larger;
+}
