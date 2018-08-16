@@ -1,5 +1,7 @@
-<ul class="comparators">
-  <li *ngFor="let comparator of linkage.comparators" (click)="gotoDetail(comparator.id)">
+<div class="d-flex flex-row list">
+  <div *ngFor="let comparator of linkage.comparators"
+    class="d-flex flex-column list-element"
+    (click)="gotoDetail(comparator.id)">
     <div><strong>Kind:</strong> {{comparator.kind}}</div>
     <div *ngIf="comparator.kind == 'compare'">
       <strong>Operator:</strong> {{comparator.options.operation}}
@@ -10,8 +12,8 @@
     <div class="set">
       <strong>Set 2:</strong> {{set2(comparator)}}
     </div>
-  </li>
-</ul>
+  </div>
+</div>
 <p *ngIf="linkage.comparators && linkage.comparators.length == 0">
   There are currently no comparators.
 </p>
