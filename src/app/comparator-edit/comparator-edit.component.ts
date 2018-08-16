@@ -19,6 +19,7 @@ export class ComparatorEditComponent implements OnInit {
   linkage: Linkage;
   comparatorId: string;
   comparator: Comparator;
+  comparatorIndex: number;
   clientError: ClientError;
   validationError: ValidationError;
 
@@ -42,7 +43,8 @@ export class ComparatorEditComponent implements OnInit {
             this.comparator = new Comparator();
             this.comparator.linkageId = this.linkage.id;
           } else {
-            this.comparator = this.linkage.findComparator(+this.comparatorId);
+            this.comparatorIndex = this.linkage.findComparatorIndex(+this.comparatorId);
+            this.comparator = this.linkage.comparators[this.comparatorIndex];
           }
         } else {
           this.clientError = result;

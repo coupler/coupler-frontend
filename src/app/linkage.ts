@@ -17,6 +17,10 @@ export class Linkage {
     return this.comparators.find(comparator => comparator.id == id);
   }
 
+  findComparatorIndex(id: number): number {
+    return this.comparators.findIndex(comparator => comparator.id == id);
+  }
+
   findJob(id: number): Job {
     return this.jobs.find(job => job.id == id);
   }
