@@ -36,4 +36,15 @@ export class Comparator {
   set2Description(): string {
     return this.sets.map(s => s.field1).join(", ");
   }
+
+  clone(): Comparator {
+    let c = new Comparator();
+    c.id = this.id;
+    c.kind = this.kind;
+    c.sets = this.sets.slice();
+    c.options = Object.assign({}, this.options);
+    c.order = this.order;
+    c.linkageId = this.linkageId;
+    return c;
+  }
 }

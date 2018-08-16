@@ -13,11 +13,14 @@ export class ComparatorFormComponent implements OnInit {
   @Input() comparator: Comparator;
   @Input() initComparison: boolean;
   @Input() canCancel = true;
+  @Input() canDelete: boolean;
   @Output() save = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() delete = new EventEmitter();
 
   @ViewChild('comparatorForm') comparatorForm: NgForm;
+
+  initialValue: Comparator;
 
   constructor() { }
 
@@ -25,6 +28,10 @@ export class ComparatorFormComponent implements OnInit {
     if ((this.initComparison === undefined && !this.comparator.id) || this.initComparison) {
       this.addComparison();
     }
+    if (this.canDelete === undefined) {
+      this.canDelete = this.comparator.id !== undefined;
+    }
+    this.initialValue = this.comparator.clone();
   }
 
   addComparison(): void {
@@ -40,9 +47,7 @@ export class ComparatorFormComponent implements OnInit {
   }
 
   doCancel(): void {
-    if (this.comparator.id) {
-      this.comparatorForm.reset();
-    }
+    Object.assign(this.comparator, this.initialValue);
     this.cancel.emit();
   }
 }

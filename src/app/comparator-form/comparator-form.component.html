@@ -149,22 +149,18 @@
       </div>
     </div>
   </ng-template>
-  <div *ngIf="!comparator.id || comparatorForm.dirty" class="mt-2 mb-2">
+  <div class="mt-5 mb-2">
     <button type="submit" class="btn btn-primary mr-2"
-            [disabled]="!comparatorForm.form.valid">
+            [disabled]="!comparatorForm.form.valid || !comparatorForm.dirty">
       <i class="fa fa-save"></i> Save
     </button>
-    <button *ngIf="canCancel" type="button" class="btn btn-secondary mr-5"
+    <button *ngIf="canCancel" type="button" class="btn btn-secondary mr-2"
       (click)="doCancel()">
-      {{ comparator.id ? "Reset" : "Cancel" }}
+      <i class="fa fa-ban"></i> Cancel
+    </button>
+    <button *ngIf="canDelete" type="button" class="btn btn-danger"
+      (click)="confirm('Are you sure?') && delete.emit()">
+      <i class="fa fa-trash"></i> Delete
     </button>
   </div>
-  <ng-template [ngIf]="comparator.id">
-    or
-    <div class="mt-2">
-      <button type="button" class="btn btn-danger" (click)="confirm('Are you sure?') && delete.emit()">
-        Delete
-      </button>
-    </div>
-  </ng-template>
 </form>
