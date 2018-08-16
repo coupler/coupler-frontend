@@ -1,18 +1,19 @@
-<h2>Linkages</h2>
+<h2 class="mb-4">Linkages</h2>
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
-<div *ngIf="linkages">
-  <ul>
-    <li *ngFor="let linkage of linkages" (click)="gotoDetail(linkage.id)">
+<ng-template [ngIf]="linkages">
+  <div class="d-flex flex-row">
+    <div *ngFor="let linkage of linkages" class="d-flex flex-column linkage"
+      (click)="gotoDetail(linkage.id)">
       <div><strong>Name:</strong> {{linkage.name}}</div>
       <div><strong>Description:</strong> {{linkage.description}}</div>
-    </li>
-  </ul>
+    </div>
+  </div>
   <p *ngIf="linkages && linkages.length == 0">
     There are currently no linkages.
   </p>
 
-  <button type="button" class="btn btn-primary" (click)="newLinkage()">
+  <button type="button" class="btn btn-primary mt-4" (click)="newLinkage()">
     New linkage
   </button>
-</div>
+</ng-template>
