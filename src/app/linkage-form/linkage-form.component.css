@@ -1,8 +1,13 @@
-.error {
-  background-color: firebrick;
-  color: white;
+label {
+  font-weight: bold;
 }
-.error a {
-  color: white;
-  text-decoration: underline;
+
+div.comparator-tab {
+  padding: 10px;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+  background-color: #f8f8f8;
 }

@@ -1,18 +1,19 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
 <ng-template [ngIf]="linkage">
-  <h2>Linkage: {{linkage.name}}</h2>
+  <h2 *ngIf="linkage.id && linkage.name"   class="mb-4">Edit Linkage: {{linkage.name}}</h2>
+  <h2 *ngIf="linkage.id && !linkage.name"  class="mb-4">Edit Linkage #{{linkage.id}}</h2>
+  <h2 *ngIf="!linkage.id && !linkage.name" class="mb-4">New Linkage</h2>
+  <h2 *ngIf="!linkage.id && linkage.name"  class="mb-4">New Linkage: {{linkage.name}}</h2>
   <app-validation-error *ngIf="validationError" [error]="validationError">
   </app-validation-error>
-  <form (ngSubmit)="save()" #linkageForm="ngForm">
+  <form (ngSubmit)="saveLinkage()" #linkageForm="ngForm">
     <div class="row">
       <div class="col-sm-6 form-group">
         <label for="linkage-name">Name</label>
         <input class="form-control" id="linkage-name"
                type="string" required [(ngModel)]="linkage.name" name="name">
       </div>
-    </div>
-    <div class="row">
       <div class="col-sm-6 form-group">
         <label for="linkage-description">Description</label>
         <input class="form-control" id="linkage-description"
@@ -20,31 +21,114 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-6 form-group">
-        <label for="linkage-dataset1-id">Dataset 1</label>
-        <select class="form-control" id="linkage-dataset1-id"
-                required [(ngModel)]="linkage.dataset1Id" name="dataset1Id">
-          <option></option>
-          <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
-        </select>
+      <div class="col-sm-12 form-group">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="type"
+            id="linkage-type-1" value="single" [(ngModel)]="linkageType">
+          <label class="form-check-label" for="linkage-type-1">Single dataset (inner linkage)</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="type"
+            id="linkage-type-2" value="dual" [(ngModel)]="linkageType">
+          <label class="form-check-label" for="linkage-type-2">Two datasets (dual linkage)</label>
+        </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6 form-group">
-        <label for="linkage-dataset2-id">Dataset 2</label>
-        <select class="form-control" id="linkage-dataset2-id"
-                required [(ngModel)]="linkage.dataset2Id" name="dataset2Id">
-          <option></option>
-          <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
-        </select>
+    <ng-template [ngIf]="linkageType == 'dual'">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label for="linkage-dataset1-id">Dataset 1</label>
+          <select class="form-control" id="linkage-dataset1-id"
+                  required [(ngModel)]="linkage.dataset1Id" name="dataset1Id"
+                  (ngModelChange)="datasetChanged()">
+            <option></option>
+            <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
+          </select>
+        </div>
+        <div class="col-sm-6 form-group">
+          <label for="linkage-dataset2-id">Dataset 2</label>
+          <select class="form-control" id="linkage-dataset2-id"
+                  required [(ngModel)]="linkage.dataset2Id" name="dataset2Id"
+                  (ngModelChange)="datasetChanged()">
+            <option></option>
+            <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
+          </select>
+        </div>
       </div>
+    </ng-template>
+    <ng-template [ngIf]="linkageType == 'single'">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+          <label for="linkage-dataset1-id">Dataset</label>
+          <select class="form-control" id="linkage-dataset1-id"
+                  required [(ngModel)]="linkage.dataset1Id" name="dataset1Id"
+                  (ngModelChange)="datasetChanged()">
+            <option></option>
+            <option *ngFor="let dataset of datasets" value="{{dataset.id}}">{{dataset.name}}</option>
+          </select>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="linkage.dataset1Id && linkage.dataset2Id">
+      <h3 class="mb-4">Comparators</h3>
+
+      <ngb-tabset #comparatorsTabset *ngIf="linkage.comparators.length > 0 || comparator">
+        <ngb-tab *ngFor="let comparator of linkage.comparators; index as i">
+          <ng-template ngbTabTitle>
+            <i *ngIf="i === editIndex" class="fa fa-edit"></i> Comparator #{{i + 1}}
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="comparator-tab">
+              <ng-template [ngIf]="i !== editIndex">
+                <app-comparator-detail [linkage]="linkage" [comparator]="comparator">
+                </app-comparator-detail>
+
+                <button type="button" [disabled]="editIndex !== undefined"
+                  class="btn btn-primary mt-2" (click)="editComparator(i)">
+                  <i class="fa fa-edit"></i> Edit
+                </button>
+              </ng-template>
+              <ng-template [ngIf]="i === editIndex">
+                <app-comparator-form [linkage]="linkage" [comparator]="comparator"
+                  [initComparison]="false" (save)="finishEditComparator()"
+                  (cancel)="cancelEditComparator()"
+                  (delete)="removeComparator()">
+                </app-comparator-form>
+              </ng-template>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="linkage-new-comparator" *ngIf="comparator">
+          <ng-template ngbTabTitle>
+            <i *ngIf="i === editIndex" class="fa fa-edit"></i> Comparator #{{linkage.comparators.length + 1}}
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="comparator-tab">
+              <app-comparator-form [linkage]="linkage" [comparator]="comparator"
+                [canCancel]="linkage.comparators.length > 0"
+                (save)="addComparator()" (cancel)="removeComparator(-1)"
+                (delete)="removeComparator(-1)">
+              </app-comparator-form>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+      <button *ngIf="!comparator && editIndex === undefined" type="button"
+        class="btn btn-primary mt-4" (click)="newComparator()">
+        <i class="fa fa-plus-circle"></i> New comparator
+      </button>
+    </ng-template>
+
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary mr-2"
+              [disabled]="editIndex !== undefined || comparator || !linkageForm.form.valid">
+        <i class="fa fa-save"></i> Save linkage
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="goBack()">
+        Cancel
+      </button>
     </div>
-    <button type="submit" class="btn btn-primary mr-2"
-            [disabled]="!linkageForm.form.valid">
-      Continue
-    </button>
-    <button type="button" class="btn btn-secondary" (click)="goBack()">
-      Back
-    </button>
   </form>
 </ng-template>

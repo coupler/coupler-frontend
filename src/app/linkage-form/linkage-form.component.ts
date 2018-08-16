@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { of as observableOf,  Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
+import { of as observableOf, empty, Observable } from 'rxjs';
+import { switchMap, flatMap } from 'rxjs/operators';
 
 import { Linkage } from '../linkage';
 import { Dataset } from '../dataset';
 import { Comparator } from '../comparator';
 import { LinkageService } from '../linkage.service';
 import { DatasetService } from '../dataset.service';
+import { ComparatorService } from '../comparator.service';
 import { ClientError, ValidationError } from '../errors';
 
 @Component({
@@ -18,20 +20,27 @@ import { ClientError, ValidationError } from '../errors';
 })
 export class LinkageFormComponent implements OnInit {
   linkage: Linkage;
+  comparator: Comparator;
+  editIndex: number;
   datasets: Dataset[] = [];
   clientError: ClientError;
   validationError: ValidationError;
+  linkageType: string;
+  deletedComparatorIds: number[] = [];
+
+  @ViewChild('comparatorsTabset') comparatorsTabset: NgbTabset;
 
   constructor(
     private linkageService: LinkageService,
     private datasetService: DatasetService,
+    private comparatorService: ComparatorService,
     private route: ActivatedRoute,
     private location: Location,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.datasetService.getDatasets().subscribe(result => {
+    this.datasetService.getDatasets(true).subscribe(result => {
       if (result instanceof Array) {
         this.datasets = result;
         this.getLinkage();
@@ -39,6 +48,14 @@ export class LinkageFormComponent implements OnInit {
         this.clientError = result;
       }
     });
+  }
+
+  datasetChanged(): void {
+    if (this.linkageType == "single") {
+      this.linkage.dataset2Id = this.linkage.dataset1Id;
+    }
+    this.linkage.dataset1 = this.datasets.find(dataset => dataset.id == this.linkage.dataset1Id);
+    this.linkage.dataset2 = this.datasets.find(dataset => dataset.id == this.linkage.dataset2Id);
   }
 
   getLinkage(): void {
@@ -53,13 +70,62 @@ export class LinkageFormComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Linkage) {
           this.linkage = result;
+          if (this.linkage.comparators.length == 0) {
+            this.newComparator();
+          }
+          if (this.linkage.dataset1Id == this.linkage.dataset2Id) {
+            this.linkageType = 'single';
+          } else {
+            this.linkageType = 'dual';
+          }
         } else if (result instanceof ClientError) {
           this.clientError = result;
         }
       });
   }
 
-  save(): void {
+  newComparator(): void {
+    this.comparator = new Comparator();
+    this.comparator.linkageId = this.linkage.id;
+    setTimeout(() => {
+      if (this.comparatorsTabset) {
+        this.comparatorsTabset.select('linkage-new-comparator');
+      }
+    }, 10);
+  }
+
+  addComparator(): void {
+    this.linkage.comparators.push(this.comparator);
+    this.comparator = undefined;
+  }
+
+  editComparator(index: number): void {
+    this.editIndex = index;
+  }
+
+  cancelEditComparator(): void {
+    // values are reset by comparator form
+    this.editIndex = undefined;
+  }
+
+  finishEditComparator(): void {
+    this.editIndex = undefined;
+  }
+
+  removeComparator(): void {
+    if (this.editIndex !== undefined) {
+      let comparator = this.linkage.comparators[this.editIndex];
+      if (comparator.id !== undefined) {
+        this.deletedComparatorIds.push(comparator.id);
+      }
+      this.linkage.comparators.splice(this.editIndex, 1);
+      this.editIndex = undefined;
+    } else {
+      this.comparator = undefined;
+    }
+  }
+
+  saveLinkage(): void {
     let obs;
     if (this.linkage.id) {
       obs = this.linkageService.update(this.linkage);
@@ -68,7 +134,35 @@ export class LinkageFormComponent implements OnInit {
     }
     obs.subscribe(result => {
       if (result instanceof Linkage) {
-        this.goNext();
+        this.saveComparators();
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      } else if (result instanceof ValidationError) {
+        this.validationError = result;
+      }
+    });
+  }
+
+  saveComparators(): void {
+    let obs;
+    this.linkage.comparators.forEach((comparator, i) => {
+      comparator.linkageId = this.linkage.id;
+
+      let op;
+      if (comparator.id) {
+        op = this.comparatorService.update(comparator);
+      } else {
+        op = this.comparatorService.create(comparator);
+      }
+      if (i == 0) {
+        obs = op;
+      } else {
+        obs = obs.pipe(flatMap(op));
+      }
+    });
+    obs.subscribe(result => {
+      if (result instanceof Comparator) {
+        this.router.navigate(['linkages', this.linkage.id]);
       } else if (result instanceof ClientError) {
         this.clientError = result;
       } else if (result instanceof ValidationError) {
@@ -79,9 +173,5 @@ export class LinkageFormComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
-  }
-
-  goNext(): void {
-    this.router.navigate(['/linkages', this.linkage.id, 'comparators']);
   }
 }
