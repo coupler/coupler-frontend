@@ -148,16 +148,16 @@ export class LinkageFormComponent implements OnInit {
     this.linkage.comparators.forEach((comparator, i) => {
       comparator.linkageId = this.linkage.id;
 
-      let op;
+      let f;
       if (comparator.id) {
-        op = this.comparatorService.update(comparator);
+        f = (() => this.comparatorService.update(comparator));
       } else {
-        op = this.comparatorService.create(comparator);
+        f = (() => this.comparatorService.create(comparator));
       }
       if (i == 0) {
-        obs = op;
+        obs = f();
       } else {
-        obs = obs.pipe(flatMap(op));
+        obs = obs.pipe(flatMap(f));
       }
     });
     obs.subscribe(result => {
