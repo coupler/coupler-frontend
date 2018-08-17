@@ -2,8 +2,8 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
 <ng-template [ngIf]="linkages">
-  <div class="d-flex flex-row">
-    <div *ngFor="let linkage of linkages" class="d-flex flex-column linkage"
+  <div class="d-flex flex-row list">
+    <div *ngFor="let linkage of linkages" class="d-flex flex-column list-element"
       (click)="gotoDetail(linkage.id)">
       <div><strong>Name:</strong> {{linkage.name}}</div>
       <div><strong>Description:</strong> {{linkage.description}}</div>

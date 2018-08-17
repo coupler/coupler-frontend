@@ -1,11 +1,12 @@
-<ul>
-  <li *ngFor="let job of jobs" (click)="gotoDetail(job)">
+<div class="d-flex flex-row list">
+  <div *ngFor="let job of jobs" class="d-flex flex-column list-element"
+    (click)="gotoDetail(job)">
     <div><strong>ID:</strong> {{job.id}}</div>
     <div><strong>Status:</strong> {{job.status}}</div>
     <div><strong>Started:</strong> {{job.startedAt | date:"short"}}</div>
     <div><strong>Ended:</strong> {{job.endedAt | date:"short"}}</div>
-  </li>
-</ul>
+  </div>
+</div>
 <p *ngIf="jobs && jobs.length == 0">
   No jobs have been created yet.
 </p>
