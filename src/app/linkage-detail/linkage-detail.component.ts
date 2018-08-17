@@ -45,7 +45,7 @@ export class LinkageDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.location.back();
+    this.router.navigate(['/linkages']);
   }
 
   edit(): void {

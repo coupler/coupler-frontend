@@ -6,6 +6,7 @@ export class Linkage {
   id: number;
   name: string;
   description: string;
+  threshold: number;
   dataset1Id: number;
   dataset2Id: number;
   dataset1: Dataset;

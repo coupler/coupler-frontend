@@ -4,7 +4,12 @@
   <h2>
     Linkage: {{linkage.name}}
   </h2>
+
+  <h4>Description</h4>
   <p>{{linkage.description}}</p>
+
+  <h4>Threshold</h4>
+  <p>{{linkage.threshold}}</p>
 
   <h4>Datasets</h4>
   <app-datasets-list [datasets]="[linkage.dataset1, linkage.dataset2]"></app-datasets-list>

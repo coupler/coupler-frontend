@@ -70,6 +70,15 @@
       </div>
     </ng-template>
 
+    <div class="row">
+      <div class="col-sm-6 form-group">
+        <label for="linkage-threshold">Match threshold</label>
+        <input class="form-control" id="linkage-threshold" type="number"
+               [min]="0" [max]="1" [value]="0.5" required
+               [(ngModel)]="linkage.threshold" name="threshold">
+      </div>
+    </div>
+
     <ng-template [ngIf]="linkage.dataset1Id && linkage.dataset2Id">
       <h3 class="mb-4">Comparators</h3>
       <ngb-tabset #comparatorsTabset *ngIf="linkage.comparators.length > 0 || comparator">

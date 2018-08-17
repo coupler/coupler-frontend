@@ -18,6 +18,7 @@ export class LinkageService extends AbstractService {
     id: "id",
     name: "name",
     description: "description",
+    threshold: "threshold",
     dataset_1_id: "dataset1Id",
     dataset_2_id: "dataset2Id",
     dataset_1: "dataset1",
@@ -129,6 +130,7 @@ export class LinkageService extends AbstractService {
 
         case 'dataset1Id':
         case 'dataset2Id':
+        case 'threshold':
           value = +value;
           break;
       }
