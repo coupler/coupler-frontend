@@ -33,7 +33,11 @@
   <p><strong>Score:</strong> {{match.score}}</p>
 
   <div class="buttons">
-    <button type="button" class="btn btn-secondary prev" (click)="prev()">Prev</button>
-    <button type="button" class="btn btn-secondary next" (click)="next()">Next</button>
+    <button type="button" class="btn btn-primary prev mr-2" (click)="prev()">
+      <i class="fa fa-arrow-left"></i> Prev
+    </button>
+    <button type="button" class="btn btn-primary next" (click)="next()">
+      <i class="fa fa-arrow-right"></i> Next
+    </button>
   </div>
 </div>

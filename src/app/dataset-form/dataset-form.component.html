@@ -82,18 +82,15 @@
         </div>
       </div>
     </ng-template>
-    <div class="row" *ngIf="dataset.kind != 'csv'">
-      <div *ngIf="dataset.kind" class="col-sm-1">
-        <button type="submit" class="btn btn-success"
-                [disabled]="!datasetForm.form.valid">
-          Save
-        </button>
-      </div>
-      <div class="col-sm-1">
-        <button type="button" class="btn btn-primary" (click)="goBack()">
-          Cancel
-        </button>
-      </div>
+
+    <div>
+      <button type="submit" class="btn btn-primary mr-2"
+              [disabled]="!datasetForm.form.valid">
+        <i class="fa fa-save"></i> Save
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="goBack()">
+        <i class="fa fa-ban"></i> Cancel
+      </button>
     </div>
   </form>
   <app-csv-import-form *ngIf="dataset.kind == 'csv'" (ready)="csvReady($event)">
