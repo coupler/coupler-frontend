@@ -83,7 +83,7 @@
       </div>
     </ng-template>
 
-    <div>
+    <div *ngIf="dataset.kind != 'csv'">
       <button type="submit" class="btn btn-primary mr-2"
               [disabled]="!datasetForm.form.valid">
         <i class="fa fa-save"></i> Save
