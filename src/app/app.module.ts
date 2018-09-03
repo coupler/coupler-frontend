@@ -45,6 +45,7 @@ import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.compo
 import { ComparatorFormComponent } from './comparator-form/comparator-form.component';
 import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 import { MigrationFormComponent } from './migration-form/migration-form.component';
+import { MigrationDetailComponent } from './migration-detail/migration-detail.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { MigrationFormComponent } from './migration-form/migration-form.componen
     DatasetBrowserComponent,
     ComparatorFormComponent,
     ComparatorDetailComponent,
-    MigrationFormComponent
+    MigrationFormComponent,
+    MigrationDetailComponent
   ],
   imports: [
     BrowserModule,

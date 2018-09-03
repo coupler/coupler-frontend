@@ -40,7 +40,6 @@ export class MigrationService extends AbstractService {
   }
   */
 
-  /*
   getMigration(id: number): Observable<Migration | ClientError> {
     const url = `${this.migrationsUrl}/${id}`;
     return this.http.get(url).pipe(
@@ -48,7 +47,6 @@ export class MigrationService extends AbstractService {
       catchError(this.handleClientError)
     );
   }
-  */
 
   create(migration: Migration): Observable<Migration | ClientError | ValidationError> {
     if (migration.id) {
