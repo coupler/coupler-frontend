@@ -13,6 +13,7 @@ import { LinkageFormComponent } from './linkage-form/linkage-form.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
 import { ComparatorEditComponent } from './comparator-edit/comparator-edit.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
+import { MigrationFormComponent } from './migration-form/migration-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'datasets/:id', component: DatasetDetailComponent },
   { path: 'datasets/:id/edit', component: DatasetFormComponent },
   { path: 'datasets/:id/browse', component: DatasetBrowserComponent },
+  { path: 'migrations/new', component: MigrationFormComponent },
   { path: 'linkages', component: LinkagesComponent },
   { path: 'linkages/new', component: LinkageFormComponent },
   { path: 'linkages/:id', component: LinkageDetailComponent },

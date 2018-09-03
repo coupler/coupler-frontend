@@ -8,3 +8,7 @@
   cursor: pointer;
   font-size: larger;
 }
+
+button:disabled {
+  cursor: not-allowed;
+}
