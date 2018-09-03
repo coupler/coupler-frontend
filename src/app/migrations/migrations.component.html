@@ -1,0 +1,10 @@
+<h2 class="mb-4">Migrations</h2>
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
+<div class="migrations" *ngIf="migrations">
+  <app-migrations-list [migrations]="migrations"></app-migrations-list>
+
+  <a class="btn btn-primary mt-4" routerLink="/migrations/new">
+    <i class="fa fa-plus-circle"></i> New migration
+  </a>
+</div>

@@ -15,6 +15,7 @@ import { ComparatorEditComponent } from './comparator-edit/comparator-edit.compo
 import { JobDetailComponent } from './job-detail/job-detail.component';
 import { MigrationFormComponent } from './migration-form/migration-form.component';
 import { MigrationDetailComponent } from './migration-detail/migration-detail.component';
+import { MigrationsComponent } from './migrations/migrations.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'datasets/:id', component: DatasetDetailComponent },
   { path: 'datasets/:id/edit', component: DatasetFormComponent },
   { path: 'datasets/:id/browse', component: DatasetBrowserComponent },
+  { path: 'migrations', component: MigrationsComponent },
   { path: 'migrations/new', component: MigrationFormComponent },
   { path: 'migrations/:id', component: MigrationDetailComponent },
   { path: 'linkages', component: LinkagesComponent },

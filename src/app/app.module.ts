@@ -46,6 +46,8 @@ import { ComparatorFormComponent } from './comparator-form/comparator-form.compo
 import { ComparatorDetailComponent } from './comparator-detail/comparator-detail.component';
 import { MigrationFormComponent } from './migration-form/migration-form.component';
 import { MigrationDetailComponent } from './migration-detail/migration-detail.component';
+import { MigrationsListComponent } from './migrations-list/migrations-list.component';
+import { MigrationsComponent } from './migrations/migrations.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +75,9 @@ import { MigrationDetailComponent } from './migration-detail/migration-detail.co
     ComparatorFormComponent,
     ComparatorDetailComponent,
     MigrationFormComponent,
-    MigrationDetailComponent
+    MigrationDetailComponent,
+    MigrationsListComponent,
+    MigrationsComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,18 @@
+<div class="d-flex flex-row list">
+  <div *ngFor="let migration of migrations" class="d-flex flex-column list-element"
+    (click)="gotoDetail(migration.id)">
+    <div><strong>ID:</strong> {{migration.id}}</div>
+    <div *ngIf="migration.description">
+      <strong>Description:</strong> {{migration.description}}
+    </div>
+    <div>
+      <strong>Input dataset:</strong> {{migration.inputDataset.name}}
+    </div>
+    <div>
+      <strong>Output dataset:</strong> {{migration.outputDataset.name}}
+    </div>
+  </div>
+</div>
+<p *ngIf="migrations && migrations.length == 0">
+  There are currently no migrations.
+</p>

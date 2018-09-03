@@ -31,18 +31,16 @@ export class MigrationService extends AbstractService {
     super();
   }
 
-  /*
   getMigrations(): Observable<Migration[] | ClientError> {
     return this.http.get<any[]>(this.migrationsUrl).pipe(
       map(data => data.map(d => this.build(d))),
       catchError(this.handleClientError)
     );
   }
-  */
 
   getMigration(id: number): Observable<Migration | ClientError> {
     const url = `${this.migrationsUrl}/${id}`;
-    return this.http.get(url).pipe(
+    return this.http.get<any>(url).pipe(
       map(data => this.build(data)),
       catchError(this.handleClientError)
     );
