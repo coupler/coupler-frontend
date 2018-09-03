@@ -1,0 +1,48 @@
+<p>
+  <strong>Type</strong>: {{operation.name}}
+</p>
+<ng-template [ngIf]="operation.name === 'add_field'">
+  <p>
+    <strong>New field name</strong>: {{operation.field_name}}
+  </p>
+  <p>
+    <strong>New field type</strong>: {{operation.type}}
+  </p>
+</ng-template>
+<ng-template [ngIf]="operation.name === 'cast'">
+  <p>
+    <strong>Field name</strong>: {{operation.field_name}}
+  </p>
+  <p>
+    <strong>New field type</strong>: {{operation.new_type}}
+  </p>
+</ng-template>
+<ng-template [ngIf]="operation.name === 'merge'">
+  <p><strong>Matching fields</strong>:</p>
+  <ul>
+    <li *ngFor="let fieldName of operation.left_field_names; index as i">
+      {{fieldName}} (left), {{operation.right_field_names[i]}} (right)
+    </li>
+  </ul>
+</ng-template>
+<ng-template [ngIf]="operation.name === 'remove_field'">
+  <p>
+    <strong>Field name</strong>: {{operation.field_name}}
+  </p>
+</ng-template>
+<ng-template [ngIf]="operation.name === 'rename'">
+  <p>
+    <strong>Field name</strong>: {{operation.field_name}}
+  </p>
+  <p>
+    <strong>New field name</strong>: {{operation.new_field_name}}
+  </p>
+</ng-template>
+<ng-template [ngIf]="operation.name === 'select'">
+  <p>
+    <strong>Field names</strong>:
+  </p>
+  <ul>
+    <li *ngFor="let fieldName of operation.field_names">{{fieldName}}</li>
+  </ul>
+</ng-template>

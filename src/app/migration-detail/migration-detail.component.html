@@ -1,1 +1,35 @@
-{{ migration | json }}
+<app-client-error *ngIf="clientError" [error]="clientError">
+</app-client-error>
+<ng-template [ngIf]="migration">
+  <h2 class="mb-4">
+    Migration #{{migration.id}}
+  </h2>
+
+  <h5>Input Dataset</h5>
+  <p>{{migration.inputDataset.name}}</p>
+
+  <h5>Output Dataset</h5>
+  <p>{{migration.outputDataset.name}}</p>
+
+  <h3>Operations</h3>
+  <ngb-tabset>
+    <ngb-tab *ngFor="let operation of migration.operations; index as i"
+             id="migration-operations-{{i}}" title="Operation #{{i+1}}">
+      <ng-template ngbTabContent>
+        <div class="operation-tab">
+          <app-migration-operation-detail [operation]="operation">
+          </app-migration-operation-detail>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+
+  <div class="mt-4">
+    <button type="button" class="btn btn-primary mr-2" disabled (click)="run()">
+      <i class="fa fa-walking"></i> Run
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="goBack()">
+      <i class="fa fa-chevron-left"></i> Back
+    </button>
+  </div>
+</ng-template>
