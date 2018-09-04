@@ -1,3 +1,7 @@
+.label {
+  font-weight: bold;
+}
+
 .field {
   display: flex;
   flex-direction: column;

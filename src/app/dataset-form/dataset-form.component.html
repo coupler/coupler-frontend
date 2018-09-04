@@ -23,7 +23,7 @@
     <div>
       <div class="d-inline-flex flex-column form-group">
         <ng-template [ngIf]="!dataset.id">
-          <label class="label" for="dataset-kind">Please choose a type:</label>
+          <label class="label" for="dataset-kind">Type</label>
           <select class="form-control" id="dataset-kind"
                   required [(ngModel)]="dataset.kind" name="kind">
             <option></option>

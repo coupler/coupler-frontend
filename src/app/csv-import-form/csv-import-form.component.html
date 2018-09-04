@@ -4,14 +4,13 @@
 </app-validation-error>
 
 <form *ngIf="!csvImport">
-  <div class="row">
-    <div class="col-sm-4 form-group">
-      <label for="csv-import-file">Select a CSV file to import:</label>
-      <input class="form-control" id="csv-import-file"
-        type="file" required name="file"
-        (change)="handleFileInput($event.target.files)" />
-    </div>
-  </div>
+  <p>
+    <label class="label" for="csv-import-file">Select a CSV file to import</label>
+  </p>
+  <p>
+    <input id="csv-import-file" type="file" required name="file"
+           (change)="handleFileInput($event.target.files)" />
+  </p>
 </form>
 
 <form *ngIf="csvImport" (ngSubmit)="submit()" #importForm="ngForm">
