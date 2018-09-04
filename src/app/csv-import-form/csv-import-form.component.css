@@ -2,6 +2,10 @@
   font-weight: bold;
 }
 
+.fields {
+  flex-flow: row wrap;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -11,7 +15,7 @@
   border: 1px solid #aaa;
   border-radius: 5px;
   background-color: #efefef;
-  flex: 1 1 0;
+  flex: 0 0 auto;
 }
 
 .field h4 {
