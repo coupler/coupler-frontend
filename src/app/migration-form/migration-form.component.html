@@ -11,33 +11,76 @@
       type="text" [(ngModel)]="migration.description" name="description">
     </div>
   </div>
-  <div class="d-flex flex-row align-items-center">
-    <div class="d-inline-flex flex-column form-group">
-      <label class="label" for="migration-input-dataset-id">Input dataset</label>
-      <select class="form-control" id="migration-input-dataset-id" required
-              name="inputDatasetId" [(ngModel)]="migration.inputDatasetId"
-              (ngModelChange)="inputDatasetIdChanged($event)">
-        <option></option>
-        <option *ngFor="let dataset of datasets" value="{{dataset.id}}">
-          {{dataset.name}}
-        </option>
-      </select>
+  <div class="d-inline-flex flex-column form-group">
+    <label class="label" for="migration-input-dataset-id">Input dataset</label>
+    <select class="form-control" id="migration-input-dataset-id" required
+            name="inputDatasetId" [(ngModel)]="migration.inputDatasetId"
+            (ngModelChange)="inputDatasetIdChanged($event)">
+      <option></option>
+      <option *ngFor="let dataset of datasets" value="{{dataset.id}}">
+        {{dataset.name}}
+      </option>
+    </select>
+  </div>
+
+  <h3 class="mt-3">Output dataset</h3>
+  <div>
+    <div class="form-group d-inline-flex flex-column">
+      <label class="label" for="output-dataset-name">Name</label>
+      <input class="form-control" id="output-dataset-name"
+        type="string" required [(ngModel)]="migration.outputDataset.name"
+        name="outputDatasetName">
     </div>
-    <i class="fa fa-arrow-right ml-3 mr-3"></i>
+  </div>
+  <div>
     <div class="d-inline-flex flex-column form-group">
-      <label class="label" for="migration-output-dataset-id">Output dataset</label>
-      <select class="form-control" id="migration-output-dataset-id" required
-              name="outputDatasetId" [(ngModel)]="migration.outputDatasetId"
-              (ngModelChange)="outputDatasetIdChanged($event)">
+      <label class="label" for="output-dataset-kind">Please choose a type:</label>
+      <select class="form-control" id="output-dataset-kind"
+              required [(ngModel)]="migration.outputDataset.kind"
+              name="outputDatasetKind">
         <option></option>
-        <option *ngFor="let dataset of datasets" value="{{dataset.id}}">
-          {{dataset.name}}
-        </option>
+        <option value="mysql">MySQL</option>
       </select>
     </div>
   </div>
+  <ng-template [ngIf]="migration.outputDataset.kind == 'mysql'">
+    <div class="row">
+      <div class="col-sm-2 form-group">
+        <label class="label" for="output-dataset-host">Host</label>
+        <input class="form-control" id="output-dataset-host"
+               required [(ngModel)]="migration.outputDataset.host"
+               name="outputDatasetHost">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label class="label" for="output-dataset-username">Username</label>
+        <input class="form-control" id="output-dataset-username"
+               required [(ngModel)]="migration.outputDataset.username"
+               name="outputDatasetUsername">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label class="label" for="output-dataset-password">Password</label>
+        <input class="form-control" id="output-dataset-password"
+               type="password" required [(ngModel)]="migration.outputDataset.password"
+               name="outputDatasetPassword">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 form-group">
+        <label class="label" for="output-dataset-database-name">Database Name</label>
+        <input class="form-control" id="output-dataset-database-name"
+               required [(ngModel)]="migration.outputDataset.databaseName"
+               name="outputDatasetDatabaseName">
+      </div>
+      <div class="col-sm-2 form-group">
+        <label class="label" for="output-dataset-table-name">Table Name</label>
+        <input class="form-control" id="output-dataset-table-name"
+               required [(ngModel)]="migration.outputDataset.tableName"
+               name="outputDatasetTableName">
+      </div>
+    </div>
+  </ng-template>
 
-  <ng-template [ngIf]="migration.inputDatasetId && migration.outputDatasetId">
+  <ng-template [ngIf]="migration.inputDatasetId && isOutputDatasetValid()">
     <h3 class="mb-3">Operations</h3>
     <ngb-tabset #operationTabset>
       <ngb-tab *ngFor="let operation of migration.operations; index as i"

@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 
 import { Migration } from '../migration';
 import { MigrationService } from '../migration.service';
+import { Job } from '../job';
+import { JobService } from '../job.service';
+
 import { ClientError } from '../errors';
 
 @Component({
@@ -18,8 +21,10 @@ export class MigrationDetailComponent implements OnInit {
 
   constructor(
     private migrationService: MigrationService,
+    private jobService: JobService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,5 +43,19 @@ export class MigrationDetailComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  createJob(): void {
+    let job = new Job();
+    job.kind = "migration";
+    job.migrationId = this.migration.id;
+
+    this.jobService.create(job).subscribe(result => {
+      if (result instanceof Job) {
+        this.router.navigate(['/jobs', result.id]);
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
   }
 }

@@ -1,7 +1,7 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
 <ng-template [ngIf]="job">
-  <h2>Job {{job.id}}</h2>
+  <h2>Job #{{job.id}}</h2>
 
   <p>
     <strong>Type:</strong> {{job.kind}}
@@ -13,41 +13,30 @@
     </p>
   </ng-template>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Status</th>
-        <th>Started At</th>
-        <th>Ended At</th>
-        <th *ngIf="job.error">Error</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          {{job.status}}
-          <i *ngIf="!job.isStopped()" class="fa fa-cog fa-spin" style="font-size: larger"></i>
-        </td>
-        <td>
-          <ng-template [ngIf]="job.startedAt" [ngIfElse]="jobNotStarted">
-            {{job.startedAt | date:"short"}}
-          </ng-template>
-          <ng-template #jobNotStarted>
-            Not yet started
-          </ng-template>
-        </td>
-        <td>
-          <ng-template [ngIf]="job.endedAt" [ngIfElse]="jobNotEnded">
-            {{job.endedAt | date:"short"}}
-          </ng-template>
-          <ng-template #jobNotEnded>
-            Not yet ended
-          </ng-template>
-        </td>
-        <td *ngIf="job.error">{{job.error}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <ng-template [ngIf]="job.kind === 'migration' && migration">
+    <app-migrations-list [migrations]="[migration]">
+    </app-migrations-list>
+  </ng-template>
+
+  <p>
+    <strong>Status:</strong> {{job.status}}
+    <i *ngIf="!job.isStopped()" class="fa fa-cog fa-spin" style="font-size: larger"></i>
+  </p>
+  <p>
+    <strong>Started at:</strong>
+    <ng-template [ngIf]="job.startedAt" [ngIfElse]="jobNotStarted">
+      {{job.startedAt | date:"short"}}
+    </ng-template>
+    <ng-template #jobNotStarted>
+      Not yet started
+    </ng-template>
+  </p>
+  <p *ngIf="job.endedAt">
+    <strong>Ended at:</strong> {{job.endedAt | date:"short"}}
+  </p>
+  <p *ngIf="job.error">
+    <strong>Error:</strong> {{job.error}}
+  </p>
 
   <div *ngIf="job.linkageResult && job.status == 'finished'" class="results">
     <h3>Results</h3>

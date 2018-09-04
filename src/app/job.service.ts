@@ -19,6 +19,7 @@ export class JobService extends AbstractService {
     error: "error",
     linkage_id: "linkageId",
     linkage_result_id: "linkageResultId",
+    migration_id: "migrationId",
     started_at: "startedAt",
     ended_at: "endedAt",
     linkage_result: "linkageResult"

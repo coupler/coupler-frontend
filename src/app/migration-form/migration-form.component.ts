@@ -42,6 +42,7 @@ export class MigrationFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.migration = new Migration();
+    this.migration.outputDataset = new Dataset();
     this.migration.operations = [{}];
 
     this.datasetService.getDatasets(true).subscribe(result => {
@@ -51,6 +52,14 @@ export class MigrationFormComponent implements OnInit {
         this.datasets = result;
       }
     });
+  }
+
+  inputDatasetIdChanged(id: number): void {
+    this.migration.inputDataset = this.datasets.find(d => d.id == id);
+  }
+
+  isOutputDatasetValid(): boolean {
+    return true;
   }
 
   addOperation(): void {
@@ -86,33 +95,9 @@ export class MigrationFormComponent implements OnInit {
     this.originalOperation = undefined;
   }
 
-  saveOperation(index: number): void {
-    this.editIndex = undefined;
-  }
-
   deleteOperation(index: number): void {
     this.editIndex = undefined;
     this.migration.operations.splice(index, 1);
-  }
-
-  isOperationValid(index: number): boolean {
-    let op = this.migration.operations[index];
-    if (op.name === "merge") {
-      return op.left_field_names.length > 0 && op.left_field_names.length == op.right_field_names.length;
-    } else {
-      // If the operation is invalid, the whole form will be. This is a shortcut, but
-      // if the non-operation parts of the form are invalid, operations won't even be
-      // shown.
-      return this.migrationForm.form.valid;
-    }
-  }
-
-  inputDatasetIdChanged(id: number): void {
-    this.migration.inputDataset = this.datasets.find(d => d.id == id);
-  }
-
-  outputDatasetIdChanged(id: number): void {
-    this.migration.outputDataset = this.datasets.find(d => d.id == id);
   }
 
   operationTypeChanged(index: number, opType: string): void {
@@ -142,6 +127,22 @@ export class MigrationFormComponent implements OnInit {
     op.right_field_names.push(this.rightFieldName);
     this.leftFieldName = undefined;
     this.rightFieldName = undefined;
+  }
+
+  isOperationValid(index: number): boolean {
+    let op = this.migration.operations[index];
+    if (op.name === "merge") {
+      return op.left_field_names.length > 0 && op.left_field_names.length == op.right_field_names.length;
+    } else {
+      // If the operation is invalid, the whole form will be. This is a shortcut, but
+      // if the non-operation parts of the form are invalid, operations won't even be
+      // shown.
+      return this.migrationForm.form.valid;
+    }
+  }
+
+  saveOperation(index: number): void {
+    this.editIndex = undefined;
   }
 
   confirm(prompt: string): boolean {

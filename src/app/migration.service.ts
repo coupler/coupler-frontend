@@ -112,12 +112,14 @@ export class MigrationService extends AbstractService {
 
       switch (mappedKey) {
         case 'inputDataset':
-        case 'outputDataset':
           continue;
 
         case 'inputDatasetId':
-        case 'outputDatasetId':
           value = +value;
+          break;
+
+        case 'outputDataset':
+          value = this.datasetService.unbuild(value);
           break;
       }
 

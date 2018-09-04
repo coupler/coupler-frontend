@@ -7,6 +7,7 @@ export class Job {
   error: string;
   linkageId: number;
   linkageResultId: number;
+  migrationId: number;
   startedAt: Date;
   endedAt: Date;
   linkageResult: LinkageResult;

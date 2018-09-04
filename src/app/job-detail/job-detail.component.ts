@@ -4,10 +4,13 @@ import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Linkage } from '../linkage';
 import { Job } from '../job';
-import { LinkageService } from '../linkage.service';
 import { JobService } from '../job.service';
+import { Linkage } from '../linkage';
+import { LinkageService } from '../linkage.service';
+import { Migration } from '../migration';
+import { MigrationService } from '../migration.service';
+
 import { ClientError } from '../errors';
 
 @Component({
@@ -17,13 +20,15 @@ import { ClientError } from '../errors';
 })
 export class JobDetailComponent implements OnInit, OnDestroy {
   job: Job;
-  linkage: Linkage;
+  linkage?: Linkage;
+  migration?: Migration;
   clientError: ClientError;
   private refreshTimer: number;
 
   constructor(
     private jobService: JobService,
     private linkageService: LinkageService,
+    private migrationService: MigrationService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -42,6 +47,8 @@ export class JobDetailComponent implements OnInit, OnDestroy {
 
           if (this.job.kind === 'linkage') {
             this.getLinkage();
+          } else if (this.job.kind === 'migration') {
+            this.getMigration();
           }
         } else if (result instanceof ClientError) {
           this.clientError = result;
@@ -59,6 +66,16 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     this.linkageService.getLinkage(this.job.linkageId).subscribe(result => {
       if (result instanceof Linkage) {
         this.linkage = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
+  }
+
+  getMigration(): void {
+    this.migrationService.getMigration(this.job.migrationId).subscribe(result => {
+      if (result instanceof Migration) {
+        this.migration = result;
       } else if (result instanceof ClientError) {
         this.clientError = result;
       }
