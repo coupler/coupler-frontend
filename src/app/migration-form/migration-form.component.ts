@@ -59,6 +59,30 @@ export class MigrationFormComponent implements OnInit {
   }
 
   isOutputDatasetValid(): boolean {
+    let ds = this.migration.outputDataset;
+    if (typeof(ds.name) !== 'string' || ds.name.length == 0) {
+      return false;
+    }
+    if (typeof(ds.kind) !== 'string' || ds.kind.length == 0) {
+      return false;
+    }
+    if (ds.kind === 'mysql') {
+      if (typeof(ds.host) !== 'string' || ds.host.length == 0) {
+        return false;
+      }
+      if (typeof(ds.username) !== 'string' || ds.username.length == 0) {
+        return false;
+      }
+      if (typeof(ds.password) !== 'string' || ds.password.length == 0) {
+        return false;
+      }
+      if (typeof(ds.databaseName) !== 'string' || ds.databaseName.length == 0) {
+        return false;
+      }
+      if (typeof(ds.tableName) !== 'string' || ds.tableName.length == 0) {
+        return false;
+      }
+    }
     return true;
   }
 

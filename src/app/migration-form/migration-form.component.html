@@ -34,7 +34,7 @@
   </div>
   <div>
     <div class="d-inline-flex flex-column form-group">
-      <label class="label" for="output-dataset-kind">Please choose a type:</label>
+      <label class="label" for="output-dataset-kind">Type</label>
       <select class="form-control" id="output-dataset-kind"
               required [(ngModel)]="migration.outputDataset.kind"
               name="outputDatasetKind">
@@ -104,7 +104,7 @@
                     <option></option>
                     <option value="add_field">Add field</option>
                     <option value="cast">Change field type</option>
-                    <option value="merge">Merge datasets</option>
+                    <!--<option value="merge">Merge datasets</option>-->
                     <option value="remove_field">Remove field</option>
                     <option value="rename">Rename field</option>
                     <option value="select">Subset fields</option>
@@ -168,6 +168,7 @@
                   </div>
                 </div>
               </ng-template>
+              <!--
               <ng-template [ngIf]="operation.name === 'merge'">
                 <div class="row mb-2">
                   <div class="col-sm-3 font-weight-bold">Left field name</div>
@@ -205,6 +206,7 @@
                   </div>
                 </div>
               </ng-template>
+              -->
               <ng-template [ngIf]="operation.name === 'remove_field'">
                 <div class="row">
                   <div class="form-group col-sm-3">
