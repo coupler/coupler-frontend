@@ -14,6 +14,6 @@ export class JobsListComponent {
   constructor(private router: Router) { }
 
   gotoDetail(job: Job): void {
-    this.router.navigate(['/linkages', job.linkageId, 'jobs', job.id]);
+    this.router.navigate(['/jobs', job.id]);
   }
 }

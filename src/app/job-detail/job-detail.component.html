@@ -1,7 +1,17 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
 <ng-template [ngIf]="job">
-  <h2>Linkage: {{linkage.name}}, Job {{job.id}}</h2>
+  <h2>Job {{job.id}}</h2>
+
+  <p>
+    <strong>Type:</strong> {{job.kind}}
+  </p>
+
+  <ng-template [ngIf]="job.kind === 'linkage' && linkage">
+    <p>
+      <strong>Linkage:</strong> {{linkage.name}}
+    </p>
+  </ng-template>
 
   <table>
     <thead>

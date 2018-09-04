@@ -76,7 +76,7 @@ export class LinkageDetailComponent implements OnInit {
 
     this.jobService.create(job).subscribe(result => {
       if (result instanceof Job) {
-        this.router.navigate(['/linkages', this.linkage.id, 'jobs', result.id]);
+        this.router.navigate(['/jobs', result.id]);
       } else if (result instanceof ClientError) {
         this.clientError = result;
       }

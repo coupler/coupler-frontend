@@ -16,15 +16,14 @@ import { ClientError } from '../errors';
   styleUrls: ['./job-detail.component.css']
 })
 export class JobDetailComponent implements OnInit, OnDestroy {
-  linkage: Linkage;
-  jobId: string;
   job: Job;
+  linkage: Linkage;
   clientError: ClientError;
   private refreshTimer: number;
 
   constructor(
-    private linkageService: LinkageService,
     private jobService: JobService,
+    private linkageService: LinkageService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -32,15 +31,17 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.pipe(
       switchMap((params: Params) => {
-        this.jobId = params['id'];
-        return this.linkageService.getLinkage(+params['linkageId']);
+        return this.jobService.getJob(+params['id']);
       })).
       subscribe(result => {
-        if (result instanceof Linkage) {
-          this.linkage = result;
-          this.job = this.linkage.findJob(+this.jobId);
+        if (result instanceof Job) {
+          this.job = result;
           if (this.job.status == "running" || this.job.status == "initialized") {
             this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
+          }
+
+          if (this.job.kind === 'linkage') {
+            this.getLinkage();
           }
         } else if (result instanceof ClientError) {
           this.clientError = result;
@@ -52,6 +53,16 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     if (this.refreshTimer) {
       clearTimeout(this.refreshTimer);
     }
+  }
+
+  getLinkage(): void {
+    this.linkageService.getLinkage(this.job.linkageId).subscribe(result => {
+      if (result instanceof Linkage) {
+        this.linkage = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
   }
 
   goBack(): void {

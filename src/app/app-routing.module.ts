@@ -35,7 +35,7 @@ const routes: Routes = [
   { path: 'linkages/:id/edit', component: LinkageFormComponent },
   { path: 'linkages/:linkageId/comparators', component: ComparatorsComponent },
   { path: 'linkages/:linkageId/comparators/:id', component: ComparatorEditComponent },
-  { path: 'linkages/:linkageId/jobs/:id', component: JobDetailComponent }
+  { path: 'jobs/:id', component: JobDetailComponent }
 ];
 
 @NgModule({
