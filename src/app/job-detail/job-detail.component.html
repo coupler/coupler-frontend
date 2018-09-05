@@ -3,22 +3,19 @@
 <ng-template [ngIf]="job">
   <h2>Job #{{job.id}}</h2>
 
-  <p>
-    <strong>Type:</strong> {{job.kind}}
-  </p>
-
   <ng-template [ngIf]="job.kind === 'linkage' && linkage">
-    <p>
-      <strong>Linkage:</strong> {{linkage.name}}
-    </p>
+    <h3>Linkage</h3>
+    <app-linkages-list [linkages]="[linkage]">
+    </app-linkages-list>
   </ng-template>
 
   <ng-template [ngIf]="job.kind === 'migration' && migration">
+    <h3>Migration</h3>
     <app-migrations-list [migrations]="[migration]">
     </app-migrations-list>
   </ng-template>
 
-  <p>
+  <p class="mt-3">
     <strong>Status:</strong> {{job.status}}
     <i *ngIf="!job.isStopped()" class="fa fa-cog fa-spin" style="font-size: larger"></i>
   </p>
@@ -51,7 +48,7 @@
     </app-linkage-result-detail>
   </div>
 
-  <button type="button" class="btn btn-secondary" (click)="goBack()">
+  <button type="button" class="btn btn-secondary mt-2" (click)="goBack()">
     <i class="fa fa-chevron-left"></i> Back
   </button>
 </ng-template>
