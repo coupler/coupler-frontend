@@ -5,6 +5,8 @@ import { switchMap } from 'rxjs/operators';
 
 import { Dataset, DatasetKind } from '../dataset';
 import { DatasetService } from '../dataset.service';
+import { Migration } from '../migration';
+import { MigrationService } from '../migration.service';
 import { ClientError } from '../errors';
 
 @Component({
@@ -15,9 +17,11 @@ import { ClientError } from '../errors';
 export class DatasetDetailComponent implements OnInit {
   clientError: ClientError;
   dataset: Dataset;
+  migration: Migration;
 
   constructor(
     private datasetService: DatasetService,
+    private migrationService: MigrationService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -30,10 +34,23 @@ export class DatasetDetailComponent implements OnInit {
       subscribe(result => {
         if (result instanceof Dataset) {
           this.dataset = result;
+          if (this.dataset.migrationId) {
+            this.getMigration();
+          }
         } else if (result instanceof ClientError) {
           this.clientError = result;
         }
       });
+  }
+
+  getMigration(): void {
+    this.migrationService.getMigration(this.dataset.migrationId).subscribe(result => {
+      if (result instanceof Migration) {
+        this.migration = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
   }
 
   goBack(): void {

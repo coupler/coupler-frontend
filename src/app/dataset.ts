@@ -18,6 +18,8 @@ export class Dataset {
   tableName: string;
   fields: DataColumn[];
   csvImportId: number;
+  migrationId: number;
+  pending: boolean;
 
   annotatedType(): string {
     switch (this.kind) {

@@ -23,6 +23,12 @@
     <p>{{dataset.tableName}}</p>
   </ng-template>
 
+  <ng-template [ngIf]="migration">
+    <h3>Related Migration</h3>
+    <app-migrations-list [migrations]="[migration]">
+    </app-migrations-list>
+  </ng-template>
+
   <div class="mt-4">
     <a class="btn btn-primary mr-2" [routerLink]="['/datasets', dataset.id, 'edit']">
       <i class="fa fa-edit"></i> Edit

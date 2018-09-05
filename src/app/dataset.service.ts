@@ -24,7 +24,9 @@ export class DatasetService extends AbstractService {
     database_path: "databasePath",
     table_name: "tableName",
     fields: "fields",
-    csv_import_id: "csvImportId"
+    csv_import_id: "csvImportId",
+    migration_id: "migrationId",
+    pending: "pending"
   };
 
   constructor(private http: HttpClient) {
