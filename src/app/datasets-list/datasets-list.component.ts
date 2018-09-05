@@ -13,7 +13,9 @@ export class DatasetsListComponent {
 
   constructor(private router: Router) { }
 
-  gotoDetail(id: number): void {
-    this.router.navigate(['/datasets', id]);
+  gotoDetail(dataset: Dataset): void {
+    if (!dataset.pending) {
+      this.router.navigate(['/datasets', dataset.id]);
+    }
   }
 }

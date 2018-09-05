@@ -1,0 +1,4 @@
+.pending {
+  border-color: darkred;
+  cursor: not-allowed;
+}
