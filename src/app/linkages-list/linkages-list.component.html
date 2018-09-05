@@ -1,0 +1,10 @@
+<div class="d-flex flex-row list">
+  <div *ngFor="let linkage of linkages" class="d-flex flex-column list-element"
+    (click)="gotoDetail(linkage.id)">
+    <div><strong>Name:</strong> {{linkage.name}}</div>
+    <div><strong>Description:</strong> {{linkage.description}}</div>
+  </div>
+</div>
+<p *ngIf="linkages && linkages.length == 0">
+  There are currently no linkages.
+</p>
