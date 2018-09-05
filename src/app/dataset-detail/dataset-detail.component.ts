@@ -7,6 +7,7 @@ import { Dataset, DatasetKind } from '../dataset';
 import { DatasetService } from '../dataset.service';
 import { Migration } from '../migration';
 import { MigrationService } from '../migration.service';
+import { CsvImportService } from '../csv-import.service';
 import { ClientError } from '../errors';
 
 @Component({
@@ -22,6 +23,7 @@ export class DatasetDetailComponent implements OnInit {
   constructor(
     private datasetService: DatasetService,
     private migrationService: MigrationService,
+    private csvImportService: CsvImportService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -51,6 +53,14 @@ export class DatasetDetailComponent implements OnInit {
         this.clientError = result;
       }
     });
+  }
+
+  downloadCsvUrl(): string {
+    if (this.dataset.csvImportId) {
+      return this.csvImportService.downloadCsvImportUrl(this.dataset.csvImportId);
+    } else {
+      return '';
+    }
   }
 
   goBack(): void {

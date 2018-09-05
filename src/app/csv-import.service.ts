@@ -58,6 +58,10 @@ export class CsvImportService extends AbstractService {
     );
   }
 
+  downloadCsvImportUrl(id: number): string {
+    return `${this.apiUrl}/${id}/download`;
+  }
+
   create(csvImport: CsvImport): Observable<CsvImport | ClientError | ValidationError> {
     if (csvImport.id) {
       throw new Error('csvImport must not already have `id` when creating.');
