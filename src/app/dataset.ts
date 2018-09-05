@@ -27,7 +27,7 @@ export class Dataset {
         return 'MySQL';
 
       case DatasetKind.SQLite3:
-        return 'SQLite3 (from CSV)';
+        return 'CSV Dataset';
 
       case DatasetKind.CSV:
         return 'CSV';

@@ -1,3 +1,11 @@
 h5 {
   font-weight: bold;
 }
+
+.details {
+  border: 1px dashed #333;
+}
+
+.details.hidden {
+  display: inline;
+}

@@ -15,22 +15,40 @@
     <h5>Table Name</h5>
     <p>{{dataset.tableName}}</p>
   </ng-template>
-  <ng-template [ngIf]="dataset.kind == 'sqlite3'">
-    <h5>Database Path</h5>
-    <p>{{dataset.databasePath}}</p>
 
-    <h5>Table Name</h5>
-    <p>{{dataset.tableName}}</p>
+  <ng-template [ngIf]="csvImport">
+    <h5>Original filename</h5>
+    <p>{{csvImport.originalName}}</p>
+
+    <p>
+      <a [href]="downloadCsvUrl()">Download original CSV</a>
+    </p>
   </ng-template>
+
+  <div *ngIf="dataset.kind == 'sqlite3'">
+    <div class="details mb-2"
+      [class.hidden]="detailsHidden"
+      [class.p-2]="detailsHidden"
+      [class.p-3]="!detailsHidden">
+
+      <i class="far mr-2" (click)="toggleDetails()"
+        [class.fa-plus-square]="detailsHidden"
+        [class.fa-minus-square]="!detailsHidden"></i> Details
+
+      <div class="mt-2" *ngIf="!detailsHidden">
+        <h5>Database Path</h5>
+        <p>{{dataset.databasePath}}</p>
+
+        <h5>Table Name</h5>
+        <p>{{dataset.tableName}}</p>
+      </div>
+    </div>
+  </div>
 
   <ng-template [ngIf]="migration">
     <h3>Related Migration</h3>
     <app-migrations-list [migrations]="[migration]">
     </app-migrations-list>
-  </ng-template>
-
-  <ng-template [ngIf]="dataset.csvImportId">
-    <a [href]="downloadCsvUrl()">Download original CSV</a>
   </ng-template>
 
   <div class="mt-4">

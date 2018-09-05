@@ -7,6 +7,7 @@ import { Dataset, DatasetKind } from '../dataset';
 import { DatasetService } from '../dataset.service';
 import { Migration } from '../migration';
 import { MigrationService } from '../migration.service';
+import { CsvImport } from '../csv-import';
 import { CsvImportService } from '../csv-import.service';
 import { ClientError } from '../errors';
 
@@ -19,6 +20,9 @@ export class DatasetDetailComponent implements OnInit {
   clientError: ClientError;
   dataset: Dataset;
   migration: Migration;
+  csvImport: CsvImport;
+
+  detailsHidden = true;
 
   constructor(
     private datasetService: DatasetService,
@@ -39,6 +43,9 @@ export class DatasetDetailComponent implements OnInit {
           if (this.dataset.migrationId) {
             this.getMigration();
           }
+          if (this.dataset.csvImportId) {
+            this.getCsvImport();
+          }
         } else if (result instanceof ClientError) {
           this.clientError = result;
         }
@@ -55,12 +62,26 @@ export class DatasetDetailComponent implements OnInit {
     });
   }
 
+  getCsvImport(): void {
+    this.csvImportService.getCsvImport(this.dataset.csvImportId).subscribe(result => {
+      if (result instanceof CsvImport) {
+        this.csvImport = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
+  }
+
   downloadCsvUrl(): string {
     if (this.dataset.csvImportId) {
       return this.csvImportService.downloadCsvImportUrl(this.dataset.csvImportId);
     } else {
       return '';
     }
+  }
+
+  toggleDetails(): void {
+    this.detailsHidden = !this.detailsHidden;
   }
 
   goBack(): void {
