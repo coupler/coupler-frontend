@@ -62,7 +62,9 @@ export class LinkageFormComponent implements OnInit {
     this.route.params.pipe(
       switchMap((params: Params) => {
         if (!params['id']) {
-          return observableOf<Linkage>(new Linkage());
+          let linkage = new Linkage();
+          linkage.threshold = 0.5;
+          return observableOf<Linkage>(linkage);
         } else {
           return this.linkageService.getLinkage(+params['id']);
         }
