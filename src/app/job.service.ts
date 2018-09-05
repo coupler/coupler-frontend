@@ -71,7 +71,7 @@ export class JobService extends AbstractService {
           case 'startedAt':
           case 'endedAt':
             if (value) {
-              value = new Date(value);
+              value = new Date(Date.parse(value));
             }
             break;
           case 'linkageResult':

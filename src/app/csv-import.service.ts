@@ -99,7 +99,7 @@ export class CsvImportService extends AbstractService {
         switch (mappedKey) {
           case 'createdAt':
             if (value) {
-              value = new Date(value);
+              value = new Date(Date.parse(value));
             }
             break;
         }
