@@ -14,6 +14,7 @@ export class ComparatorFormComponent implements OnInit {
   @Input() initComparison: boolean;
   @Input() canCancel = true;
   @Input() canDelete: boolean;
+  @Input() innerLinkage: boolean;
   @Output() save = new EventEmitter();
   @Output() cancel = new EventEmitter();
   @Output() delete = new EventEmitter();
@@ -32,6 +33,10 @@ export class ComparatorFormComponent implements OnInit {
       this.canDelete = this.comparator.id !== undefined;
     }
     this.initialValue = this.comparator.clone();
+
+    if (this.innerLinkage === undefined) {
+      this.innerLinkage = this.linkage.dataset1Id === this.linkage.dataset2Id;
+    }
   }
 
   addComparison(): void {

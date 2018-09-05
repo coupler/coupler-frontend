@@ -15,17 +15,17 @@
   </div>
   <ng-template [ngIf]="comparator.kind == 'compare'">
     <div class="row">
-      <div class="col-sm-2 form-group">
-        <label for="comparator-operation">Operator</label>
+      <div class="col-sm-4 form-group">
+        <label for="comparator-operation">Operation</label>
         <select class="form-control" id="comparator-operation"
                 required [(ngModel)]="comparator.options.operation" name="operation">
           <option></option>
-          <option value="equal">==</option>
-          <option value="not_equal">!=</option>
-          <option value="greater_than">&gt;</option>
-          <option value="greater_than_or_equal">&gt;=</option>
-          <option value="less_than">&lt;</option>
-          <option value="less_than_or_equal">&lt;=</option>
+          <option value="equal">Equal (==)</option>
+          <option value="not_equal">Not equal (!=)</option>
+          <option value="greater_than">Greater than (&gt;)</option>
+          <option value="greater_than_or_equal">Greater than or equal to (&gt;=)</option>
+          <option value="less_than">Less than (&lt;)</option>
+          <option value="less_than_or_equal">Less than or equal to (&lt;=)</option>
         </select>
       </div>
     </div>
@@ -34,7 +34,12 @@
       <div class="row" *ngFor="let set of comparator.sets; let i = index">
         <div class="col-sm-3 form-group">
           <label for="comparator-set-{{i}}-field1">
-            Field from Dataset 1 ({{linkage.dataset1.name}})
+            <ng-template [ngIf]="innerLinkage">
+              Field from Dataset
+            </ng-template>
+            <ng-template [ngIf]="!innerLinkage">
+              Field from Dataset 1 ({{linkage.dataset1.name}})
+            </ng-template>
           </label>
           <select class="form-control" id="comparator-set-{{i}}-field1"
             required [(ngModel)]="set.field1" name="set-{{i}}-field1">
@@ -46,7 +51,12 @@
         </div>
         <div class="col-sm-3 form-group">
           <label for="comparator-set-{{i}}-field2">
-            Field from Dataset 2 ({{linkage.dataset2.name}})
+            <ng-template [ngIf]="innerLinkage">
+              Field from Dataset
+            </ng-template>
+            <ng-template [ngIf]="!innerLinkage">
+              Field from Dataset 2 ({{linkage.dataset2.name}})
+            </ng-template>
           </label>
           <select class="form-control" id="comparator-set-{{i}}-field2"
             required [(ngModel)]="set.field2" name="set-{{i}}-field2">
@@ -88,7 +98,12 @@
       <div class="row" *ngFor="let set of comparator.sets; let i = index">
         <div class="col-sm-3 form-group">
           <label for="comparator-set-{{i}}-field1">
-            Field from Dataset 1 ({{linkage.dataset1.name}})
+            <ng-template [ngIf]="innerLinkage">
+              Field from Dataset
+            </ng-template>
+            <ng-template [ngIf]="!innerLinkage">
+              Field from Dataset 1 ({{linkage.dataset1.name}})
+            </ng-template>
           </label>
           <select class="form-control" id="comparator-set-{{i}}-field1"
             required [(ngModel)]="set.field1" name="set-{{i}}-field1">
@@ -100,7 +115,12 @@
         </div>
         <div class="col-sm-3 form-group">
           <label for="comparator-set-{{i}}-field2">
-            Field from Dataset 2 ({{linkage.dataset2.name}})
+            <ng-template [ngIf]="innerLinkage">
+              Field from Dataset
+            </ng-template>
+            <ng-template [ngIf]="!innerLinkage">
+              Field from Dataset 2 ({{linkage.dataset2.name}})
+            </ng-template>
           </label>
           <select class="form-control" id="comparator-set-{{i}}-field2"
             required [(ngModel)]="set.field2" name="set-{{i}}-field2">
@@ -118,7 +138,12 @@
     <div class="row" *ngFor="let set of comparator.sets; let i = index">
       <div class="col-sm-3 form-group">
         <label for="comparator-set-{{i}}-field1">
-          Field from Dataset 1 ({{linkage.dataset1.name}})
+          <ng-template [ngIf]="innerLinkage">
+            Field from Dataset
+          </ng-template>
+          <ng-template [ngIf]="!innerLinkage">
+            Field from Dataset 1 ({{linkage.dataset1.name}})
+          </ng-template>
         </label>
         <select class="form-control" id="comparator-set-{{i}}-field1"
           required [(ngModel)]="set.field1" name="set-{{i}}-field1">
@@ -130,7 +155,12 @@
       </div>
       <div class="col-sm-3 form-group">
         <label for="comparator-set-{{i}}-field2">
-          Field from Dataset 2 ({{linkage.dataset2.name}})
+          <ng-template [ngIf]="innerLinkage">
+            Field from Dataset
+          </ng-template>
+          <ng-template [ngIf]="!innerLinkage">
+            Field from Dataset 2 ({{linkage.dataset2.name}})
+          </ng-template>
         </label>
         <select class="form-control" id="comparator-set-{{i}}-field2"
           required [(ngModel)]="set.field2" name="set-{{i}}-field2">

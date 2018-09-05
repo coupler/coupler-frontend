@@ -29,6 +29,37 @@ export class Comparator {
     return "";
   }
 
+  operationDescription(): string {
+    switch (this.kind) {
+      case ComparatorKind.compare:
+        switch (this.options.operation) {
+          case 'equal':
+            return 'Equal (==)';
+          case 'not_equal':
+            return 'Not equal (!=)';
+          case 'greater_than':
+            return 'Greater than (>)';
+          case 'greater_than_or_equal':
+            return 'Greater than or equal to (>=)';
+          case 'less_than':
+            return 'Less than (<)';
+          case 'less_than_or_equal':
+            return 'Less than or equal to (<=)';
+        }
+        break;
+      case ComparatorKind.strcompare:
+        switch (this.options.operation) {
+          case 'jarowinkler':
+            return 'Jaro-Winkler';
+          case 'reverse_jarowinkler':
+            return 'Reverse Jaro-Winkler';
+          case 'damerau_levenshtein':
+            return 'Damerau-Levenshtein';
+        }
+    }
+    return this.options.operation;
+  }
+
   set1Description(): string {
     return this.sets.map(s => s.field1).join(", ");
   }

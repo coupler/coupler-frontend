@@ -3,16 +3,23 @@
 </p>
 
 <p *ngIf="comparator.kind === 'compare' || comparator.kind === 'strcompare'">
-  <strong>Operator:</strong> {{comparator.options.operation}}
+  <strong>Operation:</strong> {{comparator.operationDescription()}}
 </p>
 
 <p>
-  <strong>Set 1:</strong> {{comparator.set1Description()}}
-</p>
-
+  <strong *ngIf="comparator.sets.length != 1">Field pairs:</strong>
+  <strong *ngIf="comparator.sets.length == 1">Field pair:</strong>
 <p>
-  <strong>Set 2:</strong> {{comparator.set2Description()}}
-</p>
+<ul>
+  <li *ngFor="let set of comparator.sets">
+    <ng-template [ngIf]="innerLinkage">
+      {{set.field1}}, {{set.field2}}
+    </ng-template>
+    <ng-template [ngIf]="!innerLinkage">
+      {{set.field1}} (Dataset 1: {{linkage.dataset1.name}}), {{set.field2}} (Dataset 2: {{linkage.dataset2.name}})
+    </ng-template>
+  </li>
+</ul>
 
 <p *ngIf="comparator.kind === 'within'">
   <strong>Value:</strong> {{comparator.options.value}}

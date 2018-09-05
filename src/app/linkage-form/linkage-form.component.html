@@ -89,7 +89,9 @@
           <ng-template ngbTabContent>
             <div class="comparator-tab">
               <ng-template [ngIf]="i !== editIndex">
-                <app-comparator-detail [linkage]="linkage" [comparator]="comparator">
+                <app-comparator-detail [linkage]="linkage"
+                  [comparator]="comparator"
+                  [innerLinkage]="linkageType === 'single'">
                 </app-comparator-detail>
 
                 <button type="button" [disabled]="editIndex !== undefined"
@@ -99,6 +101,7 @@
               </ng-template>
               <ng-template [ngIf]="i === editIndex">
                 <app-comparator-form [linkage]="linkage" [comparator]="comparator"
+                  [innerLinkage]="linkageType === 'single'"
                   [initComparison]="false"
                   [canDelete]="linkage.comparators.length > 1"
                   (save)="finishEditComparator()"
@@ -116,6 +119,7 @@
           <ng-template ngbTabContent>
             <div class="comparator-tab">
               <app-comparator-form [linkage]="linkage" [comparator]="comparator"
+                [innerLinkage]="linkageType === 'single'"
                 [canCancel]="linkage.comparators.length > 0"
                 [canDelete]="false"
                 (save)="addComparator()" (cancel)="removeComparator(-1)"

@@ -10,10 +10,14 @@ import { Linkage } from '../linkage';
 export class ComparatorDetailComponent implements OnInit {
   @Input() comparator: Comparator;
   @Input() linkage: Linkage;
+  @Input() innerLinkage: boolean;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    if (this.innerLinkage === undefined) {
+      this.innerLinkage = this.linkage.dataset1Id === this.linkage.dataset2Id;
+    }
   }
 
 }
