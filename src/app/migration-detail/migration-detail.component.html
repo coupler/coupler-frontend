@@ -5,13 +5,15 @@
     Migration #{{migration.id}}
   </h2>
 
-  <h5>Input Dataset</h5>
-  <p>{{migration.inputDataset.name}}</p>
+  <h3>Input Dataset</h3>
+  <app-datasets-list [datasets]="[migration.inputDataset]">
+  </app-datasets-list>
 
-  <h5>Output Dataset</h5>
-  <p>{{migration.outputDataset.name}}</p>
+  <h3 class="mt-4">Output Dataset</h3>
+  <app-datasets-list [datasets]="[migration.outputDataset]">
+  </app-datasets-list>
 
-  <h3>Operations</h3>
+  <h3 class="mt-4">Operations</h3>
   <ngb-tabset>
     <ngb-tab *ngFor="let operation of migration.operations; index as i"
              id="migration-operations-{{i}}" title="Operation #{{i+1}}">
