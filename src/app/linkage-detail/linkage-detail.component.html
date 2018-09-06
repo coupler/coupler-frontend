@@ -1,9 +1,7 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
 <ng-template [ngIf]="linkage">
-  <h2>
-    Linkage: {{linkage.name}}
-  </h2>
+  <h2>Linkage: {{linkage.name}}</h2>
 
   <h4>Description</h4>
   <p>{{linkage.description}}</p>
@@ -12,13 +10,18 @@
   <p>{{linkage.threshold}}</p>
 
   <h4>Datasets</h4>
-  <app-datasets-list [datasets]="[linkage.dataset1, linkage.dataset2]"></app-datasets-list>
+  <app-datasets-list *ngIf="linkage.dataset1Id !== linkage.dataset2Id"
+    [datasets]="[linkage.dataset1, linkage.dataset2]">
+  </app-datasets-list>
+  <app-datasets-list *ngIf="linkage.dataset1Id === linkage.dataset2Id"
+    [datasets]="[linkage.dataset1]">
+  </app-datasets-list>
 
   <h4 class="mt-4">Comparators</h4>
   <app-comparators-list [linkage]="linkage"></app-comparators-list>
 
   <h4 class="mt-4">Jobs</h4>
-  <app-jobs-list [jobs]="linkage.jobs"></app-jobs-list>
+  <app-jobs-list [jobs]="linkage.jobs" [showType]="false"></app-jobs-list>
 
   <div class="mt-4">
     <button type="button" class="btn btn-primary mr-2" (click)="edit()">

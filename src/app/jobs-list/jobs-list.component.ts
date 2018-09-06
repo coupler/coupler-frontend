@@ -10,6 +10,7 @@ import { Job } from '../job';
 })
 export class JobsListComponent {
   @Input() jobs: Job[];
+  @Input() showType = true;
 
   constructor(private router: Router) { }
 

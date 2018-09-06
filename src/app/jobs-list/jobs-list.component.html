@@ -2,7 +2,7 @@
   <div *ngFor="let job of jobs" class="d-flex flex-column list-element"
     (click)="gotoDetail(job)">
     <div><strong>ID:</strong> {{job.id}}</div>
-    <div><strong>Type:</strong> {{job.kind}}</div>
+    <div *ngIf="showType"><strong>Type:</strong> {{job.kind}}</div>
     <div><strong>Status:</strong> {{job.status}}</div>
     <div><strong>Started:</strong> {{job.startedAt | date:"short"}}</div>
     <div><strong>Ended:</strong> {{job.endedAt | date:"short"}}</div>
