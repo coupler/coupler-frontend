@@ -1,0 +1,1 @@
+.list{flex-flow:row wrap}.list>.list-element{background-color:#f6f6f6;border:2px solid #b3b3ff;border-radius:5px;padding:10px;margin-right:10px;cursor:pointer;font-size:larger;margin-bottom:10px}button:disabled{cursor:not-allowed}
