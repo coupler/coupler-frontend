@@ -68,6 +68,12 @@ export class Comparator {
     return this.sets.map(s => s.field1).join(", ");
   }
 
+  setsDescription(): string {
+    return this.sets.map(set => {
+      return [set.field1, set.field2].join(", ");
+    }).join("; ")
+  }
+
   clone(): Comparator {
     let c = new Comparator();
     c.id = this.id;

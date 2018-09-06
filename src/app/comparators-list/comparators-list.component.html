@@ -2,15 +2,14 @@
   <div *ngFor="let comparator of linkage.comparators"
     class="d-flex flex-column list-element"
     (click)="gotoDetail(comparator.id)">
-    <div><strong>Kind:</strong> {{comparator.kind}}</div>
-    <div *ngIf="comparator.kind == 'compare'">
-      <strong>Operator:</strong> {{comparator.options.operation}}
+    <div>
+      <strong>Type:</strong> {{comparator.kindDescription()}}
     </div>
-    <div class="set">
-      <strong>Set 1:</strong> {{set1(comparator)}}
+    <div *ngIf="comparator.kind == 'compare' || comparator.kind == 'strcompare'">
+      <strong>Operation:</strong> {{comparator.operationDescription()}}
     </div>
-    <div class="set">
-      <strong>Set 2:</strong> {{set2(comparator)}}
+    <div>
+      <strong>Field pairs:</strong> {{comparator.setsDescription()}}
     </div>
   </div>
 </div>
