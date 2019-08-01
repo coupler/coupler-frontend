@@ -1,0 +1,13 @@
+.match {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #eee;
+  border-radius: 5px;
+}
+
+.records {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}

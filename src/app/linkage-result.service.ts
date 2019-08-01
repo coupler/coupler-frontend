@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
+import { AbstractService } from './abstract-service';
+import { ClientError } from './errors';
+import { SerializationService } from './serialization.service';
 import { LinkageResult } from './linkage-result';
+import { environment } from '../environments/environment';
 
 @Injectable()
-export class LinkageResultService {
-  private attributeMap = {
-    id: "id",
-    linkage_id: "linkageId",
-    job_id: "jobId",
-    match_count: "matchCount"
-  };
+export class LinkageResultService extends AbstractService {
+  private linkageResultsUrl = `${environment.apiUrl}/linkage_results`;
 
-  build(attribs: any): LinkageResult {
-    let result = new LinkageResult();
-    for (let key in attribs) {
-      let value = attribs[key];
-      if (key in this.attributeMap) {
-        let mappedKey = this.attributeMap[key];
-        result[mappedKey] = value;
-      }
-    }
-    return result;
+  constructor(
+    private http: HttpClient,
+    private serializer: SerializationService
+  ) {
+    super();
+  }
+
+  getLinkageResult(id: number): Observable<LinkageResult | ClientError> {
+    const url = `${this.linkageResultsUrl}/${id}`;
+    return this.http.get(url).pipe(
+      map(data => this.serializer.buildLinkageResult(data)),
+      catchError(this.handleClientError)
+    );
   }
 }

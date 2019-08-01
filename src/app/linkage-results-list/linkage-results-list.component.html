@@ -1,0 +1,10 @@
+<div class="d-flex flex-row list">
+  <div *ngFor="let linkageResult of linkageResults" class="d-flex flex-column list-element"
+    (click)="gotoDetail(linkageResult)">
+    <div><strong>ID:</strong> {{linkageResult.id}}</div>
+    <div><strong>Created:</strong> {{linkageResult.job.endedAt | date:"short"}}</div>
+  </div>
+</div>
+<p *ngIf="linkageResults && linkageResults.length == 0">
+  There are not any linkage results yet.
+</p>

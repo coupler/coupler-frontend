@@ -31,11 +31,14 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
 
 import { LinkageResultService } from './linkage-result.service';
 import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-result-detail.component';
+import { LinkageMatchDetailComponent } from './linkage-match-detail/linkage-match-detail.component';
 
 import { LinkageMatchService } from './linkage-match.service';
 
 import { CsvImportService } from './csv-import.service';
 import { CsvImportFormComponent } from './csv-import-form/csv-import-form.component';
+
+import { SerializationService } from './serialization.service';
 
 import { ClientErrorComponent } from './client-error/client-error.component';
 import { ValidationErrorComponent } from './validation-error/validation-error.component';
@@ -50,6 +53,9 @@ import { MigrationsListComponent } from './migrations-list/migrations-list.compo
 import { MigrationsComponent } from './migrations/migrations.component';
 import { MigrationOperationDetailComponent } from './migration-operation-detail/migration-operation-detail.component';
 import { LinkagesListComponent } from './linkages-list/linkages-list.component';
+import { LinkageResultExportComponent } from './linkage-result-export/linkage-result-export.component';
+import { LinkageResultsComponent } from './linkage-results/linkage-results.component';
+import { LinkageResultsListComponent } from './linkage-results-list/linkage-results-list.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +74,7 @@ import { LinkagesListComponent } from './linkages-list/linkages-list.component';
     DatasetsListComponent,
     JobDetailComponent,
     LinkageResultDetailComponent,
+    LinkageMatchDetailComponent,
     ClientErrorComponent,
     ValidationErrorComponent,
     CsvImportFormComponent,
@@ -81,7 +88,10 @@ import { LinkagesListComponent } from './linkages-list/linkages-list.component';
     MigrationsListComponent,
     MigrationsComponent,
     MigrationOperationDetailComponent,
-    LinkagesListComponent
+    LinkagesListComponent,
+    LinkageResultExportComponent,
+    LinkageResultsComponent,
+    LinkageResultsListComponent
   ],
   imports: [
     BrowserModule,
@@ -97,7 +107,8 @@ import { LinkagesListComponent } from './linkages-list/linkages-list.component';
     JobService,
     LinkageResultService,
     LinkageMatchService,
-    CsvImportService
+    CsvImportService,
+    SerializationService
   ],
   bootstrap: [AppComponent]
 })

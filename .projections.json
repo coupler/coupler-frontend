@@ -1,0 +1,10 @@
+{
+  "src/app/*.component.ts": {
+    "alternate": "src/app/{}.component.html",
+    "type": "component"
+  },
+  "src/app/*.component.html": {
+    "alternate": "src/app/{}.component.ts",
+    "type": "template"
+  }
+}

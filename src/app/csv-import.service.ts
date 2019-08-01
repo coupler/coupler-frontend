@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 
 import { AbstractService } from './abstract-service';
 import { ClientError, ValidationError } from './errors';
+import { SerializationService } from './serialization.service';
 import { CsvImport } from './csv-import';
 import { environment } from '../environments/environment';
 
@@ -26,23 +27,17 @@ interface ShowResponse {
 })
 export class CsvImportService extends AbstractService {
   private apiUrl = environment.apiUrl + '/csv_imports';
-  private attributeMap = {
-    id: "id",
-    original_name: "originalName",
-    file_size: "fileSize",
-    sha1_sum: "sha1Sum",
-    fields: "fields",
-    created_at: "createdAt",
-    dataset_id: "datasetId",
-    data: "data",
-    rows: "rows"
-  };
 
-  constructor(private http: HttpClient) { super(); }
+  constructor(
+    private http: HttpClient,
+    private serializer: SerializationService
+  ) {
+    super();
+  }
 
   getCsvImports(): Observable<CsvImport[] | ClientError> {
     return this.http.get<any[]>(this.apiUrl).pipe(
-      map(data => data.map(d => this.build(d))),
+      map(data => data.map(d => this.serializer.buildCsvImport(d))),
       catchError(this.handleClientError)
     );
   }
@@ -53,7 +48,7 @@ export class CsvImportService extends AbstractService {
       url += '?row_count=' + rowCount.toString();
     }
     return this.http.get<ShowResponse>(url).pipe(
-      map(data => this.build(data)),
+      map(data => this.serializer.buildCsvImport(data)),
       catchError(this.handleClientError)
     );
   }
@@ -66,7 +61,7 @@ export class CsvImportService extends AbstractService {
     if (csvImport.id) {
       throw new Error('csvImport must not already have `id` when creating.');
     }
-    let data = this.unbuild(csvImport);
+    let data = this.serializer.unbuildCsvImport(csvImport);
     return this.http.post<CreateResponse>(this.apiUrl, data).pipe(
       map(data => {
         csvImport.id = data.id;
@@ -81,44 +76,12 @@ export class CsvImportService extends AbstractService {
       throw new Error('csvImport must already have `id` when updating.');
     }
     let url = `${this.apiUrl}/${csvImport.id}`;
-    let data = this.unbuild(csvImport);
+    let data = this.serializer.unbuildCsvImport(csvImport);
     return this.http.put<UpdateResponse>(url, data).pipe(
       map(data => {
         return csvImport;
       }),
       catchError(this.handleError)
     );
-  }
-
-  build(attribs: any): CsvImport {
-    let result = new CsvImport();
-    for (let key in attribs) {
-      let value = attribs[key];
-      if (key in this.attributeMap) {
-        let mappedKey = this.attributeMap[key];
-        switch (mappedKey) {
-          case 'createdAt':
-            if (value) {
-              value = new Date(Date.parse(value));
-            }
-            break;
-        }
-        result[mappedKey] = value;
-      }
-    }
-    return result;
-  }
-
-  unbuild(csvImport: CsvImport): any {
-    let result = {};
-    for (let key in this.attributeMap) {
-      let mappedKey = this.attributeMap[key];
-      let value = csvImport[mappedKey];
-      if (!value) {
-        continue;
-      }
-      result[key] = value;
-    }
-    return result;
   }
 }

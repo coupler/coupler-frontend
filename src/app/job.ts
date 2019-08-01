@@ -1,5 +1,3 @@
-import { LinkageResult } from './linkage-result';
-
 export class Job {
   id: number;
   kind: string;
@@ -10,7 +8,7 @@ export class Job {
   migrationId: number;
   startedAt: Date;
   endedAt: Date;
-  linkageResult: LinkageResult;
+  linkageResult?: any;
 
   isStopped(): boolean {
     return this.status === "finished" || this.status === "failed";
