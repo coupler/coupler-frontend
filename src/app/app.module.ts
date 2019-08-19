@@ -37,6 +37,8 @@ import { LinkageMatchService } from './linkage-match.service';
 import { CsvImportService } from './csv-import.service';
 import { CsvImportFormComponent } from './csv-import-form/csv-import-form.component';
 
+import { SerializationService } from './serialization.service';
+
 import { ClientErrorComponent } from './client-error/client-error.component';
 import { ValidationErrorComponent } from './validation-error/validation-error.component';
 import { DatasetDetailComponent } from './dataset-detail/dataset-detail.component';
@@ -97,7 +99,8 @@ import { LinkagesListComponent } from './linkages-list/linkages-list.component';
     JobService,
     LinkageResultService,
     LinkageMatchService,
-    CsvImportService
+    CsvImportService,
+    SerializationService
   ],
   bootstrap: [AppComponent]
 })

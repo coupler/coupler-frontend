@@ -5,19 +5,18 @@ import { catchError, map } from 'rxjs/operators';
 
 import { AbstractService } from './abstract-service';
 import { ClientError } from './errors';
+import { SerializationService } from './serialization.service';
 import { LinkageMatch } from './linkage-match';
 import { environment } from '../environments/environment';
 
 @Injectable()
 export class LinkageMatchService extends AbstractService {
   private linkageResultsUrl = `${environment.apiUrl}/linkage_results`;
-  private attributeMap = {
-    record_1: "record1",
-    record_2: "record2",
-    score: "score"
-  };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private serializer: SerializationService
+  ) {
     super();
   }
 
@@ -25,20 +24,8 @@ export class LinkageMatchService extends AbstractService {
     let url = `${this.linkageResultsUrl}/${linkageResultId}/matches/${index}`;
 
     return this.http.get(url).pipe(
-      map(data => this.build(data)),
+      map(data => this.serializer.buildLinkageMatch(data)),
       catchError(this.handleClientError)
     );
-  }
-
-  build(attribs: any): LinkageMatch {
-    let result = new LinkageMatch();
-    for (let key in attribs) {
-      let value = attribs[key];
-      if (key in this.attributeMap) {
-        let mappedKey = this.attributeMap[key];
-        result[mappedKey] = value;
-      }
-    }
-    return result;
   }
 }

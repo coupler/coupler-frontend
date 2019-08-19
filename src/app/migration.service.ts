@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { AbstractService } from './abstract-service';
-import { DatasetService } from './dataset.service';
 import { ClientError, ValidationError } from './errors';
+import { SerializationService } from './serialization.service';
 import { Migration } from './migration';
 import { environment } from '../environments/environment';
 
@@ -14,26 +14,17 @@ import { environment } from '../environments/environment';
 })
 export class MigrationService extends AbstractService {
   private migrationsUrl = environment.apiUrl + '/migrations';
-  private attributeMap = {
-    id: "id",
-    description: "description",
-    operations: "operations",
-    input_dataset_id: "inputDatasetId",
-    output_dataset_id: "outputDatasetId",
-    input_dataset: "inputDataset",
-    output_dataset: "outputDataset"
-  };
 
   constructor(
     private http: HttpClient,
-    private datasetService: DatasetService
+    private serializer: SerializationService
   ) {
     super();
   }
 
   getMigrations(): Observable<Migration[] | ClientError> {
     return this.http.get<any[]>(this.migrationsUrl).pipe(
-      map(data => data.map(d => this.build(d))),
+      map(data => data.map(d => this.serializer.buildMigration(d))),
       catchError(this.handleClientError)
     );
   }
@@ -41,7 +32,7 @@ export class MigrationService extends AbstractService {
   getMigration(id: number): Observable<Migration | ClientError> {
     const url = `${this.migrationsUrl}/${id}`;
     return this.http.get<any>(url).pipe(
-      map(data => this.build(data)),
+      map(data => this.serializer.buildMigration(data)),
       catchError(this.handleClientError)
     );
   }
@@ -51,8 +42,8 @@ export class MigrationService extends AbstractService {
       throw new Error('Migration must not already have `id` when creating.');
     }
     const url = this.migrationsUrl;
-    let data = JSON.stringify(this.unbuild(migration));
-    return this.http.post<{id: number}>(url, this.unbuild(migration)).pipe(
+    let data = JSON.stringify(this.serializer.unbuildMigration(migration));
+    return this.http.post<{id: number}>(url, this.serializer.unbuildMigration(migration)).pipe(
       map(data => {
         migration.id = data.id;
         return migration;
@@ -80,51 +71,4 @@ export class MigrationService extends AbstractService {
     );
   }
   */
-
-  build(attribs: any): Migration {
-    let result = new Migration();
-    for (let key in attribs) {
-      let value = attribs[key];
-      if (key in this.attributeMap) {
-        let mappedKey = this.attributeMap[key];
-
-        switch (mappedKey) {
-          case 'inputDataset':
-          case 'outputDataset':
-            value = this.datasetService.build(value);
-            break;
-        }
-
-        result[mappedKey] = value;
-      }
-    }
-    return result;
-  }
-
-  unbuild(migration: Migration): any {
-    let result = {};
-    for (let key in this.attributeMap) {
-      let mappedKey = this.attributeMap[key];
-      let value = migration[mappedKey];
-      if (!value) {
-        continue;
-      }
-
-      switch (mappedKey) {
-        case 'inputDataset':
-          continue;
-
-        case 'inputDatasetId':
-          value = +value;
-          break;
-
-        case 'outputDataset':
-          value = this.datasetService.unbuild(value);
-          break;
-      }
-
-      result[key] = value;
-    }
-    return result;
-  }
 }
