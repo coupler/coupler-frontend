@@ -52,6 +52,7 @@ import { MigrationsListComponent } from './migrations-list/migrations-list.compo
 import { MigrationsComponent } from './migrations/migrations.component';
 import { MigrationOperationDetailComponent } from './migration-operation-detail/migration-operation-detail.component';
 import { LinkagesListComponent } from './linkages-list/linkages-list.component';
+import { LinkageResultsListComponent } from './linkage-results-list/linkage-results-list.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { LinkagesListComponent } from './linkages-list/linkages-list.component';
     MigrationsListComponent,
     MigrationsComponent,
     MigrationOperationDetailComponent,
-    LinkagesListComponent
+    LinkagesListComponent,
+    LinkageResultsListComponent
   ],
   imports: [
     BrowserModule,
