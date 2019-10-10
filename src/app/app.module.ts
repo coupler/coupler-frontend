@@ -31,6 +31,7 @@ import { JobDetailComponent } from './job-detail/job-detail.component';
 
 import { LinkageResultService } from './linkage-result.service';
 import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-result-detail.component';
+import { LinkageMatchDetailComponent } from './linkage-match-detail/linkage-match-detail.component';
 
 import { LinkageMatchService } from './linkage-match.service';
 
@@ -71,6 +72,7 @@ import { LinkageResultsListComponent } from './linkage-results-list/linkage-resu
     DatasetsListComponent,
     JobDetailComponent,
     LinkageResultDetailComponent,
+    LinkageMatchDetailComponent,
     ClientErrorComponent,
     ValidationErrorComponent,
     CsvImportFormComponent,
