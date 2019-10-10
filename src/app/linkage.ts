@@ -1,6 +1,6 @@
 import { Dataset } from './dataset';
 import { Comparator } from './comparator';
-import { Job } from './job';
+import { LinkageResult } from './linkage-result';
 
 export class Linkage {
   id: number;
@@ -12,7 +12,7 @@ export class Linkage {
   dataset1: Dataset;
   dataset2: Dataset;
   comparators: Comparator[] = [];
-  jobs: Job[] = [];
+  linkageResults: LinkageResult[] = [];
 
   findComparator(id: number): Comparator {
     return this.comparators.find(comparator => comparator.id == id);
@@ -20,9 +20,5 @@ export class Linkage {
 
   findComparatorIndex(id: number): number {
     return this.comparators.findIndex(comparator => comparator.id == id);
-  }
-
-  findJob(id: number): Job {
-    return this.jobs.find(job => job.id == id);
   }
 }
