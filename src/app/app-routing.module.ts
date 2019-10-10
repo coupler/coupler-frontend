@@ -10,6 +10,7 @@ import { DatasetBrowserComponent } from './dataset-browser/dataset-browser.compo
 import { LinkagesComponent } from './linkages/linkages.component';
 import { LinkageDetailComponent } from './linkage-detail/linkage-detail.component';
 import { LinkageFormComponent } from './linkage-form/linkage-form.component';
+import { LinkageResultDetailComponent } from './linkage-result-detail/linkage-result-detail.component';
 import { ComparatorsComponent } from './comparators/comparators.component';
 import { ComparatorEditComponent } from './comparator-edit/comparator-edit.component';
 import { JobDetailComponent } from './job-detail/job-detail.component';
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'linkages/:id/edit', component: LinkageFormComponent },
   { path: 'linkages/:linkageId/comparators', component: ComparatorsComponent },
   { path: 'linkages/:linkageId/comparators/:id', component: ComparatorEditComponent },
+  { path: 'linkages/:linkageId/results/:id', component: LinkageResultDetailComponent },
   { path: 'jobs/:id', component: JobDetailComponent }
 ];
 

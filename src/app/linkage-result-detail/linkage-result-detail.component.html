@@ -1,43 +1,23 @@
 <app-client-error *ngIf="clientError" [error]="clientError">
 </app-client-error>
-<div *ngIf="match" class="match">
-  <h4>Match #{{matchIndex + 1}}</h4>
+<ng-template [ngIf]="linkageResult">
+  <h2>Linkage result #{{linkageResult.id}}</h2>
+  <p>Here are the resulting matches created for the following linkage configuration at <b>{{job.endedAt | date:"short"}}</b>:</p>
+  <app-linkages-list [linkages]="[linkage]">
+  </app-linkages-list>
+  <div *ngIf="currentMatch" class="currentMatch">
+    <h4>Match #{{matchIndex + 1}}</h4>
+    <app-linkage-match-detail [match]="currentMatch" [fields1]="fields1"
+      [fields2]="fields2" [selfLinkage]="selfLinkage">
+    </app-linkage-match-detail>
 
-  <div class="records">
-    <ng-template [ngIf]="linkage.dataset1Id == linkage.dataset2Id" [ngIfElse]="elseBlock">
-      <div class="d-flex flex-row">
-        <div class="d-flex flex-column" *ngFor="let field of linkage.dataset1.fields">
-          <div class="font-weight-bold p-1">{{field.name}}</div>
-          <div class="d-inline-flex p-1">{{match.record1[field.name]}}</div>
-          <div class="d-inline-flex p-1">{{match.record2[field.name]}}</div>
-        </div>
-      </div>
-    </ng-template>
-    <ng-template #elseBlock>
-      <div class="d-flex flex-row">
-        <div class="d-flex flex-column" *ngFor="let field of linkage.dataset1.fields">
-          <div class="font-weight-bold p-1">{{field.name}}</div>
-          <div class="d-inline-flex p-1">{{match.record1[field.name]}}</div>
-        </div>
-      </div>
-
-      <div class="d-flex flex-row">
-        <div class="d-flex flex-column" *ngFor="let field of linkage.dataset2.fields">
-          <div class="font-weight-bold p-1">{{field.name}}</div>
-          <div class="d-inline-flex p-1">{{match.record2[field.name]}}</div>
-        </div>
-      </div>
-    </ng-template>
+    <div class="buttons">
+      <button type="button" class="btn btn-primary prev mr-2" (click)="prev()">
+        <i class="fa fa-arrow-left"></i> Prev
+      </button>
+      <button type="button" class="btn btn-primary next" (click)="next()">
+        <i class="fa fa-arrow-right"></i> Next
+      </button>
+    </div>
   </div>
-
-  <p><strong>Score:</strong> {{match.score}}</p>
-
-  <div class="buttons">
-    <button type="button" class="btn btn-primary prev mr-2" (click)="prev()">
-      <i class="fa fa-arrow-left"></i> Prev
-    </button>
-    <button type="button" class="btn btn-primary next" (click)="next()">
-      <i class="fa fa-arrow-right"></i> Next
-    </button>
-  </div>
-</div>
+</ng-template>
