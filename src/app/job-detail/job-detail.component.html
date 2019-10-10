@@ -3,19 +3,10 @@
 <ng-template [ngIf]="job">
   <h2>Job #{{job.id}}</h2>
 
-  <ng-template [ngIf]="job.kind === 'linkage' && linkage">
-    <h3>Linkage</h3>
-    <app-linkages-list [linkages]="[linkage]">
-    </app-linkages-list>
-  </ng-template>
-
-  <ng-template [ngIf]="job.kind === 'migration' && migration">
-    <h3>Migration</h3>
-    <app-migrations-list [migrations]="[migration]">
-    </app-migrations-list>
-  </ng-template>
-
-  <p class="mt-3">
+  <p class="mb-3">
+    <strong>Type:</strong> {{job.kind}}
+  </p>
+  <p>
     <strong>Status:</strong> {{job.status}}
     <i *ngIf="!job.isStopped()" class="fa fa-cog fa-spin" style="font-size: larger"></i>
   </p>
@@ -35,18 +26,23 @@
     <strong>Error:</strong> {{job.error}}
   </p>
 
-  <div *ngIf="job.linkageResult && job.status == 'finished'" class="results">
-    <h3>Results</h3>
-    <p>
-      <strong>Number of matches:</strong>
-      {{job.linkageResult.matchCount}}
-    </p>
+  <ng-template [ngIf]="job.kind === 'linkage' && linkage">
+    <h3>Linkage</h3>
+    <app-linkages-list [linkages]="[linkage]">
+    </app-linkages-list>
+  </ng-template>
 
-    <app-linkage-result-detail *ngIf="job.linkageResult.matchCount > 0"
-      [linkageResult]="job.linkageResult"
-      [linkage]="linkage">
-    </app-linkage-result-detail>
-  </div>
+  <ng-template [ngIf]="job.kind === 'migration' && migration">
+    <h3>Migration</h3>
+    <app-migrations-list [migrations]="[migration]">
+    </app-migrations-list>
+  </ng-template>
+
+  <ng-template [ngIf]="linkageResult">
+    <h3>Results</h3>
+    <app-linkage-results-list [linkageResults]="[linkageResult]">
+    </app-linkage-results-list>
+  </ng-template>
 
   <button type="button" class="btn btn-secondary mt-2" (click)="goBack()">
     <i class="fa fa-chevron-left"></i> Back

@@ -10,6 +10,8 @@ import { Linkage } from '../linkage';
 import { LinkageService } from '../linkage.service';
 import { Migration } from '../migration';
 import { MigrationService } from '../migration.service';
+import { LinkageResult } from '../linkage-result';
+import { LinkageResultService } from '../linkage-result.service';
 
 import { ClientError } from '../errors';
 
@@ -22,6 +24,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   job: Job;
   linkage?: Linkage;
   migration?: Migration;
+  linkageResult?: LinkageResult
   clientError: ClientError;
   private refreshTimer: number;
 
@@ -29,6 +32,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     private jobService: JobService,
     private linkageService: LinkageService,
     private migrationService: MigrationService,
+    private linkageResultService: LinkageResultService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -46,7 +50,11 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           }
 
           if (this.job.kind === 'linkage') {
-            this.getLinkage();
+            if (typeof(this.job.linkageResultId) == 'number' && this.job.status == "finished") {
+              this.getLinkageResult();
+            } else {
+              this.getLinkage();
+            }
           } else if (this.job.kind === 'migration') {
             this.getMigration();
           }
@@ -76,6 +84,16 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     this.migrationService.getMigration(this.job.migrationId).subscribe(result => {
       if (result instanceof Migration) {
         this.migration = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
+  }
+
+  getLinkageResult(): void {
+    this.linkageResultService.getLinkageResult(this.job.linkageResultId).subscribe(result => {
+      if (result instanceof LinkageResult) {
+        this.linkageResult = result;
       } else if (result instanceof ClientError) {
         this.clientError = result;
       }
