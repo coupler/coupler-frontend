@@ -3,4 +3,6 @@ export class LinkageResult {
   linkageId: number;
   jobId: number;
   matchCount: number;
+  job?: any;
+  linkage?: any;
 }
