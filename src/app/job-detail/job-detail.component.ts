@@ -12,6 +12,8 @@ import { Migration } from '../migration';
 import { MigrationService } from '../migration.service';
 import { LinkageResult } from '../linkage-result';
 import { LinkageResultService } from '../linkage-result.service';
+import { Dataset } from '../dataset';
+import { DatasetService } from '../dataset.service';
 
 import { ClientError } from '../errors';
 
@@ -24,7 +26,8 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   job: Job;
   linkage?: Linkage;
   migration?: Migration;
-  linkageResult?: LinkageResult
+  linkageResult?: LinkageResult;
+  dataset?: Dataset;
   clientError: ClientError;
   private refreshTimer: number;
 
@@ -33,41 +36,54 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     private linkageService: LinkageService,
     private migrationService: MigrationService,
     private linkageResultService: LinkageResultService,
+    private datasetService: DatasetService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
 
   ngOnInit(): void {
-    this.route.params.pipe(
-      switchMap((params: Params) => {
-        return this.jobService.getJob(+params['id']);
-      })).
-      subscribe(result => {
-        if (result instanceof Job) {
-          this.job = result;
-          if (this.job.status == "running" || this.job.status == "initialized") {
-            this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
-          }
-
-          if (this.job.kind === 'linkage') {
-            if (typeof(this.job.linkageResultId) == 'number' && this.job.status == "finished") {
-              this.getLinkageResult();
-            } else {
-              this.getLinkage();
-            }
-          } else if (this.job.kind === 'migration') {
-            this.getMigration();
-          }
-        } else if (result instanceof ClientError) {
-          this.clientError = result;
-        }
-      });
+    this.route.params.subscribe((params: Params) => {
+      this.getJob(+params['id']);
+    });
   }
 
   ngOnDestroy(): void {
     if (this.refreshTimer) {
       clearTimeout(this.refreshTimer);
     }
+  }
+
+  getJob(id: number): void {
+    this.jobService.getJob(id).subscribe(result => {
+      if (result instanceof Job) {
+        this.job = result;
+
+        // Update job every second if it's still running
+        if (this.job.status == "running" || this.job.status == "initialized") {
+          this.refreshTimer = setTimeout(this.getJob.bind(this, this.job.id), 1000);
+        } else {
+          this.refreshTimer = undefined;
+        }
+
+        if (this.job.kind === 'linkage') {
+          this.getLinkage();
+
+          if (typeof(this.job.linkageResultId) == 'number' && this.job.status == "finished") {
+            this.getLinkageResult();
+          }
+        } else if (this.job.kind === 'migration') {
+          this.getMigration();
+        } else if (this.job.kind === 'linkage_result_export') {
+          this.getLinkageResult();
+
+          if (typeof(this.job.datasetId) == 'number' && this.job.status == 'finished') {
+            this.getDataset();
+          }
+        }
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
   }
 
   getLinkage(): void {
@@ -100,22 +116,17 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  goBack(): void {
-    this.location.back();
-  }
-
-  refresh(): void {
-    this.jobService.getJob(this.job.id).subscribe(result => {
-      if (result instanceof Job) {
-        this.job = result;
-        if (this.job.status == "running" || this.job.status == "initialized") {
-          this.refreshTimer = setTimeout(this.refresh.bind(this), 1000);
-        } else {
-          this.refreshTimer = undefined;
-        }
+  getDataset(): void {
+    this.datasetService.getDataset(this.job.datasetId).subscribe(result => {
+      if (result instanceof Dataset) {
+        this.dataset = result;
       } else if (result instanceof ClientError) {
         this.clientError = result;
       }
     });
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }

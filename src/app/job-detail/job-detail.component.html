@@ -26,13 +26,13 @@
     <strong>Error:</strong> {{job.error}}
   </p>
 
-  <ng-template [ngIf]="job.kind === 'linkage' && linkage">
+  <ng-template [ngIf]="linkage">
     <h3>Linkage</h3>
     <app-linkages-list [linkages]="[linkage]">
     </app-linkages-list>
   </ng-template>
 
-  <ng-template [ngIf]="job.kind === 'migration' && migration">
+  <ng-template [ngIf]="migration">
     <h3>Migration</h3>
     <app-migrations-list [migrations]="[migration]">
     </app-migrations-list>
@@ -42,6 +42,12 @@
     <h3>Results</h3>
     <app-linkage-results-list [linkageResults]="[linkageResult]">
     </app-linkage-results-list>
+  </ng-template>
+
+  <ng-template [ngIf]="dataset">
+    <h3>Dataset</h3>
+    <app-datasets-list [datasets]="[dataset]">
+    </app-datasets-list>
   </ng-template>
 
   <button type="button" class="btn btn-secondary mt-2" (click)="goBack()">

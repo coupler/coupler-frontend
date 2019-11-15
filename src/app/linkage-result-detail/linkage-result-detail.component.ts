@@ -9,6 +9,7 @@ import { LinkageMatch } from '../linkage-match';
 import { LinkageMatchService } from '../linkage-match.service';
 import { DataColumn } from '../data-table';
 import { Job } from '../job';
+import { JobService } from '../job.service';
 import { ClientError } from '../errors';
 
 @Component({
@@ -30,6 +31,7 @@ export class LinkageResultDetailComponent implements OnInit {
   constructor(
     private linkageResultService: LinkageResultService,
     private linkageMatchService: LinkageMatchService,
+    private jobService: JobService,
     private route: ActivatedRoute,
     private router: Router
   ) { }
@@ -79,5 +81,19 @@ export class LinkageResultDetailComponent implements OnInit {
       this.matchIndex++;
       this.getMatch();
     }
+  }
+
+  createExportJob(): void {
+    let job = new Job();
+    job.kind = "linkage_result_export";
+    job.linkageResultId = this.linkageResult.id;
+
+    this.jobService.create(job).subscribe(result => {
+      if (result instanceof Job) {
+        this.router.navigate(['/jobs', result.id]);
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
   }
 }

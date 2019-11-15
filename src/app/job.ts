@@ -6,6 +6,7 @@ export class Job {
   linkageId: number;
   linkageResultId: number;
   migrationId: number;
+  datasetId: number;
   startedAt: Date;
   endedAt: Date;
   linkageResult?: any;

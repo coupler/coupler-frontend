@@ -21,6 +21,7 @@ export class SerializationService {
     linkage_id: "linkageId",
     linkage_result_id: "linkageResultId",
     migration_id: "migrationId",
+    dataset_id: "datasetId",
     started_at: "startedAt",
     ended_at: "endedAt",
     linkage_result: "linkageResult"
@@ -68,6 +69,7 @@ export class SerializationService {
     fields: "fields",
     csv_import_id: "csvImportId",
     migration_id: "migrationId",
+    linkage_result_id: "linkageResultId",
     pending: "pending"
   };
 

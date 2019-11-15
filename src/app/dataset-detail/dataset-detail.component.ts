@@ -9,6 +9,8 @@ import { Migration } from '../migration';
 import { MigrationService } from '../migration.service';
 import { CsvImport } from '../csv-import';
 import { CsvImportService } from '../csv-import.service';
+import { LinkageResult } from '../linkage-result';
+import { LinkageResultService } from '../linkage-result.service';
 import { ClientError } from '../errors';
 
 @Component({
@@ -21,6 +23,7 @@ export class DatasetDetailComponent implements OnInit {
   dataset: Dataset;
   migration: Migration;
   csvImport: CsvImport;
+  linkageResult: LinkageResult;
 
   detailsHidden = true;
 
@@ -28,6 +31,7 @@ export class DatasetDetailComponent implements OnInit {
     private datasetService: DatasetService,
     private migrationService: MigrationService,
     private csvImportService: CsvImportService,
+    private linkageResultService: LinkageResultService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -45,6 +49,9 @@ export class DatasetDetailComponent implements OnInit {
           }
           if (this.dataset.csvImportId) {
             this.getCsvImport();
+          }
+          if (this.dataset.linkageResultId) {
+            this.getLinkageResult();
           }
         } else if (result instanceof ClientError) {
           this.clientError = result;
@@ -66,6 +73,16 @@ export class DatasetDetailComponent implements OnInit {
     this.csvImportService.getCsvImport(this.dataset.csvImportId).subscribe(result => {
       if (result instanceof CsvImport) {
         this.csvImport = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
+  }
+
+  getLinkageResult(): void {
+    this.linkageResultService.getLinkageResult(this.dataset.linkageResultId).subscribe(result => {
+      if (result instanceof LinkageResult) {
+        this.linkageResult = result;
       } else if (result instanceof ClientError) {
         this.clientError = result;
       }

@@ -25,6 +25,12 @@
     </p>
   </ng-template>
 
+  <ng-template [ngIf]="linkageResult">
+    <h4>Linkage Result</h4>
+    <app-linkage-results-list [linkageResults]="[linkageResult]">
+    </app-linkage-results-list>
+  </ng-template>
+
   <div *ngIf="dataset.kind == 'sqlite3'">
     <div class="details mb-2"
       [class.hidden]="detailsHidden"

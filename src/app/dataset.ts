@@ -19,6 +19,7 @@ export class Dataset {
   fields: DataColumn[];
   csvImportId: number;
   migrationId: number;
+  linkageResultId: number;
   pending: boolean;
 
   annotatedType(): string {
@@ -27,7 +28,11 @@ export class Dataset {
         return 'MySQL';
 
       case DatasetKind.SQLite3:
-        return 'CSV Dataset';
+        if (typeof(this.linkageResultId) == 'number') {
+          return 'Linkage Result Export';
+        } else {
+          return 'CSV Dataset';
+        }
 
       case DatasetKind.CSV:
         return 'CSV';
