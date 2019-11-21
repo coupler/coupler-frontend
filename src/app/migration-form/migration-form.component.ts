@@ -30,8 +30,8 @@ export class MigrationFormComponent implements OnInit {
   clientError: ClientError;
   validationError: ValidationError;
 
-  @ViewChild('migrationForm') migrationForm: NgForm;
-  @ViewChild('operationTabset') operationTabset: NgbTabset;
+  @ViewChild('migrationForm', { static: true }) migrationForm: NgForm;
+  @ViewChild('operationTabset', { static: false }) operationTabset: NgbTabset;
 
   constructor(
     private migrationService: MigrationService,

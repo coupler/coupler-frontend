@@ -95,7 +95,7 @@ import { ValidationErrorComponent } from './validation-error/validation-error.co
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule.forRoot()
+    NgbModule
   ],
   providers: [
     DatasetService,

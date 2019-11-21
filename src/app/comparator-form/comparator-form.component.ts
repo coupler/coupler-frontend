@@ -19,7 +19,7 @@ export class ComparatorFormComponent implements OnInit {
   @Output() cancel = new EventEmitter();
   @Output() delete = new EventEmitter();
 
-  @ViewChild('comparatorForm') comparatorForm: NgForm;
+  @ViewChild('comparatorForm', { static: true }) comparatorForm: NgForm;
 
   initialValue: Comparator;
 

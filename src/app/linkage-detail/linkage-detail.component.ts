@@ -19,7 +19,7 @@ export class LinkageDetailComponent implements OnInit {
   linkage: Linkage;
   clientError: ClientError;
 
-  @ViewChild('deleteConfirmation') confirmDeletionContent: TemplateRef<any>;
+  @ViewChild('deleteConfirmation', { static: false }) confirmDeletionContent: TemplateRef<any>;
 
   constructor(
     private linkageService: LinkageService,

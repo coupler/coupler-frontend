@@ -28,7 +28,7 @@ export class LinkageFormComponent implements OnInit {
   linkageType: string;
   deletedComparatorIds: number[] = [];
 
-  @ViewChild('comparatorsTabset') comparatorsTabset: NgbTabset;
+  @ViewChild('comparatorsTabset', { static: false }) comparatorsTabset: NgbTabset;
 
   constructor(
     private linkageService: LinkageService,

@@ -16,7 +16,7 @@ export class DataTableComponent implements OnChanges, AfterViewChecked {
   columnWidths: number[];
   rows: any[];
 
-  @ViewChild('thead') thead: ElementRef;
+  @ViewChild('thead', { static: false }) thead: ElementRef;
 
   constructor() { }
 
