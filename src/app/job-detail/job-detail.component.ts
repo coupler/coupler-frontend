@@ -14,6 +14,8 @@ import { LinkageResult } from '../linkage-result';
 import { LinkageResultService } from '../linkage-result.service';
 import { Dataset } from '../dataset';
 import { DatasetService } from '../dataset.service';
+import { DatasetExport } from '../dataset-export';
+import { DatasetExportService } from '../dataset-export.service';
 
 import { ClientError } from '../errors';
 
@@ -28,6 +30,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   migration?: Migration;
   linkageResult?: LinkageResult;
   dataset?: Dataset;
+  datasetExport?: DatasetExport;
   clientError: ClientError;
   private refreshTimer: number;
 
@@ -37,6 +40,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     private migrationService: MigrationService,
     private linkageResultService: LinkageResultService,
     private datasetService: DatasetService,
+    private datasetExportService: DatasetExportService,
     private route: ActivatedRoute,
     private location: Location
   ) { }
@@ -78,6 +82,12 @@ export class JobDetailComponent implements OnInit, OnDestroy {
 
           if (typeof(this.job.datasetId) == 'number' && this.job.status == 'finished') {
             this.getDataset();
+          }
+        } else if (this.job.kind == 'dataset_export') {
+          this.getDataset();
+
+          if (typeof(this.job.datasetExportId) == 'number' && this.job.status == 'finished') {
+            this.getDatasetExport();
           }
         }
       } else if (result instanceof ClientError) {
@@ -124,6 +134,20 @@ export class JobDetailComponent implements OnInit, OnDestroy {
         this.clientError = result;
       }
     });
+  }
+
+  getDatasetExport(): void {
+    this.datasetExportService.getDatasetExport(this.job.datasetExportId).subscribe(result => {
+      if (result instanceof DatasetExport) {
+        this.datasetExport = result;
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
+  }
+
+  downloadDatasetExportUrl(): string {
+    return this.datasetExportService.downloadDatasetExportUrl(this.datasetExport.id);
   }
 
   goBack(): void {

@@ -51,6 +51,8 @@ import { MigrationOperationDetailComponent } from './migration-operation-detail/
 import { CsvImportService } from './csv-import.service';
 import { CsvImportFormComponent } from './csv-import-form/csv-import-form.component';
 
+import { DatasetExportService } from './dataset-export.service';
+
 import { SerializationService } from './serialization.service';
 
 import { ClientErrorComponent } from './client-error/client-error.component';
@@ -105,6 +107,7 @@ import { ValidationErrorComponent } from './validation-error/validation-error.co
     LinkageResultService,
     LinkageMatchService,
     CsvImportService,
+    DatasetExportService,
     SerializationService
   ],
   bootstrap: [AppComponent]

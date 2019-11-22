@@ -50,6 +50,10 @@
     </app-datasets-list>
   </ng-template>
 
+  <p *ngIf="datasetExport">
+    <a [href]="downloadDatasetExportUrl()">Download exported dataset</a>
+  </p>
+
   <button type="button" class="btn btn-secondary mt-2" (click)="goBack()">
     <i class="fa fa-chevron-left"></i> Back
   </button>

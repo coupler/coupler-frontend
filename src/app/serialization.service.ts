@@ -8,6 +8,7 @@ import { DataColumnType, DataColumn } from './data-table';
 import { LinkageMatch } from './linkage-match';
 import { Linkage } from './linkage';
 import { Migration } from './migration';
+import { DatasetExport } from './dataset-export';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class SerializationService {
     dataset_id: "datasetId",
     started_at: "startedAt",
     ended_at: "endedAt",
-    linkage_result: "linkageResult"
+    linkage_result: "linkageResult",
+    dataset_export_kind: "datasetExportKind",
+    dataset_export_id: "datasetExportId"
   };
 
   private linkageResultAttributeMap = {
@@ -101,6 +104,15 @@ export class SerializationService {
     input_dataset: "inputDataset",
     output_dataset: "outputDataset"
   };
+
+  private datasetExportAttributeMap = {
+    id: "id",
+    dataset_id: "datasetId",
+    job_id: "jobId",
+    kind: "kind",
+    path: "path",
+    pending: "pending"
+  }
 
   constructor() { }
 
@@ -405,6 +417,18 @@ export class SerializationService {
       }
 
       result[key] = value;
+    }
+    return result;
+  }
+
+  buildDatasetExport(attribs: any): DatasetExport {
+    let result = new DatasetExport();
+    for (let key in attribs) {
+      let value = attribs[key];
+      if (key in this.datasetExportAttributeMap) {
+        let mappedKey = this.datasetExportAttributeMap[key];
+        result[mappedKey] = value;
+      }
     }
     return result;
   }

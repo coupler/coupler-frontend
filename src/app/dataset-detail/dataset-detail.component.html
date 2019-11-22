@@ -68,4 +68,27 @@
       <i class="fa fa-chevron-left"></i> Back
     </a>
   </div>
+
+  <ng-template [ngIf]='!csvImport'>
+    <h3 class="mt-4">Export</h3>
+    <p>
+      You can export this dataset as a CSV file or a SQLite3 database. When you
+      choose to export, a new job is created, and the export file can be
+      downloaded when the job is finished.
+    </p>
+    <form (ngSubmit)="createExportJob()">
+      <div class="form-group">
+        <label for="export-kind">Export type:</label>
+        <select class="form-control" id="export-kind" name="export-kind"
+          required [(ngModel)]="exportKind" style="width: auto">
+          <option></option>
+          <option value="csv">CSV</option>
+          <option value="sqlite3">SQLite3</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">
+        <i class="fa fa-file-export"></i> Export
+      </button>
+    </form>
+  </ng-template>
 </ng-template>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { switchMap } from 'rxjs/operators';
 
@@ -11,6 +11,8 @@ import { CsvImport } from '../csv-import';
 import { CsvImportService } from '../csv-import.service';
 import { LinkageResult } from '../linkage-result';
 import { LinkageResultService } from '../linkage-result.service';
+import { Job } from '../job';
+import { JobService } from '../job.service';
 import { ClientError } from '../errors';
 
 @Component({
@@ -24,7 +26,7 @@ export class DatasetDetailComponent implements OnInit {
   migration: Migration;
   csvImport: CsvImport;
   linkageResult: LinkageResult;
-
+  exportKind = ""
   detailsHidden = true;
 
   constructor(
@@ -32,7 +34,9 @@ export class DatasetDetailComponent implements OnInit {
     private migrationService: MigrationService,
     private csvImportService: CsvImportService,
     private linkageResultService: LinkageResultService,
+    private jobService: JobService,
     private route: ActivatedRoute,
+    private router: Router,
     private location: Location
   ) { }
 
@@ -103,5 +107,20 @@ export class DatasetDetailComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  createExportJob(): void {
+    let job = new Job();
+    job.kind = 'dataset_export';
+    job.datasetExportKind = this.exportKind;
+    job.datasetId = this.dataset.id;
+
+    this.jobService.create(job).subscribe(result => {
+      if (result instanceof Job) {
+        this.router.navigate(['/jobs', result.id]);
+      } else if (result instanceof ClientError) {
+        this.clientError = result;
+      }
+    });
   }
 }
