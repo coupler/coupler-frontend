@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.licenses      = ['MIT']
   s.summary       = 'Coupler frontend application'
   s.authors       = ['Jeremy Stephens']
-  s.email         = 'jeremy.f.stephens@vanderbilt.edu'
+  s.email         = 'jeremy.f.stephens@vumc.org'
   s.files         = `git ls-files -z`.split("\x0")
   s.require_paths = ["lib"]
 
